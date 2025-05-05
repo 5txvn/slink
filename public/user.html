@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alumni Profile - SEM Alumni Network</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body, html {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        body::-webkit-scrollbar, html::-webkit-scrollbar {
+            display: none;
+        }
+        .maroon-text { color: #800000; }
+        .profile-container {
+            width: 95vw;
+            max-width: 1200px;
+            margin: 6rem auto 2rem auto;
+            background: #f8fafc;
+            border-radius: 1.5rem;
+            box-shadow: 0 4px 18px #e0e0e0;
+            padding: 2.2rem 2.2rem 2rem 2.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+        .profile-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .profile-avatar {
+            width: 160px;
+            height: 160px;
+            border-radius: 1.25rem;
+            object-fit: cover;
+            box-shadow: 0 2px 8px #d1d1d1;
+            border: 3px solid #800000;
+            margin-top: 0.2rem;
+            margin-left: 0.2rem;
+            float: left;
+        }
+        .profile-main-info {
+            flex: 1 1 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 160px;
+        }
+        .profile-name {
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: 0.01em;
+            color: #800000;
+            margin-bottom: 1.2rem;
+        }
+        .profile-contact {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            flex-wrap: wrap;
+            margin-bottom: 1.2rem;
+        }
+        .profile-contact-item {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 1rem;
+            color: #555;
+        }
+        .profile-contact-item i {
+            color: #800000;
+            font-size: 1.1em;
+        }
+        .profile-class {
+            font-size: 1.2rem;
+            color: #800000;
+            font-weight: 800;
+            margin-bottom: 0.1rem;
+            margin-top: 1.2rem;
+        }
+        .profile-bio {
+            font-size: 1.08rem;
+            color: #444;
+            margin-bottom: 0.5rem;
+            margin-top: 0.2rem;
+        }
+        .profile-sections {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+        }
+        .profile-section {
+            flex: 1 1 260px;
+            min-width: 220px;
+            background: #fff;
+            border-radius: 1rem;
+            box-shadow: 0 1px 6px #e0e0e0;
+            padding: 1.1rem 1.2rem 1rem 1.2rem;
+            margin-bottom: 0.2rem;
+            min-height: 90px;
+        }
+        .section-title {
+            font-size: 1.08rem;
+            font-weight: 700;
+            color: #800000;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .section-content {
+            font-size: 1rem;
+            color: #333;
+            display: flex;
+            flex-direction: column;
+            gap: 0.2rem;
+        }
+        .section-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            color: #444;
+        }
+        .section-item i {
+            color: #800000;
+            font-size: 1em;
+        }
+        .contact-links {
+            display: flex;
+            flex-direction: column;
+            gap: 0.4rem;
+        }
+        .contact-link-row {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-size: 1rem;
+        }
+        .contact-link-row i {
+            color: #800000;
+            font-size: 1.1em;
+        }
+        .contact-link-row a {
+            color: #800000;
+            text-decoration: underline;
+            font-weight: 500;
+        }
+        @media (max-width: 800px) {
+            .profile-container {
+                padding: 1.2rem 0.5rem;
+            }
+            .profile-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.7rem;
+            }
+            .profile-avatar {
+                float: none;
+                margin-bottom: 0.5rem;
+            }
+            .profile-sections {
+                flex-direction: column;
+                gap: 0.7rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div id="navbar-container"></div>
+    <div class="profile-container">
+        <div class="profile-header">
+            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Profile Photo" class="profile-avatar">
+            <div class="profile-main-info">
+                <div class="profile-name">John Smith</div>
+                <div class="profile-contact">
+                    <div class="profile-contact-item"><i class="fas fa-envelope"></i><a href="mailto:john.smith@email.com" class="underline">john.smith@email.com</a></div>
+                    <div class="profile-contact-item"><i class="fas fa-map-marker-alt"></i>San Francisco, CA</div>
+                </div>
+                <div class="profile-class">Class of 2019</div>
+            </div>
+        </div>
+        <div class="profile-bio">
+            John is a passionate software engineer who graduated from SEM in 2019 and went on to study Computer Science at Harvard. He currently works at Google in San Francisco and enjoys mentoring students interested in technology and engineering.
+        </div>
+        <div class="profile-sections">
+            <div class="profile-section">
+                <div class="section-title">Education</div>
+                <div class="section-content">
+                    <div class="section-item"><i class="fas fa-university"></i>Harvard University</div>
+                    <div class="section-item"><i class="fas fa-graduation-cap"></i>B.S. Computer Science, 2019</div>
+                </div>
+            </div>
+            <div class="profile-section">
+                <div class="section-title">Profession</div>
+                <div class="section-content">
+                    <div class="section-item"><i class="fas fa-briefcase"></i>Software Engineer</div>
+                    <div class="section-item"><i class="fas fa-building"></i>Google</div>
+                </div>
+            </div>
+            <div class="profile-section">
+                <div class="section-title">Contact & Links</div>
+                <div class="contact-links">
+                    <div class="contact-link-row"><i class="fab fa-github"></i><a href="https://github.com/johnsmith" target="_blank">github.com/johnsmith</a></div>
+                    <div class="contact-link-row"><i class="fab fa-linkedin"></i><a href="https://linkedin.com/in/johnsmith" target="_blank">linkedin.com/in/johnsmith</a></div>
+                    <div class="contact-link-row"><i class="fas fa-globe"></i><a href="https://johnsmith.dev" target="_blank">johnsmith.dev</a></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="module">
+        import Navbar from './components/navbar.js';
+        const navbar = new Navbar();
+        document.getElementById('navbar-container').innerHTML = navbar.render();
+        navbar.init();
+        setTimeout(() => {
+            const atom = document.querySelector('.fa-atom');
+            if (atom) atom.classList.add('animate-spin-slow');
+        }, 100);
+    </script>
+</body>
+</html> 
