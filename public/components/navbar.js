@@ -5,37 +5,59 @@ class Navbar {
 
     render() {
         return `
-            <nav class="bg-gradient-to-r from-[#4a0000] via-[#800000] to-[#4a0000] text-white p-4 fixed w-full top-0 z-50 shadow-lg rounded-b-2xl gradient-flow">
-                <div class="container mx-auto flex justify-between items-center">
-                    <div class="flex items-center space-x-4">
-                        <i class="fas fa-atom text-2xl animate-spin-slow mt-1"></i>
-                        <h1 class="text-2xl font-bold tracking-wider">Slink</h1>
+            <nav class="bg-gradient-to-r from-[#4a0000] via-[#800000] to-[#4a0000] text-white px-6 py-4 fixed w-full top-0 z-50 shadow-lg rounded-b-2xl gradient-flow">
+                <div class="max-w-6xl mx-auto flex items-center justify-between">
+                    <div class="flex items-center space-x-3 min-w-[160px] pr-8">
+                        <i class="fas fa-atom text-3xl animate-spin-slow mt-1"></i>
+                        <h1 class="text-3xl font-extrabold tracking-wider ml-1">Slink</h1>
                     </div>
-                    <div class="flex items-center space-x-4">
-                        <button id="nav-toggle" class="text-white transition-all hover:scale-105">
-                            <i class="fas fa-chevron-down text-xl"></i>
+                    <div class="flex-1 flex justify-end">
+                        <div class="hidden md:flex space-x-8">
+                            <a href="index.html" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md">
+                                <i class="fas fa-home"></i>
+                                <span>Home</span>
+                            </a>
+                            <a href="directory.html" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md">
+                                <i class="fas fa-users"></i>
+                                <span>Directory</span>
+                            </a>
+                            <a href="#" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span>Events</span>
+                            </a>
+                            <a href="#" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md">
+                                <i class="fas fa-book"></i>
+                                <span>Resources</span>
+                            </a>
+                            <a href="#" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md">
+                                <i class="fas fa-info-circle"></i>
+                                <span>About</span>
+                            </a>
+                        </div>
+                        <button id="nav-toggle" class="text-white transition-all hover:scale-110 md:hidden ml-2">
+                            <i class="fas fa-chevron-down text-2xl"></i>
                         </button>
                     </div>
                 </div>
-                <div id="nav-menu" class="hidden mt-4 transition-all duration-300 ease-in-out">
+                <div id="nav-menu" class="hidden mt-4 transition-all duration-300 ease-in-out md:hidden max-w-6xl mx-auto">
                     <div class="flex flex-col space-y-2">
-                        <a href="index.html" class="flex items-center space-x-2 hover:text-gray-200 transition-all hover:scale-105 p-2">
+                        <a href="index.html" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md p-2">
                             <i class="fas fa-home"></i>
                             <span>Home</span>
                         </a>
-                        <a href="directory.html" class="flex items-center space-x-2 hover:text-gray-200 transition-all hover:scale-105 p-2">
+                        <a href="directory.html" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md p-2">
                             <i class="fas fa-users"></i>
                             <span>Directory</span>
                         </a>
-                        <a href="#" class="flex items-center space-x-2 hover:text-gray-200 transition-all hover:scale-105 p-2">
+                        <a href="#" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md p-2">
                             <i class="fas fa-calendar-alt"></i>
                             <span>Events</span>
                         </a>
-                        <a href="#" class="flex items-center space-x-2 hover:text-gray-200 transition-all hover:scale-105 p-2">
+                        <a href="#" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md p-2">
                             <i class="fas fa-book"></i>
                             <span>Resources</span>
                         </a>
-                        <a href="#" class="flex items-center space-x-2 hover:text-gray-200 transition-all hover:scale-105 p-2">
+                        <a href="#" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md p-2">
                             <i class="fas fa-info-circle"></i>
                             <span>About</span>
                         </a>

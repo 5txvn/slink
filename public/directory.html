@@ -19,12 +19,40 @@
         /* Neumorphic inner shadow for buttons */
         .neumorphic-btn {
             background: #f0f0f0;
-            box-shadow: inset 3px 3px 7px #d1d1d1, inset -3px -3px 7px #ffffff;
+            box-shadow: inset 2px 2px 4px #d6d6d6, inset 3px 3px 6px #ececec;
+            /* Subtle inner shadow bottom and right only */
             transition: all 0.2s ease;
             border: none;
         }
         .neumorphic-btn:active {
-            transform: scale(0.97);
+            transform: scale(0.95);
+        }
+        .neumorphic-btn, .close-button {
+            box-shadow: inset 4px 4px 10px #c0bebe, inset 6px 6px 16px #e0e0e0 !important;
+        }
+        .close-button {
+            background: #800000;
+            color: #fff;
+            border: none;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+            box-shadow: inset 2px 2px 6px #5a0000, inset 3px 3px 8px #a94442;
+        }
+        .close-button:hover {
+            background: #a94442;
+        }
+        .modal-content.nice-modal, .modal-content.neumorphic {
+            box-shadow: inset 4px 4px 12px #e0e0e0, inset 8px 8px 18px #f7f7f7;
+        }
+        .directory-title {
+            background-size: 200% 200%;
+            animation: gradient-flow 3s ease-in-out infinite;
+        }
+        @keyframes gradient-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
         /* Table header icon colors */
         .icon-user { color: #800000; }
@@ -202,12 +230,6 @@
             vertical-align: middle;
             margin-right: 0.5em;
         }
-        .icon-university { color: #3b82f6; }
-        .icon-calendar { color: #fbbf24; }
-        .icon-briefcase { color: #a78bfa; }
-        .icon-building { color: #06b6d4; }
-        .icon-location { color: #fb923c; }
-        .icon-user { color: #ef4444; }
         /* Hide up/down arrows in table headers */
         .sort-icon { display: none !important; }
         /* Filter modal redesign */
@@ -258,26 +280,108 @@
         .dynamic-checkboxes {
             margin-bottom: 1rem;
         }
+        .close-button {
+            background-color: #800000;
+            color: white;
+            padding: 0.5rem 1.5rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .close-button:hover {
+            background-color: #4a0000;
+        }
+        .neumorphic-inner {
+            background: #f0f0f0;
+            box-shadow: inset 1.5px 1.5px 4px #e0e0e0, inset 2.5px 2.5px 8px #f7f7f7;
+        }
+        .close-button {
+            background: #f0f0f0;
+            color: #800000;
+            border: none;
+            box-shadow: inset 2px 2px 6px #d1d1d1, inset -2px -2px 6px #ffffff;
+            padding: 0.5rem 1.5rem;
+            border-radius: 0.375rem;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        .close-button:hover {
+            background: #e5e5e5;
+        }
+        .modal-content.nice-modal, .modal-content.neumorphic {
+            box-shadow: inset 6px 6px 18px #d1d1d1, inset -6px -6px 18px #ffffff;
+        }
+        .directory-title {
+            background-size: 200% 200%;
+            animation: gradient-flow 3s ease-in-out infinite;
+        }
+        @keyframes gradient-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        /* Autocomplete dropdown for filter modal */
+        .autocomplete-dropdown {
+            position: absolute;
+            z-index: 1001;
+            background: #e5e7eb;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            width: 100%;
+            max-height: 220px;
+            overflow-y: auto;
+            margin-top: 0.25rem;
+        }
+        .autocomplete-option {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .autocomplete-option:hover {
+            background: #f3f4f6;
+        }
+        @keyframes gradient-flow-btn {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .animate-gradient-flow-btn {
+            background-size: 200% 200%;
+            animation: gradient-flow-btn 6s ease-in-out infinite;
+        }
+        .filter-checkbox, .column-toggle {
+            transition: box-shadow 0.2s, transform 0.2s;
+        }
+        .filter-checkbox:checked, .column-toggle:checked {
+            box-shadow: 0 0 0 4px #80000022;
+            transform: scale(1.12);
+        }
     </style>
 </head>
 <body class="bg-gray-100">
     <div id="navbar-container"></div>
 
+    <!-- Directory Title Card -->
+    <div id="directory-title-card" class="directory-title-card flex flex-col items-center justify-center py-16 mb-12 container mx-auto border border-gray-200 rounded-2xl shadow-[inset_0_12px_32px_#e0e0e0,inset_12px_0_32px_#c0bebe]" style="margin-top:7rem;">
+        <h1 class="directory-title text-4xl sm:text-5xl md:text-6xl font-extrabold mb-8 pb-2 leading-tight bg-gradient-to-r from-[#800000] via-gray-500 to-gray-400 bg-clip-text text-transparent animate-gradient-flow">Alumni Directory</h1>
+        <p class="text-gray-600 text-2xl font-bold mb-6">Browse and connect with alumni from SEM</p>
+    </div>
+
     <!-- Main Content -->
     <main class="container mx-auto p-4 mt-20">
         <!-- Table Controls -->
-        <div class="flex justify-between items-center mb-4">
-            <div class="flex space-x-2">
-                <button id="filter-btn" class="neumorphic-btn px-4 py-2 rounded-lg hover-scale">
-                    <i class="fas fa-filter mr-2"></i>Filter
+        <div class="flex justify-between items-center mb-14">
+            <div class="flex space-x-6">
+                <button id="filter-btn" class="px-10 py-3 text-lg rounded-xl hover-scale font-bold border border-gray-200 shadow-[inset_0_4px_12px_#e0e0e0,inset_4px_0_12px_#c0bebe] bg-gray-100">
+                    <i class="fas fa-filter mr-3"></i>Filter
                 </button>
-                <button id="columns-btn" class="neumorphic-btn px-4 py-2 rounded-lg hover-scale">
-                    <i class="fas fa-columns mr-2"></i>Columns
+                <button id="columns-btn" class="px-10 py-3 text-lg rounded-xl hover-scale font-bold border border-gray-200 shadow-[inset_0_4px_12px_#e0e0e0,inset_4px_0_12px_#c0bebe] bg-gray-100">
+                    <i class="fas fa-columns mr-3"></i>Columns
                 </button>
             </div>
-            <div class="relative">
-                <input type="text" placeholder="Search alumni..." class="neumorphic px-4 py-2 rounded-lg w-64 search-input">
-                <i class="fas fa-search absolute right-3 top-3 text-gray-400"></i>
+            <div class="relative w-[28rem]">
+                <input id="search-alumni-input" type="text" placeholder="Search alumni..." class="px-6 py-4 text-lg rounded-xl w-full search-input bg-white border border-gray-200 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/10">
+                <i class="fas fa-search absolute right-5 top-1/2 -translate-y-1/2 text-2xl text-gray-400"></i>
             </div>
         </div>
 
@@ -289,55 +393,54 @@
         <!-- Alumni Table -->
         <div class="neumorphic rounded-lg overflow-hidden">
             <div class="overflow-x-auto">
-                <table class="w-full">
+                <table class="w-full text-lg md:text-xl">
                     <thead class="table-header">
-                        <tr class="text-left text-sm">
+                        <tr class="text-left text-lg">
                             <th class="px-4 py-2 cursor-pointer hover:bg-gray-100">
                                 <div class="flex items-center">
-                                    <i class="fas fa-user icon-user text-2xl mr-2"></i>
+                                    <i class="fas fa-user icon-user text-base mr-2"></i>
                                     Name
                                 </div>
                             </th>
                             <th class="px-4 py-2 cursor-pointer hover:bg-gray-100">
                                 <div class="flex items-center">
-                                    <i class="fas fa-university icon-university text-2xl mr-2"></i>
+                                    <i class="fas fa-university icon-university text-base mr-2"></i>
                                     School
                                 </div>
                             </th>
                             <th class="px-4 py-2 cursor-pointer hover:bg-gray-100">
                                 <div class="flex items-center">
-                                    <i class="fas fa-graduation-cap icon-graduation text-2xl mr-2"></i>
+                                    <i class="fas fa-graduation-cap icon-graduation text-base mr-2"></i>
                                     Major
                                 </div>
                             </th>
                             <th class="px-4 py-2 cursor-pointer hover:bg-gray-100">
                                 <div class="flex items-center">
-                                    <i class="fas fa-calendar icon-calendar text-2xl mr-2"></i>
+                                    <i class="fas fa-calendar icon-calendar text-base mr-2"></i>
                                     Year
                                 </div>
                             </th>
                             <th class="px-4 py-2 cursor-pointer hover:bg-gray-100">
                                 <div class="flex items-center">
-                                    <i class="fas fa-briefcase icon-briefcase text-2xl mr-2"></i>
+                                    <i class="fas fa-briefcase icon-briefcase text-base mr-2"></i>
                                     Position
                                 </div>
                             </th>
                             <th class="px-4 py-2 cursor-pointer hover:bg-gray-100">
                                 <div class="flex items-center">
-                                    <i class="fas fa-building icon-building text-2xl mr-2"></i>
+                                    <i class="fas fa-building icon-building text-base mr-2"></i>
                                     Company
                                 </div>
                             </th>
                             <th class="px-4 py-2 cursor-pointer hover:bg-gray-100">
                                 <div class="flex items-center">
-                                    <i class="fas fa-map-marker-alt icon-location text-2xl mr-2"></i>
+                                    <i class="fas fa-map-marker-alt icon-location text-base mr-2"></i>
                                     Location
                                 </div>
                             </th>
-                            <th class="px-4 py-2">Actions</th>
                         </tr>
                     </thead>
-                    <tbody id="alumni-table-body" class="text-sm">
+                    <tbody id="alumni-table-body" class="text-lg md:text-xl">
                         <!-- Table rows will be populated here -->
                     </tbody>
                 </table>
@@ -347,40 +450,49 @@
 
     <!-- Filter Modal -->
     <div id="filter-modal" class="modal">
-        <div class="modal-content nice-modal">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-2xl font-bold maroon-text">Filter Alumni</h2>
+        <div class="modal-content nice-modal relative bg-white rounded-2xl shadow-[inset_0_12px_32px_#e0e0e0,inset_12px_0_32px_#c0bebe]">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-2xl font-bold maroon-text flex items-center gap-2"><i class="fas fa-filter"></i>Filter Alumni</h2>
                 <button id="close-filter-modal" class="text-gray-500 hover:text-gray-700">
                     <i class="fas fa-times text-xl"></i>
                 </button>
             </div>
             <form id="filter-form">
                 <div class="filter-group">
-                    <div class="filter-group-title">School</div>
-                    <input type="text" class="search-filter-input" placeholder="Search for a school..." data-filter-type="School">
+                    <div class="filter-group-title flex items-center gap-2 text-lg font-semibold mb-1"><i class="fas fa-university"></i>School</div>
+                    <div style="position:relative;">
+                        <input type="text" class="search-filter-input bg-gradient-to-r from-gray-100 via-white to-gray-200 focus:from-gray-200 focus:to-gray-100 transition-all duration-300 placeholder-gray-400 rounded-lg px-4 py-2 border border-gray-300 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/10" placeholder="Search for a school..." data-filter-type="School" id="school-search-input" autocomplete="off">
+                        <div class="autocomplete-dropdown" id="school-autocomplete" style="display:none;"></div>
+                    </div>
                     <div class="dynamic-checkboxes" id="school-dynamic-checkboxes"></div>
                 </div>
                 <div class="filter-group">
-                    <div class="filter-group-title">Major</div>
-                    <input type="text" class="search-filter-input" placeholder="Search for a major..." data-filter-type="Major">
+                    <div class="filter-group-title flex items-center gap-2 text-lg font-semibold mb-1"><i class="fas fa-graduation-cap"></i>Major</div>
+                    <div style="position:relative;">
+                        <input type="text" class="search-filter-input bg-gradient-to-r from-gray-100 via-white to-gray-200 focus:from-gray-200 focus:to-gray-100 transition-all duration-300 placeholder-gray-400 rounded-lg px-4 py-2 border border-gray-300 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/10" placeholder="Search for a major..." data-filter-type="Major" id="major-search-input" autocomplete="off">
+                        <div class="autocomplete-dropdown" id="major-autocomplete" style="display:none;"></div>
+                    </div>
                     <div class="dynamic-checkboxes" id="major-dynamic-checkboxes"></div>
                 </div>
                 <div class="filter-group">
-                    <div class="filter-group-title">Graduation Year</div>
-                    <input type="text" class="search-filter-input" placeholder="Search for a year..." data-filter-type="Year">
+                    <div class="filter-group-title flex items-center gap-2 text-lg font-semibold mb-1"><i class="fas fa-calendar"></i>Graduation Year</div>
+                    <div style="position:relative;">
+                        <input type="text" class="search-filter-input bg-gradient-to-r from-gray-100 via-white to-gray-200 focus:from-gray-200 focus:to-gray-100 transition-all duration-300 placeholder-gray-400 rounded-lg px-4 py-2 border border-gray-300 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/10" placeholder="Search for a year..." data-filter-type="Year" id="year-search-input" autocomplete="off">
+                        <div class="autocomplete-dropdown" id="year-autocomplete" style="display:none;"></div>
+                    </div>
                     <div class="dynamic-checkboxes" id="year-dynamic-checkboxes"></div>
                 </div>
                 <div class="filter-group">
-                    <div class="filter-group-title">Current Position</div>
-                    <input type="text" class="search-filter-input" placeholder="Search for a position..." data-filter-type="Position">
+                    <div class="filter-group-title flex items-center gap-2 text-lg font-semibold mb-1"><i class="fas fa-briefcase"></i>Current Position</div>
+                    <div style="position:relative;">
+                        <input type="text" class="search-filter-input bg-gradient-to-r from-gray-100 via-white to-gray-200 focus:from-gray-200 focus:to-gray-100 transition-all duration-300 placeholder-gray-400 rounded-lg px-4 py-2 border border-gray-300 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/10" placeholder="Search for a position..." data-filter-type="Position" id="position-search-input" autocomplete="off">
+                        <div class="autocomplete-dropdown" id="position-autocomplete" style="display:none;"></div>
+                    </div>
                     <div class="dynamic-checkboxes" id="position-dynamic-checkboxes"></div>
                 </div>
-                <div class="flex justify-end space-x-2 mt-4">
-                    <button type="button" id="reset-filters" class="neumorphic-btn px-4 py-2 rounded-lg hover-scale">
-                        Reset
-                    </button>
-                    <button type="submit" class="bg-[#4a0000] text-white px-4 py-2 rounded-lg hover-scale">
-                        Apply Filters
+                <div class="flex justify-end mt-4">
+                    <button type="button" id="close-filter-modal-btn" class="px-6 py-3 rounded-lg bg-[#800000] text-white text-lg font-bold shadow-[inset_0_6px_16px_#5a0000,inset_6px_0_16px_#a94442]">
+                        Close
                     </button>
                 </div>
             </form>
@@ -389,19 +501,19 @@
 
     <!-- Columns Modal -->
     <div id="columns-modal" class="modal">
-        <div class="modal-content neumorphic bg-white">
-            <div class="flex justify-between items-center mb-4">
-                <h2 class="text-2xl font-bold maroon-text">Show/Hide Columns</h2>
+        <div class="modal-content nice-modal bg-white rounded-2xl shadow-[inset_0_12px_32px_#e0e0e0,inset_12px_0_32px_#c0bebe]">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-2xl font-bold maroon-text flex items-center gap-2"><i class="fas fa-columns"></i>Show/Hide Columns</h2>
                 <button id="close-columns-modal" class="text-gray-500 hover:text-gray-700">
                     <i class="fas fa-times text-xl"></i>
                 </button>
             </div>
-            <div class="space-y-2" id="column-toggles">
+            <div class="space-y-4" id="column-toggles">
                 <!-- Column toggles will be populated here -->
             </div>
             <div class="flex justify-end mt-4">
-                <button id="apply-columns" class="bg-[#4a0000] text-white px-4 py-2 rounded-lg hover-scale">
-                    Apply
+                <button id="close-columns-modal-btn" class="px-6 py-3 rounded-lg bg-[#800000] text-white text-lg font-bold shadow-[inset_0_6px_16px_#5a0000,inset_6px_0_16px_#a94442]">
+                    Close
                 </button>
             </div>
         </div>
@@ -491,13 +603,12 @@
         function renderFilterTags() {
             const container = $('#active-filters');
             container.empty();
-            
             for (let [key, values] of activeFilters) {
                 for (let value of values) {
                     const tag = `
-                        <div class="filter-tag" data-key="${key}" data-value="${value}">
+                        <div class="filter-tag inline-flex items-center bg-[#800000] text-white px-4 py-2 rounded-full text-base font-medium mr-2 mb-2 whitespace-nowrap" data-key="${key}" data-value="${value}">
                             <span>${key}: ${value}</span>
-                            <span class="close"><i class="fas fa-times"></i></span>
+                            <span class="close ml-2 cursor-pointer hover:opacity-80"><i class="fas fa-times"></i></span>
                         </div>
                     `;
                     container.append(tag);
@@ -518,10 +629,18 @@
                 }
                 return true;
             });
-            
             currentPage = 1;
             renderTable();
             updatePaginationInfo();
+            // After filtering, re-hide any columns that are toggled off
+            columns.forEach((col, idx) => {
+                if (!col.visible) {
+                    $(`table thead th`).eq(idx).hide();
+                    $(`#alumni-table-body tr`).each(function() {
+                        $(this).find('td').eq(idx).hide();
+                    });
+                }
+            });
         }
 
         // Update pagination info
@@ -544,18 +663,15 @@
             filteredData.forEach(alumni => {
                 const row = `
                     <tr class="table-row border-t text-sm">
-                        <td class="px-4 py-2">${alumni.name}</td>
-                        <td class="px-4 py-2"><span class="clickable" data-key="School" data-value="${alumni.school}">${alumni.school}</span></td>
-                        <td class="px-4 py-2 col-major"><span class="clickable" data-key="Major" data-value="${alumni.major}">${alumni.major}</span></td>
-                        <td class="px-4 py-2 col-year"><span class="clickable" data-key="Year" data-value="${alumni.year}">${alumni.year}</span></td>
-                        <td class="px-4 py-2"><span class="clickable" data-key="Position" data-value="${alumni.position}">${alumni.position}</span></td>
-                        <td class="px-4 py-2 col-company"><span class="clickable" data-key="Company" data-value="${alumni.company}">${alumni.company}</span></td>
-                        <td class="px-4 py-2 col-location"><span class="clickable" data-key="Location" data-value="${alumni.location}">${alumni.location}</span></td>
                         <td class="px-4 py-2">
-                            <button class="neumorphic-btn px-3 py-1 rounded-lg hover-scale text-sm">
-                                Contact
-                            </button>
+                            <a href="/user/${alumni.username}" class="text-black underline">${alumni.name}</a>
                         </td>
+                        <td class="px-4 py-2"><span class="clickable" data-key="School" data-value="${alumni.school}">${alumni.school}</span></td>
+                        <td class="px-4 py-2 col-major hidden lg:table-cell"><span class="clickable" data-key="Major" data-value="${alumni.major}">${alumni.major}</span></td>
+                        <td class="px-4 py-2 col-year hidden md:table-cell"><span class="clickable" data-key="Year" data-value="${alumni.year}">${alumni.year}</span></td>
+                        <td class="px-4 py-2 hidden md:table-cell"><span class="clickable" data-key="Position" data-value="${alumni.position}">${alumni.position}</span></td>
+                        <td class="px-4 py-2 col-company hidden sm:table-cell"><span class="clickable" data-key="Company" data-value="${alumni.company}">${alumni.company}</span></td>
+                        <td class="px-4 py-2 col-location hidden sm:table-cell"><span class="clickable" data-key="Location" data-value="${alumni.location}">${alumni.location}</span></td>
                     </tr>
                 `;
                 tableBody.append(row);
@@ -574,9 +690,9 @@
             container.empty();
             columns.forEach(column => {
                 const toggle = `
-                    <label class="filter-label">
-                        <input type="checkbox" id="${column.id}-toggle" class="filter-checkbox" ${column.visible ? 'checked' : ''}>
-                        ${column.label}
+                    <label class="filter-label transition-all duration-200 flex items-center gap-3 bg-gray-50 rounded-lg px-3 py-2 shadow-sm hover:bg-gray-100">
+                        <input type="checkbox" id="${column.id}-toggle" class="filter-checkbox column-toggle transition-transform duration-200 ease-in-out scale-100 checked:scale-110 checked:bg-[#800000]" data-column-id="${column.id}" ${column.visible ? 'checked' : ''}>
+                        <span class="text-lg font-medium">${column.label}</span>
                     </label>
                 `;
                 container.append(toggle);
@@ -585,61 +701,72 @@
 
         // Initialize searchable filter inputs
         function initializeSearchableFilters() {
-            $('.search-filter-input').on('input', function() {
-                const searchTerm = $(this).val().toLowerCase();
-                const filterType = $(this).data('filter-type');
-                const container = $(`#${filterType.toLowerCase()}-dynamic-checkboxes`);
-                
-                // Get unique values from alumni data
-                const uniqueValues = [...new Set(alumniData.map(alumni => alumni[filterType.toLowerCase()]))];
-                
-                // Filter values based on search term
-                const filteredValues = uniqueValues.filter(value => 
-                    value.toLowerCase().includes(searchTerm)
-                );
-                
-                // Update checkboxes
-                container.empty();
-                filteredValues.forEach(value => {
-                    const isChecked = activeFilters.has(filterType) && 
-                                    activeFilters.get(filterType).has(value);
-                    const checkbox = `
-                        <label class="filter-label">
-                            <input type="checkbox" class="filter-checkbox" 
-                                   data-filter-type="${filterType}" 
-                                   value="${value}"
-                                   ${isChecked ? 'checked' : ''}>
-                            ${value}
-                        </label>
-                    `;
-                    container.append(checkbox);
+            // Helper for each filter type
+            function setupAutocomplete(inputId, dropdownId, dynamicId, filterType) {
+                const input = $(inputId);
+                const dropdown = $(dropdownId);
+                const dynamic = $(dynamicId);
+                input.on('input', function() {
+                    const searchTerm = input.val().toLowerCase();
+                    if (!searchTerm) {
+                        dropdown.hide();
+                        return;
+                    }
+                    const uniqueValues = [...new Set(alumniData.map(alumni => alumni[filterType.toLowerCase()]))];
+                    const filteredValues = uniqueValues.filter(value => value.toLowerCase().includes(searchTerm)).slice(0, 10);
+                    dropdown.empty();
+                    if (filteredValues.length === 0) {
+                        dropdown.hide();
+                        return;
+                    }
+                    filteredValues.forEach(value => {
+                        dropdown.append(`<div class="autocomplete-option" data-value="${value}">${value}</div>`);
+                    });
+                    dropdown.show();
                 });
-            });
+                // Click on autocomplete option
+                dropdown.on('click', '.autocomplete-option', function() {
+                    const value = $(this).data('value');
+                    // Add checked checkbox below input
+                    if (dynamic.find(`input[value='${value}']`).length === 0) {
+                        dynamic.append(`
+                            <label class="filter-label">
+                                <input type="checkbox" class="filter-checkbox single-filter-checkbox" data-filter-type="${filterType}" value="${value}" checked>
+                                ${value}
+                            </label>
+                        `);
+                        addFilterTag(filterType, value);
+                        applyActiveFilters();
+                    }
+                    dropdown.hide();
+                    input.val('');
+                });
+                // Hide dropdown on blur
+                input.on('blur', function() {
+                    setTimeout(() => dropdown.hide(), 200);
+                });
+            }
+            setupAutocomplete('#school-search-input', '#school-autocomplete', '#school-dynamic-checkboxes', 'School');
+            setupAutocomplete('#major-search-input', '#major-autocomplete', '#major-dynamic-checkboxes', 'Major');
+            setupAutocomplete('#year-search-input', '#year-autocomplete', '#year-dynamic-checkboxes', 'Year');
+            setupAutocomplete('#position-search-input', '#position-autocomplete', '#position-dynamic-checkboxes', 'Position');
         }
 
-        // Handle dynamic checkbox changes
-        $(document).on('change', '.dynamic-checkboxes .filter-checkbox', function() {
+        // Remove filter and checkbox when unticked
+        $(document).on('change', '.single-filter-checkbox', function() {
             const filterType = $(this).data('filter-type');
             const value = $(this).val();
-            
-            if (!activeFilters.has(filterType)) {
-                activeFilters.set(filterType, new Set());
+            if (!$(this).is(':checked')) {
+                removeFilterTag(filterType, value);
+                $(this).closest('.filter-label').remove();
             }
-            
-            if ($(this).is(':checked')) {
-                activeFilters.get(filterType).add(value);
-            } else {
-                activeFilters.get(filterType).delete(value);
-                if (activeFilters.get(filterType).size === 0) {
-                    activeFilters.delete(filterType);
-                }
-            }
-            
-            renderFilterTags();
-            applyActiveFilters();
         });
 
         $(document).ready(function() {
+            // If navbar is fixed, add margin to title card
+            if ($('#navbar-container').css('position') === 'fixed' || $('#navbar-container').css('position') === 'sticky') {
+                $('#directory-title-card').css('margin-top', $('#navbar-container').outerHeight() + 32 + 'px');
+            }
             // Initialize table and filters
             renderTable();
             populateColumnToggles();
@@ -651,50 +778,13 @@
                 <div id="pagination-info" class="mb-4"></div>
             `);
 
-            // Filter controls
-            $('#apply-filters').click(function() {
-                const selectedSchools = $('#school-filter').val() || [];
-                const selectedMajors = $('#major-filter').val() || [];
-                const selectedYears = $('#year-filter').val() || [];
-                const selectedPositions = $('#position-filter').val() || [];
-
-                activeFilters.clear();
-
-                if (selectedSchools.length) activeFilters.set('School', new Set(selectedSchools));
-                if (selectedMajors.length) activeFilters.set('Major', new Set(selectedMajors));
-                if (selectedYears.length) activeFilters.set('Year', new Set(selectedYears));
-                if (selectedPositions.length) activeFilters.set('Position', new Set(selectedPositions));
-
-                renderFilterTags();
-                applyActiveFilters();
+            // Close filter modal
+            $('#close-filter-modal-btn').click(function() {
                 $('#filter-modal').hide();
             });
 
-            // Reset filters
-            $('#reset-filters').click(function() {
-                $('#school-filter, #major-filter, #year-filter, #position-filter').val([]);
-                activeFilters.clear();
-                renderFilterTags();
-                filteredData = alumniData;
-                currentPage = 1;
-                renderTable();
-                updatePaginationInfo();
-                $('#filter-modal').hide();
-            });
-
-            // Remove filter tag on click
-            $(document).on('click', '.filter-tag .close', function() {
-                const key = $(this).closest('.filter-tag').data('key');
-                const value = $(this).closest('.filter-tag').data('value');
-                removeFilterTag(key, value);
-            });
-
-            // Column visibility controls
-            $('#apply-columns').click(function() {
-                columns.forEach(column => {
-                    column.visible = $(`#${column.id}-toggle`).is(':checked');
-                    $(`.col-${column.id}`).toggle(column.visible);
-                });
+            // Close columns modal
+            $('#close-columns-modal-btn').click(function() {
                 $('#columns-modal').hide();
             });
 
@@ -710,17 +800,41 @@
                 }
             });
 
-            // Handle filter form submit
-            $(document).on('submit', '#filter-form', function(e) {
-                e.preventDefault();
-                activeFilters.clear();
-                ['school','major','year','position'].forEach(key => {
-                    const checked = $(`input[name='${key}']:checked`).map(function(){return this.value;}).get();
-                    if (checked.length) activeFilters.set(key.charAt(0).toUpperCase()+key.slice(1), new Set(checked));
+            // Directory title card gradient animation (force reflow for animation)
+            $('.directory-title').css('animation', 'none');
+            setTimeout(() => {
+                $('.directory-title').css('animation', 'gradient-flow 3s ease-in-out infinite');
+            }, 10);
+
+            // Column visibility controls (fix: hide/show entire column)
+            $(document).on('change', '.column-toggle', function() {
+                const columnId = $(this).data('column-id');
+                const isVisible = $(this).is(':checked');
+                columns.find(col => col.id === columnId).visible = isVisible;
+                // Find the index of the column in the table
+                const thIndex = columns.findIndex(col => col.id === columnId);
+                // Hide/show header
+                $(`table thead th`).eq(thIndex).toggle(isVisible);
+                // Hide/show all cells in that column
+                $(`#alumni-table-body tr`).each(function() {
+                    $(this).find('td').eq(thIndex).toggle(isVisible);
                 });
-                renderFilterTags();
-                applyActiveFilters();
-                $('#filter-modal').hide();
+            });
+
+            // Remove filter tag on click (fix)
+            $(document).on('click', '.filter-tag .close', function() {
+                const key = $(this).closest('.filter-tag').data('key');
+                const value = $(this).closest('.filter-tag').data('value');
+                removeFilterTag(key, value);
+            });
+
+            // Live search for alumni name
+            $(document).on('input', '#search-alumni-input', function() {
+                const searchVal = $(this).val().toLowerCase();
+                filteredData = alumniData.filter(alumni => alumni.name.toLowerCase().includes(searchVal));
+                currentPage = 1;
+                renderTable();
+                updatePaginationInfo();
             });
         });
     </script>

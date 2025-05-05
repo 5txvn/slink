@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authenticate - Slink</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .switch-anim {
+            transition: all 0.4s cubic-bezier(0.4,0,0.2,1);
+        }
+        .input-gradient {
+            background: linear-gradient(90deg, #f3f4f6 0%, #fff 100%);
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-100 to-gray-200 min-h-screen flex flex-col items-center justify-center">
+    <div class="w-full max-w-md mx-auto bg-white rounded-2xl shadow-[inset_0_8px_24px_#e0e0e0,inset_8px_0_24px_#c0bebe] p-8">
+        <div class="flex justify-center mb-8">
+            <img src="/logo192.png" alt="Slink Logo" class="h-12 w-12 mr-2">
+            <span class="text-3xl font-extrabold bg-gradient-to-r from-[#800000] via-gray-500 to-gray-400 bg-clip-text text-transparent">Slink</span>
+        </div>
+        <div class="flex justify-center mb-6">
+            <button id="login-switch" class="px-6 py-2 rounded-l-xl font-bold text-lg focus:outline-none bg-[#800000] text-white">Login</button>
+            <button id="signup-switch" class="px-6 py-2 rounded-r-xl font-bold text-lg focus:outline-none bg-gray-200 text-[#800000]">Sign Up</button>
+        </div>
+        <form id="auth-form" class="space-y-6">
+            <!-- Dynamic form fields here -->
+        </form>
+        <div class="flex justify-center mt-6">
+            <div class="flex items-center gap-2">
+                <span class="text-gray-600">Registering as:</span>
+                <select id="user-type" class="rounded-lg border border-gray-300 px-3 py-2 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/10">
+                    <option value="alumni">Alumni</option>
+                    <option value="student">Student</option>
+                    <option value="other">Other</option>
+                </select>
+            </div>
+        </div>
+    </div>
+    <script>
+        // Form field templates
+        const alumniFields = `
+            <div class="space-y-4">
+                <div class="flex gap-4">
+                    <input type="text" name="name" placeholder="Full Name" class="input-gradient px-4 py-3 rounded-lg border border-gray-300 w-1/2 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/10" required>
+                    <input type="text" name="username" placeholder="Username" class="input-gradient px-4 py-3 rounded-lg border border-gray-300 w-1/2 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/10" required>
+                </div>
+                <input type="email" name="email" placeholder="Email" class="input-gradient px-4 py-3 rounded-lg border border-gray-300 w-full focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/10" required>
+                <div class="flex gap-4">
+                    <input type="text" name="school" placeholder="School" class="input-gradient px-4 py-3 rounded-lg border border-gray-300 w-1/2 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/10" required>
+                    <input type="text" name="major" placeholder="Major" class="input-gradient px-4 py-3 rounded-lg border border-gray-300 w-1/2 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/10" required>
+                </div>
+                <div class="flex gap-4">
+                    <input type="number" name="year" placeholder="Graduation Year" class="input-gradient px-4 py-3 rounded-lg border border-gray-300 w-1/2 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/10" required>
+                    <input type="text" name="position" placeholder="Current Position" class="input-gradient px-4 py-3 rounded-lg border border-gray-300 w-1/2 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/10" required>
+                </div>
+                <div class="flex gap-4">
+                    <input type="text" name="company" placeholder="Company" class="input-gradient px-4 py-3 rounded-lg border border-gray-300 w-1/2 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/10" required>
+                    <input type="text" name="location" placeholder="Location" class="input-gradient px-4 py-3 rounded-lg border border-gray-300 w-1/2 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/10" required>
+                </div>
+                <input type="password" name="password" placeholder="Password" class="input-gradient px-4 py-3 rounded-lg border border-gray-300 w-full focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/10" required>
+                <input type="password" name="confirm_password" placeholder="Confirm Password" class="input-gradient px-4 py-3 rounded-lg border border-gray-300 w-full focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/10" required>
+            </div>
+        `;
+        const studentFields = `
+            <div class="space-y-4">
+                <input type="text" name="name" placeholder="Full Name" class="input-gradient px-4 py-3 rounded-lg border border-gray-300 w-full focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/10" required>
+                <input type="email" name="email" placeholder="Email" class="input-gradient px-4 py-3 rounded-lg border border-gray-300 w-full focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/10" required>
+                <input type="number" name="year" placeholder="Graduation Year" class="input-gradient px-4 py-3 rounded-lg border border-gray-300 w-full focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/10" required>
+                <input type="text" name="parents" placeholder="Parent(s) Name(s)" class="input-gradient px-4 py-3 rounded-lg border border-gray-300 w-full focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/10" required>
+                <input type="password" name="password" placeholder="Password" class="input-gradient px-4 py-3 rounded-lg border border-gray-300 w-full focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/10" required>
+                <input type="password" name="confirm_password" placeholder="Confirm Password" class="input-gradient px-4 py-3 rounded-lg border border-gray-300 w-full focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/10" required>
+            </div>
+        `;
+        const otherFields = `
+            <div class="space-y-4">
+                <input type="text" name="name" placeholder="Full Name" class="input-gradient px-4 py-3 rounded-lg border border-gray-300 w-full focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/10" required>
+                <input type="email" name="email" placeholder="Email" class="input-gradient px-4 py-3 rounded-lg border border-gray-300 w-full focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/10" required>
+                <input type="password" name="password" placeholder="Password" class="input-gradient px-4 py-3 rounded-lg border border-gray-300 w-full focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/10" required>
+                <input type="password" name="confirm_password" placeholder="Confirm Password" class="input-gradient px-4 py-3 rounded-lg border border-gray-300 w-full focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/10" required>
+            </div>
+        `;
+        const loginFields = `
+            <div class="space-y-4">
+                <input type="email" name="email" placeholder="Email" class="input-gradient px-4 py-3 rounded-lg border border-gray-300 w-full focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/10" required>
+                <input type="password" name="password" placeholder="Password" class="input-gradient px-4 py-3 rounded-lg border border-gray-300 w-full focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/10" required>
+            </div>
+        `;
+        function renderForm() {
+            const isSignup = $("#signup-switch").hasClass("bg-[#800000]");
+            const userType = $("#user-type").val();
+            let fields = '';
+            if (!isSignup) {
+                fields = loginFields;
+            } else {
+                if (userType === 'alumni') fields = alumniFields;
+                else if (userType === 'student') fields = studentFields;
+                else fields = otherFields;
+            }
+            $("#auth-form").html(fields + `<button type='submit' class='w-full mt-4 py-3 rounded-xl bg-[#800000] text-white font-bold text-lg shadow-[inset_0_4px_12px_#5a0000,inset_4px_0_12px_#a94442] transition-all hover:scale-105'>${isSignup ? 'Sign Up' : 'Login'}</button>`);
+        }
+        $(document).ready(function() {
+            // Switch between login/signup
+            $('#login-switch').click(function() {
+                $(this).addClass('bg-[#800000] text-white').removeClass('bg-gray-200 text-[#800000]');
+                $('#signup-switch').addClass('bg-gray-200 text-[#800000]').removeClass('bg-[#800000] text-white');
+                $('#user-type').prop('disabled', true);
+                renderForm();
+            });
+            $('#signup-switch').click(function() {
+                $(this).addClass('bg-[#800000] text-white').removeClass('bg-gray-200 text-[#800000]');
+                $('#login-switch').addClass('bg-gray-200 text-[#800000]').removeClass('bg-[#800000] text-white');
+                $('#user-type').prop('disabled', false);
+                renderForm();
+            });
+            $('#user-type').on('change', renderForm);
+            renderForm();
+        });
+    </script>
+</body>
+</html> 
