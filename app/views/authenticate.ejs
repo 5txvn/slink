@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication - Slink</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes gradient-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .gradient-text {
+            background: linear-gradient(45deg, #800000, #cc0000);
+            background-size: 200% 200%;
+            animation: gradient-flow 3s ease-in-out infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .atom {
+            position: absolute;
+            color: #718096;
+            opacity: 0.4;
+            pointer-events: none;
+        }
+        .error-toast {
+            position: fixed;
+            top: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            background: #800000;
+            color: white;
+            display: none;
+            z-index: 50;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+            animation: slideDown 0.3s ease-out;
+        }
+        @keyframes slideDown {
+            from { transform: translate(-50%, -100%); }
+            to { transform: translate(-50%, 0); }
+        }
+        .error-toast:hover {
+            transform: translateX(-50%) scale(1.02);
+            background: #600000;
+        }
+        .custom-select-options {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 0.5rem;
+            margin-top: 0.5rem;
+            z-index: 10;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .custom-select-option {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #718096;
+        }
+        .custom-select-option:hover {
+            background: #800000;
+            color: white;
+        }
+        .custom-select-option.selected {
+            color: #000000;
+        }
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+            animation: spin-slow 8s linear infinite;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4 overflow-hidden">
+    <!-- Floating Atoms Background -->
+    <div id="atoms-container"></div>
+
+    <div class="w-full max-w-2xl relative z-10">
+        <div id="authCard" class="bg-white rounded-xl p-8 shadow-lg transition-all duration-500 ease-in-out">
+            <div class="flex items-center justify-center mb-8">
+                <i class="fas fa-atom text-4xl mr-3 text-[#800000] animate-spin-slow"></i>
+                <h1 class="text-3xl font-bold gradient-text">Welcome to Slink</h1>
+            </div>
+            
+            <!-- Form Toggle Switch -->
+            <div class="flex justify-center mb-8">
+                <div class="bg-gray-200 rounded-full p-1 flex relative">
+                    <div id="toggleSlider" class="absolute bg-[#800000] rounded-full transition-all duration-500 ease-in-out" style="width: 50%; height: calc(100% - 0.5rem); top: 0.25rem;"></div>
+                    <button id="loginToggle" class="px-6 py-2 rounded-full text-white font-semibold transition-all duration-300 relative z-10">
+                        Log In
+                    </button>
+                    <button id="signupToggle" class="px-6 py-2 rounded-full text-gray-600 font-semibold transition-all duration-300 relative z-10">
+                        Sign Up
+                    </button>
+                </div>
+            </div>
+
+            <!-- Forms Container -->
+            <div class="relative">
+                <!-- Login Form -->
+                <form id="loginForm" action="/authenticate/login" method="POST" class="space-y-6 transition-all duration-500 ease-in-out">
+                    <div class="relative">
+                        <i class="fas fa-envelope absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" name="email" required autocomplete="off"
+                               class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/20 focus:bg-gray-50 transition-all duration-300"
+                               placeholder="Enter your email">
+                    </div>
+                    <div class="relative">
+                        <i class="fas fa-lock absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="password" name="password" required autocomplete="off"
+                               class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/20 focus:bg-gray-50 transition-all duration-300"
+                               placeholder="Enter your password">
+                    </div>
+                    <button type="submit" 
+                            class="w-full bg-[#800000] text-white py-4 rounded-lg text-lg font-bold transition-all duration-300 transform hover:scale-[1.02] shadow-[inset_6px_6px_12px_rgba(0,0,0,0.3)]">
+                        Log In
+                    </button>
+                </form>
+
+                <!-- Signup Form -->
+                <form id="signupForm" action="/authenticate/signup" method="POST" class="space-y-6 transition-all duration-500 ease-in-out absolute top-0 left-0 w-full">
+                    <div class="relative">
+                        <i class="fas fa-user absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" name="name" required autocomplete="off"
+                               class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/20 focus:bg-gray-50 transition-all duration-300"
+                               placeholder="Enter your full name">
+                    </div>
+                    <div class="relative">
+                        <i class="fas fa-envelope absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" name="email" required autocomplete="off"
+                               class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/20 focus:bg-gray-50 transition-all duration-300"
+                               placeholder="Enter your email">
+                    </div>
+                    <div class="relative">
+                        <i class="fas fa-at absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" name="username" required autocomplete="off"
+                               class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/20 focus:bg-gray-50 transition-all duration-300"
+                               placeholder="Choose a username">
+                    </div>
+                    <div class="relative">
+                        <i class="fas fa-lock absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="password" name="password" required autocomplete="off"
+                               class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/20 focus:bg-gray-50 transition-all duration-300"
+                               placeholder="Create a password">
+                    </div>
+                    <div class="relative">
+                        <i class="fas fa-lock absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <input type="password" name="confirmPassword" required autocomplete="off"
+                               class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/20 focus:bg-gray-50 transition-all duration-300"
+                               placeholder="Confirm your password">
+                        <i id="passwordMatchIcon" class="fas absolute right-3 top-1/2 transform -translate-y-1/2 hidden"></i>
+                    </div>
+                    <div class="relative custom-select">
+                        <i class="fas fa-user-tag absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
+                        <div class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/20 transition-all duration-300 cursor-pointer text-gray-500" id="roleSelect">
+                            Select your role
+                        </div>
+                        <div class="custom-select-options">
+                            <div class="custom-select-option" data-value="alumni">Alumni</div>
+                            <div class="custom-select-option" data-value="student">Student</div>
+                            <div class="custom-select-option" data-value="staff">Staff</div>
+                            <div class="custom-select-option" data-value="parent">Parent</div>
+                        </div>
+                        <input type="hidden" name="position" required>
+                    </div>
+                    <button type="submit" 
+                            class="w-full bg-[#800000] text-white py-4 rounded-lg text-lg font-bold transition-all duration-300 transform hover:scale-[1.02] shadow-[inset_6px_6px_12px_rgba(0,0,0,0.3)]">
+                        Sign Up
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Toast -->
+    <div id="errorToast" class="error-toast w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2">
+        <div class="flex items-center justify-center">
+            <i class="fas fa-exclamation-circle mr-2 text-xl"></i>
+            <span id="errorMessage" class="text-lg font-semibold"></span>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // Form Toggle with Smooth Animation
+            $('#loginToggle').click(function() {
+                $('#loginForm').css({
+                    'transform': 'translateY(0)',
+                    'opacity': '1',
+                    'visibility': 'visible',
+                    'position': 'relative',
+                    'z-index': '1'
+                });
+                $('#signupForm').css({
+                    'transform': 'translateY(100%)',
+                    'opacity': '0',
+                    'visibility': 'hidden',
+                    'position': 'absolute',
+                    'z-index': '0'
+                });
+                $('#toggleSlider').css('left', '0.25rem');
+                $('#loginToggle').addClass('text-white').removeClass('text-gray-600');
+                $('#signupToggle').removeClass('text-white').addClass('text-gray-600');
+                $('#authCard').css('height', $('#loginForm').outerHeight() + 200);
+            });
+
+            $('#signupToggle').click(function() {
+                $('#loginForm').css({
+                    'transform': 'translateY(-100%)',
+                    'opacity': '0',
+                    'visibility': 'hidden',
+                    'position': 'absolute',
+                    'z-index': '0'
+                });
+                $('#signupForm').css({
+                    'transform': 'translateY(0)',
+                    'opacity': '1',
+                    'visibility': 'visible',
+                    'position': 'relative',
+                    'z-index': '1'
+                });
+                $('#toggleSlider').css('left', 'calc(50% - 0.25rem)');
+                $('#signupToggle').addClass('text-white').removeClass('text-gray-600');
+                $('#loginToggle').removeClass('text-white').addClass('text-gray-600');
+                $('#authCard').css('height', $('#signupForm').outerHeight() + 200);
+            });
+
+            // Set initial height and visibility
+            $('#authCard').css('height', $('#loginForm').outerHeight() + 200);
+            $('#loginForm').css({
+                'opacity': '1',
+                'visibility': 'visible',
+                'position': 'relative',
+                'z-index': '1'
+            });
+            $('#signupForm').css({
+                'opacity': '0',
+                'visibility': 'hidden',
+                'position': 'absolute',
+                'z-index': '0'
+            });
+
+            // Custom Select
+            $('#roleSelect').click(function() {
+                $('.custom-select-options').slideToggle();
+            });
+
+            $('.custom-select-option').click(function() {
+                const value = $(this).data('value');
+                const text = $(this).text();
+                $('#roleSelect').text(text).removeClass('text-gray-500').addClass('text-black');
+                $('input[name="position"]').val(value);
+                $('.custom-select-options').slideUp();
+                $('.custom-select-option').removeClass('selected');
+                $(this).addClass('selected');
+            });
+
+            // Password Match Validation
+            $('input[name="confirmPassword"]').on('input', function() {
+                const password = $('input[name="password"]:eq(1)').val();
+                const confirmPassword = $(this).val();
+                const icon = $('#passwordMatchIcon');
+                
+                if (confirmPassword) {
+                    if (password === confirmPassword) {
+                        console.log("Password match");
+                        icon.removeClass('fa-times text-red-500').addClass('fa-check text-green-500 text-xl font-bold').removeClass('hidden');
+                    } else {
+                        icon.removeClass('fa-check text-green-500').addClass('fa-times text-red-500 text-xl font-bold').removeClass('hidden');
+                    }
+                } else {
+                    icon.addClass('hidden');
+                }
+            });
+
+            // Client-side Validation
+            function showError(message) {
+                $('#errorMessage').text(message);
+                $('#errorToast').fadeIn().delay(3000).fadeOut();
+            }
+
+            $('form').on('submit', function(e) {
+                const form = $(this);
+                const isSignup = form.attr('id') === 'signupForm';
+                
+                if (isSignup) {
+                    const name = $('input[name="name"]').val();
+                    const email = $('input[name="email"]:eq(1)').val();
+                    const username = $('input[name="username"]').val();
+                    const password = $('input[name="password"]:eq(1)').val();
+                    const confirmPassword = $('input[name="confirmPassword"]').val();
+                    const position = $('input[name="position"]').val();
+
+                    // Name validation
+                    if (!/\s/.test(name)) {
+                        e.preventDefault();
+                        showError("Name must contain a space");
+                        return;
+                    }
+
+                    // Email validation
+                    if (!/^\S+@\S+\.\S+$/.test(email)) {
+                        e.preventDefault();
+                        showError("Email address is not valid");
+                        return;
+                    }
+
+                    // Password validation
+                    if (!/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/.test(password)) {
+                        e.preventDefault();
+                        showError("Password must be at least 8 characters long and include at least one uppercase letter, one number, and one special character");
+                        return;
+                    }
+
+                    // Password match validation
+                    if (password !== confirmPassword) {
+                        e.preventDefault();
+                        showError("Passwords do not match");
+                        return;
+                    }
+
+                    // Position validation
+                    if (!position) {
+                        e.preventDefault();
+                        showError("Please select a position");
+                        return;
+                    }
+                }
+            });
+
+            // Floating Atoms Animation
+            function createAtom() {
+                const atom = $('<i class="fas fa-atom atom"></i>');
+                const container = $('#atoms-container');
+                const containerWidth = $(window).width();
+                const containerHeight = $(window).height();
+                
+                // Responsive size based on screen width
+                const size = window.innerWidth < 640 ? 'text-5xl' : 
+                           window.innerWidth < 1024 ? 'text-6xl' : 'text-7xl';
+                atom.addClass(size);
+                
+                let x = Math.random() * containerWidth;
+                let y = Math.random() * containerHeight;
+                const speed = 2;
+                let vx = (Math.random() - 0.5) * speed;
+                let vy = (Math.random() - 0.5) * speed;
+                let rotation = Math.random() * 360;
+                let rotationSpeed = (Math.random() - 0.5) * 2; // Random rotation speed between -1 and 1
+                
+                atom.css({
+                    left: x + 'px',
+                    top: y + 'px',
+                    transform: `rotate(${rotation}deg)`
+                });
+                
+                container.append(atom);
+                
+                function animate() {
+                    x += vx;
+                    y += vy;
+                    rotation += rotationSpeed;
+                    
+                    if (x <= 0 || x >= containerWidth) {
+                        vx *= -1;
+                        x = x <= 0 ? 0 : containerWidth;
+                    }
+                    if (y <= 0 || y >= containerHeight) {
+                        vy *= -1;
+                        y = y <= 0 ? 0 : containerHeight;
+                    }
+                    
+                    atom.css({
+                        left: x + 'px',
+                        top: y + 'px',
+                        transform: `rotate(${rotation}deg)`
+                    });
+                    
+                    requestAnimationFrame(animate);
+                }
+                
+                animate();
+            }
+
+            // Create all atoms simultaneously
+            const numAtoms = 8;
+            for (let i = 0; i < numAtoms; i++) {
+                createAtom();
+            }
+
+            // Close error toast on click
+            $('#errorToast').click(function() {
+                $(this).fadeOut();
+            });
+        });
+    </script>
+</body>
+</html> 

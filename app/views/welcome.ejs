@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Slink</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes gradient-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .gradient-text {
+            background: linear-gradient(45deg, #800000, #cc0000);
+            background-size: 200% 200%;
+            animation: gradient-flow 3s ease-in-out infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .welcome-card {
+            backdrop-filter: blur(10px);
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        }
+        .nav-button {
+            transition: all 0.3s ease;
+            box-shadow: inset 6px 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        .nav-button:hover {
+            transform: scale(1.02);
+            box-shadow: inset 8px 8px 16px rgba(0, 0, 0, 0.25);
+        }
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+            animation: spin-slow 8s linear infinite;
+        }
+        .floating {
+            animation: floating 3s ease-in-out infinite;
+        }
+        @keyframes floating {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-100 to-gray-200 min-h-screen flex items-center justify-center p-4 overflow-hidden">
+    <div class="w-full max-w-4xl lg:max-w-6xl xl:max-w-7xl relative z-10">
+        <div class="welcome-card rounded-xl p-8 md:p-12 lg:p-16">
+            <div class="flex items-center justify-center mb-8 md:mb-12">
+                <i class="fas fa-atom text-4xl md:text-5xl lg:text-6xl mr-3 text-[#800000] animate-spin-slow self-center translate-y-2"></i>
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold gradient-text">Welcome to Slink!</h1>
+            </div>
+
+            <div class="text-center mb-12 md:mb-16">
+                <p class="text-xl md:text-2xl text-gray-600 mb-4">We're excited to have you join our community! 🎉</p>
+                <p class="text-lg md:text-xl text-gray-500">To get started, you can either explore the alumni directory or complete your profile ✨</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-6 md:gap-8 lg:gap-12 max-w-4xl mx-auto">
+                <a href="/directory" class="nav-button bg-[#800000] text-white p-6 md:p-8 rounded-xl text-center hover:bg-[#600000] group">
+                    <div class="transform transition-transform duration-300 group-hover:scale-105">
+                        <i class="fas fa-users text-3xl md:text-4xl mb-3 floating"></i>
+                        <h3 class="text-xl md:text-2xl font-bold mb-2">Explore Directory</h3>
+                        <p class="text-gray-200">Browse through SEM alumni and connect with them</p>
+                    </div>
+                </a>
+
+                <a href="/profile" class="nav-button bg-gray-800 text-white p-6 md:p-8 rounded-xl text-center hover:bg-gray-700 group">
+                    <div class="transform transition-transform duration-300 group-hover:scale-105">
+                        <i class="fas fa-user-edit text-3xl md:text-4xl mb-3 floating"></i>
+                        <h3 class="text-xl md:text-2xl font-bold mb-2">Complete Profile</h3>
+                        <p class="text-gray-200">Add more details to your profile to help others find you</p>
+                    </div>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // Confetti animation
+            function shootConfetti() {
+                const colors = ['#800000', '#4a5568', '#ffffff', '#000000'];
+                
+                const duration = 5 * 1000; // Increased duration to 5 seconds
+                const animationEnd = Date.now() + duration;
+                const defaults = { startVelocity: 40, spread: 360, ticks: 100, zIndex: 0 }; // Increased velocity and ticks
+
+                function randomInRange(min, max) {
+                    return Math.random() * (max - min) + min;
+                }
+
+                const interval = setInterval(function() {
+                    const timeLeft = animationEnd - Date.now();
+
+                    if (timeLeft <= 0) {
+                        return clearInterval(interval);
+                    }
+
+                    const particleCount = 100 * (timeLeft / duration); // Increased base particle count
+                    
+                    // Multiple confetti bursts from different positions
+                    for (let i = 0; i < 3; i++) { // Added more burst points
+                        confetti({
+                            ...defaults,
+                            particleCount,
+                            origin: { x: randomInRange(0.1, 0.9), y: Math.random() - 0.2 },
+                            colors: colors
+                        });
+                    }
+                }, 100); // Reduced interval for more continuous effect
+            }
+
+            // Initial confetti burst
+            shootConfetti();
+        });
+    </script>
+</body>
+</html> 
