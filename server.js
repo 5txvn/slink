@@ -41,6 +41,6 @@ app.get('/error', (req, res) => {
 })
 
 //start server
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
     console.log(`Slink is running on port ${PORT}`);
 }); 
