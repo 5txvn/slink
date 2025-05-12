@@ -9,37 +9,103 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         .gradient-text {
-            background: linear-gradient(45deg, #800000, #cc0000);
-            background-size: 200% 200%;
-            animation: gradient-flow 3s ease-in-out infinite;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #111;
         }
-        @keyframes gradient-flow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* Custom scrollbar */
+        body::-webkit-scrollbar { width: 10px; background: transparent; }
+        body::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #800000, #111);
+            border-radius: 8px;
+            margin: 2px;
+            width: 8px;
+            opacity: 1;
+            transition: opacity 0.5s;
         }
-        .notification {
+        body.hide-scrollbar::-webkit-scrollbar-thumb { opacity: 0; }
+        body::-webkit-scrollbar-track { background: transparent; }
+        /* Detach scrollbar */
+        body::-webkit-scrollbar {
             position: fixed;
-            top: 80px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 1000;
-            width: 90%;
-            max-width: 500px;
-            padding: 1rem;
-            border-radius: 0.5rem;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            display: none;
+            right: 24px;
         }
-        .notification.success {
-            background-color: #10B981;
-            color: white;
+        /* Firefox */
+        html {
+            scrollbar-width: thin;
+            scrollbar-color: #800000 #111;
         }
-        .notification.error {
-            background-color: #EF4444;
-            color: white;
+        body.hide-scrollbar {
+            scrollbar-color: transparent transparent;
+        }
+        /* Card and input depth */
+        .modern-card {
+            background: #fff;
+            border-radius: 1.25rem;
+            box-shadow: 0 4px 24px 0 rgba(60,0,0,0.08), 0 1.5px 8px #e0e0e0;
+            transition: box-shadow 0.2s;
+        }
+        .modern-card:hover {
+            box-shadow: 0 8px 32px 0 rgba(60,0,0,0.13), 0 2.5px 12px #e0e0e0;
+        }
+        .modern-input {
+            background: #f7f7fa;
+            border-radius: 0.75rem;
+            border: 2px solid #e5e7eb;
+            box-shadow: 0 1.5px 6px #ececec;
+            transition: border 0.2s, box-shadow 0.2s;
+        }
+        .modern-input:focus {
+            border: 2px solid #800000;
+            box-shadow: 0 2px 12px #e0e0e0;
+        }
+        /* Input icon vertical alignment */
+        .input-icon {
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+        }
+        /* Save button neumorphic and animation */
+        .neumorphic-btn {
+            background: #f7f7f7;
+            border-radius: 1rem;
+            box-shadow: 4px 4px 12px #d1d1d1, -4px -4px 12px #ffffff, inset 0 6px 16px #e0e0e0, inset 6px 0 16px #f7f7f7;
+            border: none;
+            transition: transform 0.4s cubic-bezier(.4,0,.2,1), box-shadow 0.2s;
+            width: 100%;
+            margin-left: 2.5vw;
+            margin-right: 2.5vw;
+            padding-top: 1.2rem;
+            padding-bottom: 1.2rem;
+        }
+        .neumorphic-btn:hover {
+            transform: translateY(-10px) scale(1.03);
+            box-shadow: 8px 8px 24px #d1d1d1, -8px -8px 24px #ffffff, inset 0 8px 24px #e0e0e0, inset 8px 0 24px #f7f7f7;
+        }
+        .pulse-text {
+            animation: pulse 1.8s infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        @media (max-width: 1024px) {
+            .neumorphic-btn { font-size: 1.1rem; padding-top: 1rem; padding-bottom: 1rem; }
+        }
+        @media (max-width: 640px) {
+            .neumorphic-btn { font-size: 1rem; padding-top: 0.7rem; padding-bottom: 0.7rem; }
+        }
+        ::-webkit-scrollbar {
+            width: 10px;
+            background: #fff;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #800000;
+            border-radius: 8px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a94442;
+        }
+        html {
+            scrollbar-width: thin;
+            scrollbar-color: #800000 #fff;
         }
     </style>
 </head>
@@ -49,146 +115,157 @@
 
     <main class="container mx-auto px-4 py-8 mt-16">
         <div class="max-w-7xl mx-auto">
-            <h1 class="text-4xl font-bold gradient-text mb-8 text-center">Edit Profile</h1>
-
             <form id="profile-form" class="space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Edit Profile Card (now a grid card) -->
+                    <div class="rounded-xl shadow-lg bg-white p-6 flex flex-col items-center justify-center min-h-[180px]">
+                        <h1 class="text-3xl md:text-5xl font-extrabold text-[#800000] mb-3">Edit Profile</h1>
+                        <p class="text-lg md:text-2xl mt-8 text-black text-center font-medium">Update your profile information and add details here to help others connect with you!</p>
+                    </div>
                     <!-- Basic Information -->
-                    <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-200">
+                    <div class="rounded-xl shadow-lg bg-white p-6">
                         <h2 class="text-xl font-bold text-[#800000] mb-4 flex items-center gap-2">
-                            <i class="fas fa-user"></i>
-                            Basic Information
+                            👤 Basic Information
                         </h2>
                         <div class="space-y-4">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
                                 <div class="relative">
-                                    <i class="fas fa-user absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                                    <input type="text" name="name" class="w-full pl-10 pr-4 py-3 text-lg rounded-lg border-2 border-gray-200 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/20 transition-colors duration-200" required>
+                                    <i class="fas fa-user absolute left-3 input-icon text-gray-400"></i>
+                                    <input type="text" name="name" class="modern-input w-full pl-10 pr-4 py-3 text-lg pr-12" required>
+                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full" id="name-valid" style="background:#10B981;"></span>
                                 </div>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Bio</label>
                                 <div class="relative">
-                                    <i class="fas fa-pen absolute left-3 top-4 text-gray-400"></i>
-                                    <textarea name="bio" class="w-full pl-10 pr-4 py-3 text-lg rounded-lg border-2 border-gray-200 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/20 transition-colors duration-200 h-32" placeholder="Tell us about yourself..."></textarea>
+                                    <i class="fas fa-pen absolute left-3 input-icon text-gray-400"></i>
+                                    <textarea name="bio" class="modern-input w-full pl-10 pr-4 py-3 text-lg h-32 pr-12" placeholder="Tell us about yourself..."></textarea>
+                                    <span class="absolute right-3 top-8 w-3 h-3 rounded-full" id="bio-valid" style="background:#10B981;"></span>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Education -->
-                    <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-200">
+                    <div class="rounded-xl shadow-lg bg-white p-6">
                         <h2 class="text-xl font-bold text-[#800000] mb-4 flex items-center gap-2">
-                            <i class="fas fa-graduation-cap"></i>
-                            Education
+                            🎓 Education
                         </h2>
                         <div class="space-y-4">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">School</label>
                                 <div class="relative">
-                                    <i class="fas fa-school absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                                    <input type="text" name="school" class="w-full pl-10 pr-4 py-3 text-lg rounded-lg border-2 border-gray-200 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/20 transition-colors duration-200">
+                                    <i class="fas fa-school absolute left-3 input-icon text-gray-400"></i>
+                                    <input type="text" name="school" class="modern-input w-full pl-10 pr-4 py-3 text-lg pr-12">
+                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full" id="school-valid" style="background:#10B981;"></span>
                                 </div>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Major</label>
                                 <div class="relative">
-                                    <i class="fas fa-book absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                                    <input type="text" name="major" class="w-full pl-10 pr-4 py-3 text-lg rounded-lg border-2 border-gray-200 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/20 transition-colors duration-200">
+                                    <i class="fas fa-book absolute left-3 input-icon text-gray-400"></i>
+                                    <input type="text" name="major" class="modern-input w-full pl-10 pr-4 py-3 text-lg pr-12">
+                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full" id="major-valid" style="background:#10B981;"></span>
                                 </div>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Graduation Year</label>
                                 <div class="relative">
-                                    <i class="fas fa-calendar absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                                    <input type="number" name="graduationYear" class="w-full pl-10 pr-4 py-3 text-lg rounded-lg border-2 border-gray-200 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/20 transition-colors duration-200">
+                                    <i class="fas fa-calendar absolute left-3 input-icon text-gray-400"></i>
+                                    <input type="text" name="graduationYear" class="modern-input w-full pl-10 pr-4 py-3 text-lg pr-12">
+                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full" id="graduationYear-valid" style="background:#10B981;"></span>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Professional Information -->
-                    <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-200">
+                    <div class="rounded-xl shadow-lg bg-white p-6">
                         <h2 class="text-xl font-bold text-[#800000] mb-4 flex items-center gap-2">
-                            <i class="fas fa-briefcase"></i>
-                            Professional Information
+                            💼 Professional Information
                         </h2>
                         <div class="space-y-4">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Current Position</label>
                                 <div class="relative">
-                                    <i class="fas fa-id-badge absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                                    <input type="text" name="currentPosition" class="w-full pl-10 pr-4 py-3 text-lg rounded-lg border-2 border-gray-200 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/20 transition-colors duration-200">
+                                    <i class="fas fa-id-badge absolute left-3 input-icon text-gray-400"></i>
+                                    <input type="text" name="currentPosition" class="modern-input w-full pl-10 pr-4 py-3 text-lg pr-12">
+                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full" id="currentPosition-valid" style="background:#10B981;"></span>
                                 </div>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Company</label>
                                 <div class="relative">
-                                    <i class="fas fa-building absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                                    <input type="text" name="company" class="w-full pl-10 pr-4 py-3 text-lg rounded-lg border-2 border-gray-200 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/20 transition-colors duration-200">
+                                    <i class="fas fa-building absolute left-3 input-icon text-gray-400"></i>
+                                    <input type="text" name="company" class="modern-input w-full pl-10 pr-4 py-3 text-lg pr-12">
+                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full" id="company-valid" style="background:#10B981;"></span>
                                 </div>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Location</label>
                                 <div class="relative">
-                                    <i class="fas fa-map-marker-alt absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                                    <input type="text" name="location" class="w-full pl-10 pr-4 py-3 text-lg rounded-lg border-2 border-gray-200 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/20 transition-colors duration-200">
+                                    <i class="fas fa-map-marker-alt absolute left-3 input-icon text-gray-400"></i>
+                                    <input type="text" name="location" class="modern-input w-full pl-10 pr-4 py-3 text-lg pr-12">
+                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full" id="location-valid" style="background:#10B981;"></span>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Social Links -->
-                    <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-200">
+                    <div class="rounded-xl shadow-lg bg-white p-6">
                         <h2 class="text-xl font-bold text-[#800000] mb-4 flex items-center gap-2">
-                            <i class="fas fa-link"></i>
-                            Social Links
+                            🔗 Social Links
                         </h2>
                         <div class="space-y-4">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">LinkedIn</label>
                                 <div class="relative">
-                                    <i class="fab fa-linkedin absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                                    <input type="url" name="linkedin" class="w-full pl-10 pr-4 py-3 text-lg rounded-lg border-2 border-gray-200 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/20 transition-colors duration-200" placeholder="https://linkedin.com/in/...">
+                                    <i class="fab fa-linkedin absolute left-3 input-icon text-gray-400"></i>
+                                    <input type="url" name="linkedin" class="modern-input w-full pl-10 pr-4 py-3 text-lg pr-12" placeholder="https://linkedin.com/in/...">
+                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full" id="linkedin-valid" style="background:#10B981;"></span>
                                 </div>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">GitHub</label>
                                 <div class="relative">
-                                    <i class="fab fa-github absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                                    <input type="url" name="github" class="w-full pl-10 pr-4 py-3 text-lg rounded-lg border-2 border-gray-200 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/20 transition-colors duration-200" placeholder="https://github.com/...">
+                                    <i class="fab fa-github absolute left-3 input-icon text-gray-400"></i>
+                                    <input type="url" name="github" class="modern-input w-full pl-10 pr-4 py-3 text-lg pr-12" placeholder="https://github.com/...">
+                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full" id="github-valid" style="background:#10B981;"></span>
                                 </div>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Personal Website</label>
                                 <div class="relative">
-                                    <i class="fas fa-globe absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                                    <input type="url" name="website" class="w-full pl-10 pr-4 py-3 text-lg rounded-lg border-2 border-gray-200 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/20 transition-colors duration-200" placeholder="https://...">
+                                    <i class="fas fa-globe absolute left-3 input-icon text-gray-400"></i>
+                                    <input type="url" name="website" class="modern-input w-full pl-10 pr-4 py-3 text-lg pr-12" placeholder="https://...">
+                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full" id="website-valid" style="background:#10B981;"></span>
                                 </div>
                             </div>
                         </div>
                     </div>
 
                     <!-- Skills & Interests -->
-                    <div class="bg-white rounded-xl p-6 shadow-lg hover:shadow-xl transition-shadow duration-200">
+                    <div class="rounded-xl shadow-lg bg-white p-6">
                         <h2 class="text-xl font-bold text-[#800000] mb-4 flex items-center gap-2">
-                            <i class="fas fa-star"></i>
-                            Skills & Interests
+                            ⭐ Skills & Interests
                         </h2>
                         <div class="space-y-4">
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Skills</label>
                                 <div class="relative">
-                                    <i class="fas fa-tools absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                                    <input type="text" name="skills" class="w-full pl-10 pr-4 py-3 text-lg rounded-lg border-2 border-gray-200 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/20 transition-colors duration-200" placeholder="e.g., JavaScript, Python, Design">
+                                    <i class="fas fa-tools absolute left-3 input-icon text-gray-400"></i>
+                                    <input type="text" name="skills" class="modern-input w-full pl-10 pr-4 py-3 text-lg pr-12" placeholder="e.g., JavaScript">
+                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full" id="skills-valid" style="background:#10B981;"></span>
                                 </div>
                             </div>
                             <div>
                                 <label class="block text-sm font-medium text-gray-700 mb-2">Interests</label>
                                 <div class="relative">
-                                    <i class="fas fa-heart absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                                    <input type="text" name="interests" class="w-full pl-10 pr-4 py-3 text-lg rounded-lg border-2 border-gray-200 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/20 transition-colors duration-200" placeholder="e.g., AI, Web Development, Photography">
+                                    <i class="fas fa-heart absolute left-3 input-icon text-gray-400"></i>
+                                    <input type="text" name="interests" class="modern-input w-full pl-10 pr-4 py-3 text-lg pr-12" placeholder="e.g., Web Development">
+                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full" id="interests-valid" style="background:#10B981;"></span>
                                 </div>
                             </div>
                         </div>
@@ -197,7 +274,7 @@
 
                 <!-- Save Button -->
                 <div class="flex justify-center mt-8">
-                    <button type="submit" class="inline-flex items-center px-8 py-4 bg-[#800000] text-white text-lg font-bold rounded-lg hover:bg-[#600000] transition-colors duration-200 shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200">
+                    <button type="submit" class="neumorphic-btn flex items-center justify-center text-[#800000] text-lg md:text-xl font-bold pulse-text transition-transform duration-200" style="box-shadow: 4px 4px 12px #d1d1d1, -4px -4px 12px #ffffff, inset 0 4px 12px #e0e0e0, inset 4px 0 12px #f7f7f7;">
                         <i class="fas fa-save mr-2"></i>
                         Save Changes
                     </button>
@@ -285,6 +362,30 @@
         // Initialize form
         $(document).ready(function() {
             populateForm();
+        });
+    </script>
+    <script>
+        // Input validation functions (jQuery)
+        function validateInput(name, value) {
+            if (name === 'graduationYear') return value >= 1900;
+            if (name === 'linkedin' || name === 'github' || name === 'website') return value === '' || value.startsWith('https://') || value.startsWith('http://');
+            if (name === 'email') return /^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(value);
+            return value.trim().length > 0;
+        }
+        function updateValidationDot(name, valid) {
+            const dot = $('#' + name + '-valid');
+            if (!dot.length) return;
+            dot.css('background', valid ? '#10B981' : '#EF4444');
+        }
+        $(function() {
+            $('#profile-form input, #profile-form textarea').on('input', function() {
+                updateValidationDot(this.name, validateInput(this.name, $(this).val()));
+            });
+            // Subtle save button hover
+            $('.neumorphic-btn').hover(
+                function() { $(this).css('transform', 'translateY(-3px) scale(1.015)'); },
+                function() { $(this).css('transform', 'none'); }
+            );
         });
     </script>
 </body>
