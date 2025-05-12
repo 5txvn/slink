@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Slink</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes gradient-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .gradient-text {
+            background: linear-gradient(45deg, #800000, #cc0000);
+            background-size: 200% 200%;
+            animation: gradient-flow 3s ease-in-out infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .atom {
+            position: absolute;
+            color: #718096;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .animate-spin-slow {
+            animation: spin-slow 8s linear infinite;
+        }
+        .hide-scrollbar {
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .navbar {
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            background: #fff;
+            box-shadow: 0 2px 12px #e0e0e0;
+            transition: box-shadow 0.2s;
+        }
+        .navbar .fa-atom {
+            animation: spin-slow 8s linear infinite;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen flex flex-col hide-scrollbar" style="overflow:auto;">
+    <!-- Floating Atoms Background -->
+    <div id="atoms-container"></div>
+    <!-- Sticky Navbar -->
+    <nav class="navbar flex items-center justify-between px-6 py-4">
+        <div class="flex items-center gap-3">
+            <i class="fas fa-atom text-2xl text-[#800000] animate-spin-slow"></i>
+            <span class="text-2xl font-bold gradient-text">Slink</span>
+        </div>
+        <div class="flex gap-4">
+            <a href="/directory" class="text-[#800000] font-semibold hover:underline transition">Directory</a>
+            <a href="/authenticate" class="text-[#800000] font-semibold hover:underline transition">Sign Up / Log In</a>
+        </div>
+    </nav>
+    <!-- Main Content -->
+    <main class="flex-1 flex flex-col items-center justify-center px-4 py-12 md:py-20 relative z-10">
+        <div class="max-w-2xl w-full bg-white rounded-2xl shadow-xl p-8 md:p-14 flex flex-col items-center">
+            <h1 class="gradient-text text-4xl md:text-6xl font-extrabold mb-4 text-center">Welcome to Slink</h1>
+            <p class="text-lg md:text-2xl text-gray-700 mb-6 text-center">A modern alumni directory and connection platform for SEM. Discover, connect, and grow your network with fellow alumni, students, and staff.</p>
+            <div class="flex flex-col md:flex-row gap-4 w-full justify-center mb-4">
+                <a href="/directory" class="w-full md:w-auto px-8 py-4 rounded-xl bg-[#800000] text-white text-lg font-bold shadow hover:bg-[#a94442] transition-all text-center">Explore Directory</a>
+                <a href="/authenticate" class="w-full md:w-auto px-8 py-4 rounded-xl bg-white border-2 border-[#800000] text-[#800000] text-lg font-bold shadow hover:bg-gray-100 transition-all text-center">Sign Up / Log In</a>
+            </div>
+            <div class="mt-6 text-gray-500 text-center text-base md:text-lg">
+                <span>Built for SEM alumni, students, staff, and parents.<br>Safe, private, and easy to use.</span>
+            </div>
+        </div>
+    </main>
+    <script>
+        // Floating Atoms Animation (same as authenticate)
+        $(document).ready(function() {
+            function createAtom() {
+                const atom = $('<i class="fas fa-atom atom"></i>');
+                const container = $('#atoms-container');
+                const containerWidth = $(window).width();
+                const containerHeight = $(window).height();
+                const size = window.innerWidth < 640 ? 'text-5xl' : window.innerWidth < 1024 ? 'text-6xl' : 'text-7xl';
+                atom.addClass(size);
+                let x = Math.random() * containerWidth;
+                let y = Math.random() * containerHeight;
+                const speed = 2;
+                let vx = (Math.random() - 0.5) * speed;
+                let vy = (Math.random() - 0.5) * speed;
+                let rotation = Math.random() * 360;
+                let rotationSpeed = (Math.random() - 0.5) * 2;
+                atom.css({ left: x + 'px', top: y + 'px', transform: `rotate(${rotation}deg)` });
+                container.append(atom);
+                function animate() {
+                    x += vx;
+                    y += vy;
+                    rotation += rotationSpeed;
+                    if (x <= 0 || x >= containerWidth) { vx *= -1; x = x <= 0 ? 0 : containerWidth; }
+                    if (y <= 0 || y >= containerHeight) { vy *= -1; y = y <= 0 ? 0 : containerHeight; }
+                    atom.css({ left: x + 'px', top: y + 'px', transform: `rotate(${rotation}deg)` });
+                    requestAnimationFrame(animate);
+                }
+                animate();
+            }
+            const numAtoms = 8;
+            for (let i = 0; i < numAtoms; i++) { createAtom(); }
+        });
+    </script>
+</body>
+</html> 
