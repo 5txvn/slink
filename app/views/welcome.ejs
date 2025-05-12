@@ -49,9 +49,19 @@
             50% { transform: translateY(-10px); }
             100% { transform: translateY(0px); }
         }
+        
+        body {
+            overflow: auto;
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none;  /* IE and Edge */
+        }
+
+        ::-webkit-scrollbar {
+            display: none; /* Chrome, Safari, and Opera */
+        }
     </style>
 </head>
-<body class="bg-gradient-to-br from-gray-100 to-gray-200 min-h-screen flex items-center justify-center p-4 overflow-hidden">
+<body class="bg-gradient-to-br from-gray-100 to-gray-200 min-h-screen flex items-center justify-center p-4">
     <div class="w-full max-w-4xl lg:max-w-6xl xl:max-w-7xl relative z-10">
         <div class="welcome-card rounded-xl p-8 md:p-12 lg:p-16">
             <div class="flex items-center justify-center mb-8 md:mb-12">
@@ -90,7 +100,7 @@
             function shootConfetti() {
                 const colors = ['#800000', '#4a5568', '#ffffff', '#000000'];
                 
-                const duration = 5 * 1000; // Increased duration to 5 seconds
+                const duration = 3 * 1000; // Increased duration to 5 seconds
                 const animationEnd = Date.now() + duration;
                 const defaults = { startVelocity: 40, spread: 360, ticks: 100, zIndex: 0 }; // Increased velocity and ticks
 
@@ -105,7 +115,7 @@
                         return clearInterval(interval);
                     }
 
-                    const particleCount = 100 * (timeLeft / duration); // Increased base particle count
+                    const particleCount = 50 * (timeLeft / duration); // Increased base particle count
                     
                     // Multiple confetti bursts from different positions
                     for (let i = 0; i < 3; i++) { // Added more burst points
