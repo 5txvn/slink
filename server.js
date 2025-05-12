@@ -31,15 +31,6 @@ app.use('/profile', require('./app/routes/profile'));
 app.use('/welcome', require('./app/routes/welcome'));
 app.use('/directory', require('./app/routes/directory'));
 
-//testing
-app.get('/error', (req, res) => {
-    res.render(path.join(__dirname, 'app', 'views', 'error.ejs'), {
-        errorTitle: 'Error',
-        errorMessage: 'This is a test error message.',
-        redirectUrl: '/'
-    })
-})
-
 //start server
 app.listen(process.env.PORT || 3000, () => {
     console.log(`Slink is running on port ${PORT}`);
