@@ -24,12 +24,17 @@ app.use(session({
 const db = require('./app/config/db');
 db();
 
+//import and use controllers
+const logOutUser = require('./app/controllers/logOutUser');
+app.get('/logout', logOutUser.logOutUser);
+
 //user routes
 app.use('/', require('./app/routes/home'));
 app.use('/authenticate', require('./app/routes/authenticate'));
 app.use('/profile', require('./app/routes/profile'));
 app.use('/welcome', require('./app/routes/welcome'));
 app.use('/directory', require('./app/routes/directory'));
+app.use('/user', require('./app/routes/viewUser'));
 
 //start server
 app.listen(process.env.PORT || 3000, () => {
