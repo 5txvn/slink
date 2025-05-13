@@ -35,6 +35,7 @@ app.use('/profile', require('./app/routes/profile'));
 app.use('/welcome', require('./app/routes/welcome'));
 app.use('/directory', require('./app/routes/directory'));
 app.use('/user', require('./app/routes/viewUser'));
+app.use('/about', require('./app/routes/about'));
 
 //start server
 app.listen(process.env.PORT || 3000, () => {
