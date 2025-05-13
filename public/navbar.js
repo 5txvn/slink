@@ -13,25 +13,25 @@ class Navbar {
                     </div>
                     <div class="flex-1 flex justify-end">
                         <div class="hidden md:flex space-x-8">
-                            <a href="index.html" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md">
+                            <a href="/" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md">
                                 <i class="fas fa-home"></i>
                                 <span>Home</span>
                             </a>
-                            <a href="directory.html" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md">
+                            <a href="/directory" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md">
                                 <i class="fas fa-users"></i>
                                 <span>Directory</span>
                             </a>
-                            <a href="#" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md">
-                                <i class="fas fa-calendar-alt"></i>
-                                <span>Events</span>
+                            <a href="/profile" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md">
+                                <i class="fas fa-user"></i>
+                                <span>My Profile</span>
                             </a>
-                            <a href="#" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md">
-                                <i class="fas fa-book"></i>
-                                <span>Resources</span>
-                            </a>
-                            <a href="#" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md">
+                            <a href="/about" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md">
                                 <i class="fas fa-info-circle"></i>
                                 <span>About</span>
+                            </a>
+                            <a href="/logout" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md">
+                                <i class="fas fa-sign-out-alt"></i>
+                                <span>Logout</span>
                             </a>
                         </div>
                         <button id="nav-toggle" class="text-white transition-all hover:scale-110 md:hidden ml-2">
@@ -41,25 +41,25 @@ class Navbar {
                 </div>
                 <div id="nav-menu" class="hidden mt-4 transition-all duration-300 ease-in-out md:hidden max-w-6xl mx-auto">
                     <div class="flex flex-col space-y-2">
-                        <a href="index.html" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md p-2">
+                        <a href="/" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md p-2">
                             <i class="fas fa-home"></i>
                             <span>Home</span>
                         </a>
-                        <a href="directory.html" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md p-2">
+                        <a href="/directory" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md p-2">
                             <i class="fas fa-users"></i>
                             <span>Directory</span>
                         </a>
-                        <a href="#" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md p-2">
-                            <i class="fas fa-calendar-alt"></i>
-                            <span>Events</span>
+                        <a href="/profile" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md p-2">
+                            <i class="fas fa-user"></i>
+                            <span>My Profile</span>
                         </a>
-                        <a href="#" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md p-2">
-                            <i class="fas fa-book"></i>
-                            <span>Resources</span>
-                        </a>
-                        <a href="#" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md p-2">
+                        <a href="/about" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md p-2">
                             <i class="fas fa-info-circle"></i>
                             <span>About</span>
+                        </a>
+                        <a href="/logout" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md p-2">
+                            <i class="fas fa-sign-out-alt"></i>
+                            <span>Logout</span>
                         </a>
                     </div>
                 </div>
@@ -79,6 +79,13 @@ class Navbar {
                 .gradient-flow {
                     background-size: 200% 200%;
                     animation: gradient-flow 15s ease infinite;
+                }
+                @keyframes spin-slow {
+                    from { transform: rotate(0deg); }
+                    to { transform: rotate(360deg); }
+                }
+                .animate-spin-slow {
+                    animation: spin-slow 8s linear infinite;
                 }
             </style>
         `;
