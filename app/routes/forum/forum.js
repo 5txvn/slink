@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const path = require('path');
-const Post = require('../models/Post');
+const Post = require('../../models/Post');
 
 // GET route to render forum page
 router.get('/', async (req, res) => {
@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
                 .populate('comments')
                 .exec();
 
-            res.render(path.join(__dirname, '../views', 'forum.ejs'), {
+            res.render(path.join(__dirname, '../../views/forum', 'forum.ejs'), {
                 posts: posts
             });
         } catch (error) {

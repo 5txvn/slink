@@ -38,9 +38,9 @@ app.use('/user', require('./app/routes/viewUser'));
 app.use('/about', require('./app/routes/about'));
 
 //forum routes
-app.use('/create-post', require('./app/routes/createPost'));
-app.use('/forum', require('./app/routes/forum'));
-app.use('/post', require('./app/routes/post'));
+app.use('/create-post', require('./app/routes/forum/createPost'));
+app.use('/forum', require('./app/routes/forum/forum'));
+app.use('/post', require('./app/routes/forum/post'));
 
 //start server
 app.listen(process.env.PORT || 3000, () => {

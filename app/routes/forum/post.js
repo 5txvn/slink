@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const path = require('path');
-const Post = require('../models/Post');
+const Post = require('../../models/Post');
 
 // Middleware to check if user is authenticated
 const isAuthenticated = (req, res, next) => {
@@ -19,7 +19,7 @@ router.get('/:id', isAuthenticated, async (req, res) => {
             .exec();
 
         if (!post) {
-            return res.status(404).render(path.join(__dirname, '../views', 'status.ejs'), {
+            return res.status(404).render(path.join(__dirname, '../../views', 'status.ejs'), {
                 status: 'error',
                 title: "Post Not Found",
                 message: "The post you're looking for doesn't exist.",
@@ -27,12 +27,12 @@ router.get('/:id', isAuthenticated, async (req, res) => {
             });
         }
 
-        res.render(path.join(__dirname, '../views', 'post.ejs'), {
+        res.render(path.join(__dirname, '../../views/forum', 'post.ejs'), {
             post: post,
             currentUser: req.session.username
         });
     } catch (error) {
-        return res.status(500).render(path.join(__dirname, '../views', 'status.ejs'), {
+        return res.status(500).render(path.join(__dirname, '../../views', 'status.ejs'), {
             status: 'error',
             title: "Server Error",
             message: `Error message: ${error.message}`,

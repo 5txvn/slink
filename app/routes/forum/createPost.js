@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const path = require('path');
-const { createPost } = require('../controllers/createPost');
+const { createPost } = require('../../controllers/createPost');
 
 
 router.get('/', (req, res) => {
@@ -9,7 +9,7 @@ router.get('/', (req, res) => {
         req.session.redirectUrl = '/create-post';
         res.redirect('/authenticate');
     } else {
-        res.render(path.join(__dirname, '../views', 'createPost.ejs'));
+        res.render(path.join(__dirname, '../../views/forum', 'createPost.ejs'));
     }
 });
 
