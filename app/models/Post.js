@@ -2,9 +2,9 @@ const mongoose = require('mongoose');
 const Comment = require('./Comment');
 
 const postSchema = new mongoose.Schema({
-    heading: {
+    title: {
         type: String,
-        required: [true, "Forum post must have a heading, please fill in the heading field."]
+        required: [true, "Forum post must have a title, please fill in the title field."]
     },
     author: {
         type: String,

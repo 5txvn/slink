@@ -3,12 +3,13 @@ const Post = require('../models/Post');
 const path = require('path');
 
 exports.createPost = async (req, res) => {
-    const { content, tags } = req.body;
+    const { title, content, tags } = req.body;
     const author = req.session.username;
 
     try {
         const post = await Post.create({
             author,
+            title,
             content,
             tags
         });
