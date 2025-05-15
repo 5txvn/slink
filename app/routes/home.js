@@ -15,7 +15,7 @@ router.get("/", async (req, res) => {
             numStaffParents
         });
     } else {
-        res.redirect('/directory');
+        res.render(path.join(__dirname, '../views', 'home.ejs'));
     }
 })
 
