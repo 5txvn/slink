@@ -4,6 +4,7 @@ const path = require('path');
 
 router.get("/", async (req, res) => {
     if(!req.session.username) {
+        req.session.redirectUrl = '/about';
         res.redirect('/authenticate');
     } else {
         res.render(path.join(__dirname, '../views', 'about.ejs'));

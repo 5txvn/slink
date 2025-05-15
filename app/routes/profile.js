@@ -8,6 +8,7 @@ const editUser = require('../controllers/editUser');
 // Profile page route
 router.get('/', async (req, res) => {
     if(!req.session.username) {
+        req.session.redirectUrl = '/profile';
         res.redirect('/authenticate');
     } else {
         try {

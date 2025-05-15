@@ -37,6 +37,11 @@ app.use('/directory', require('./app/routes/directory'));
 app.use('/user', require('./app/routes/viewUser'));
 app.use('/about', require('./app/routes/about'));
 
+//forum routes
+app.use('/create-post', require('./app/routes/createPost'));
+app.use('/forum', require('./app/routes/forum'));
+app.use('/post', require('./app/routes/post'));
+
 //start server
 app.listen(process.env.PORT || 3000, () => {
     console.log(`Slink is running on port ${PORT}`);

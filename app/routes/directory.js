@@ -6,6 +6,7 @@ const User = require('../models/User');
 
 router.get('/', async (req, res) => {
     if(!req.session.username) {
+        req.session.redirectUrl = '/directory';
         res.redirect('/authenticate');
     } else {
         try {

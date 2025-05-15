@@ -12,10 +12,9 @@
         .gradient-text {
             color: #111;
         }
-        /* Custom scrollbar */
         body::-webkit-scrollbar { width: 10px; background: transparent; }
         body::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, #800000, #111);
+            background: linear-gradient(180deg, #800000, #fff);
             border-radius: 8px;
             margin: 2px;
             width: 8px;
@@ -24,18 +23,19 @@
         }
         body.hide-scrollbar::-webkit-scrollbar-thumb { opacity: 0; }
         body::-webkit-scrollbar-track { background: transparent; }
-        /* Detach scrollbar */
         body::-webkit-scrollbar {
             position: fixed;
             right: 24px;
         }
-        /* Firefox */
         html {
             scrollbar-width: thin;
-            scrollbar-color: #800000 #111;
+            scrollbar-color: #800000 #fff;
         }
         body.hide-scrollbar {
             scrollbar-color: transparent transparent;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a94442;
         }
         /* Card and input depth */
         .modern-card {
@@ -92,21 +92,6 @@
         }
         @media (max-width: 640px) {
             .neumorphic-btn { font-size: 1rem; padding-top: 0.7rem; padding-bottom: 0.7rem; }
-        }
-        ::-webkit-scrollbar {
-            width: 10px;
-            background: #fff;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #800000;
-            border-radius: 8px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #a94442;
-        }
-        html {
-            scrollbar-width: thin;
-            scrollbar-color: #800000 #fff;
         }
     </style>
 </head>

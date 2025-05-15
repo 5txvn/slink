@@ -26,5 +26,9 @@ exports.validateUser = async (req, res) => {
     //load user into session
     req.session.username = user.username;
     req.session.email = email;
-    res.redirect('/');
+    if(req.session.redirectUrl) {
+        res.redirect(req.session.redirectUrl);
+    } else {
+        res.redirect('/');
+    }
 }

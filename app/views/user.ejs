@@ -6,8 +6,31 @@
     <title>Slink | View User</title>
     <link rel="icon" href="/images/slink-logo.png" type="image/x-icon">
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        body::-webkit-scrollbar { width: 10px; background: transparent; }
+        body::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #800000, #fff);
+            border-radius: 8px;
+            margin: 2px;
+            width: 8px;
+            opacity: 1;
+            transition: opacity 0.5s;
+        }
+        body.hide-scrollbar::-webkit-scrollbar-thumb { opacity: 0; }
+        body::-webkit-scrollbar-track { background: transparent; }
+        body::-webkit-scrollbar {
+            position: fixed;
+            right: 24px;
+        }
+        html {
+            scrollbar-width: thin;
+            scrollbar-color: #800000 #fff;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #a94442;
+        }
         .profile-card {
             background: #fff;
             border-radius: 1.5rem;
@@ -107,53 +130,138 @@
 <body class="bg-gray-100 min-h-screen">
     <div id="navbar-container"></div>
     <main class="container mx-auto px-4 py-8 mt-16">
-        <div class="profile-card">
-            <div class="profile-avatar">
+        <!-- Profile Header Card -->
+        <div class="bg-white rounded-3xl shadow-lg p-8 md:p-12 mb-8 flex flex-col md:flex-row items-center gap-8">
+            <div class="w-32 h-32 md:w-40 md:h-40 rounded-2xl flex items-center justify-center text-white text-5xl shadow-lg" id="profile-avatar">
                 <i class="fas fa-user"></i>
             </div>
-            <div class="main-info">
-                <div class="name"><%= user.name %></div>
-                <div class="username">@<%= user.username %></div>
-                <div class="position"><%= user.position %></div>
+            <div class="flex-1 text-center md:text-left">
+                <h1 class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-800 mb-2"><%= JSON.parse(user).name %></h1>
+                <p class="text-xl md:text-2xl text-[#800000] font-semibold mb-2">@<%= JSON.parse(user).username %></p>
+                <p class="text-lg md:text-xl text-gray-600 font-medium">
+                    <i class="fas fa-briefcase mr-2"></i>
+                    <%= JSON.parse(user).position.charAt(0).toUpperCase() + JSON.parse(user).position.slice(1) %>
+                </p>
             </div>
         </div>
-        <div class="profile-card info-section">
-            <div class="info-card">
-                <div class="info-title">Education</div>
-                <div class="info-content">
-                    <span><%= user.school %></span>
-                    <span><%= user.major %></span>
-                    <span>Class of <%= user.graduationYear %></span>
+
+        <!-- Info Cards Section -->
+        <div class="space-y-6">
+            <!-- Education Card -->
+            <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 transform transition-all duration-300 hover:shadow-xl">
+                <div class="flex items-center mb-4">
+                    <i class="fas fa-graduation-cap text-2xl text-[#800000] mr-3"></i>
+                    <h2 class="text-2xl font-bold text-[#800000]">Education</h2>
+                </div>
+                <div class="space-y-3 text-lg">
+                    <div class="flex items-center">
+                        <i class="fas fa-university text-gray-600 w-8"></i>
+                        <span class="font-semibold">School:</span>
+                        <span class="ml-2"><%= JSON.parse(user).school %></span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-book text-gray-600 w-8"></i>
+                        <span class="font-semibold">Major:</span>
+                        <span class="ml-2"><%= JSON.parse(user).major %></span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-calendar-alt text-gray-600 w-8"></i>
+                        <span class="font-semibold">Graduation:</span>
+                        <span class="ml-2">Class of <%= JSON.parse(user).graduationYear %></span>
+                    </div>
                 </div>
             </div>
-            <div class="info-card">
-                <div class="info-title">Contact</div>
-                <div class="info-content">
-                    <span><i class="fas fa-envelope mr-2"></i><%= user.email %></span>
-                    <span><i class="fas fa-map-marker-alt mr-2"></i><%= user.location %></span>
+
+            <!-- Contact Card -->
+            <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 transform transition-all duration-300 hover:shadow-xl">
+                <div class="flex items-center mb-4">
+                    <i class="fas fa-address-card text-2xl text-[#800000] mr-3"></i>
+                    <h2 class="text-2xl font-bold text-[#800000]">Contact</h2>
+                </div>
+                <div class="space-y-3 text-lg">
+                    <div class="flex items-center">
+                        <i class="fas fa-envelope text-gray-600 w-8"></i>
+                        <span class="font-semibold">Email:</span>
+                        <a href="mailto:<%= JSON.parse(user).email %>" class="ml-2 text-[#800000] hover:underline">
+                            <%= JSON.parse(user).email %>
+                        </a>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-map-marker-alt text-gray-600 w-8"></i>
+                        <span class="font-semibold">Location:</span>
+                        <span class="ml-2"><%= JSON.parse(user).location %></span>
+                    </div>
                 </div>
             </div>
-            <div class="info-card">
-                <div class="info-title">About</div>
-                <div class="info-content">
-                    <span><%= user.bio %></span>
+
+            <!-- About Card -->
+            <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 transform transition-all duration-300 hover:shadow-xl">
+                <div class="flex items-center mb-4">
+                    <i class="fas fa-user-circle text-2xl text-[#800000] mr-3"></i>
+                    <h2 class="text-2xl font-bold text-[#800000]">About</h2>
+                </div>
+                <div class="text-lg leading-relaxed">
+                    <%= JSON.parse(user).bio %>
                 </div>
             </div>
-            <div class="info-card">
-                <div class="info-title">Links</div>
-                <div class="info-content">
-                    <% if (user.linkedin) { %><span><i class="fab fa-linkedin mr-2"></i><a href="<%= user.linkedin %>" target="_blank" class="underline text-[#800000]">LinkedIn</a></span><% } %>
-                    <% if (user.github) { %><span><i class="fab fa-github mr-2"></i><a href="<%= user.github %>" target="_blank" class="underline text-[#800000]">GitHub</a></span><% } %>
-                    <% if (user.website) { %><span><i class="fas fa-globe mr-2"></i><a href="<%= user.website %>" target="_blank" class="underline text-[#800000]">Website</a></span><% } %>
+
+            <!-- Social Links Card -->
+            <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 transform transition-all duration-300 hover:shadow-xl">
+                <div class="flex items-center mb-4">
+                    <i class="fas fa-link text-2xl text-[#800000] mr-3"></i>
+                    <h2 class="text-2xl font-bold text-[#800000]">Social Links</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <% if (user.linkedin) { %>
+                        <a href="<%= user.linkedin %>" target="_blank" 
+                           class="flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
+                            <i class="fab fa-linkedin text-2xl text-[#0077B5] mr-3"></i>
+                            <span class="text-lg font-medium">LinkedIn</span>
+                        </a>
+                    <% } %>
+                    <% if (user.github) { %>
+                        <a href="<%= user.github %>" target="_blank"
+                           class="flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
+                            <i class="fab fa-github text-2xl text-gray-800 mr-3"></i>
+                            <span class="text-lg font-medium">GitHub</span>
+                        </a>
+                    <% } %>
+                    <% if (user.website) { %>
+                        <a href="<%= user.website %>" target="_blank"
+                           class="flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
+                            <i class="fas fa-globe text-2xl text-[#800000] mr-3"></i>
+                            <span class="text-lg font-medium">Website</span>
+                        </a>
+                    <% } %>
                 </div>
             </div>
         </div>
     </main>
+
     <script type="module">
-        import Navbar from './navbar.js';
+        import Navbar from '/navbar.js';
+        
         const navbar = new Navbar();
         document.getElementById('navbar-container').innerHTML = navbar.render();
         navbar.init();
+    </script>
+
+    <script>
+        $(document).ready(function() {
+            // Add hover effect to cards
+            $('.bg-white').hover(
+                function() {
+                    $(this).addClass('shadow-xl');
+                },
+                function() {
+                    $(this).removeClass('shadow-xl');
+                }
+            );
+            //change color of icon
+            const colors = ['#800000', '#191919', '#707070'];
+            const bg = colors[Math.floor(Math.random() * colors.length)];
+            $("#profile-avatar").addClass(`bg-[${bg}]`);
+        });
     </script>
 </body>
 </html> 

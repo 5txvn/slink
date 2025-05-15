@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slink | Create Post</title>
+    <link rel="icon" href="/images/slink-logo.png" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <style>
+        @keyframes gradient-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .gradient-text {
+            background: linear-gradient(45deg, #800000, #cc0000);
+            background-size: 200% 200%;
+            animation: gradient-flow 3s ease-in-out infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .error-toast {
+            position: fixed;
+            top: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            background: #800000;
+            color: white;
+            display: none;
+            z-index: 50;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            animation: slideDown 0.3s ease-out;
+        }
+        @keyframes slideDown {
+            from { transform: translate(-50%, -100%); }
+            to { transform: translate(-50%, 0); }
+        }
+        .animate-spin-slow {
+            animation: spin-slow 8s linear infinite;
+        }
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .tag-card {
+            background-color: #800000;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            display: inline-flex;
+            align-items: center;
+            margin: 0.25rem;
+            transition: all 0.2s ease;
+        }
+        .tag-card:hover {
+            transform: scale(1.05);
+            background-color: #a94442;
+        }
+        .tag-card .remove-tag {
+            margin-left: 0.5rem;
+            cursor: pointer;
+            opacity: 0.7;
+            transition: opacity 0.2s;
+        }
+        .tag-card .remove-tag:hover {
+            opacity: 1;
+        }
+        .editor-toolbar {
+            border: 1px solid #e5e7eb;
+            border-bottom: none;
+            border-radius: 0.5rem 0.5rem 0 0;
+            background-color: #f9fafb;
+            padding: 0.5rem;
+        }
+        .editor-toolbar button {
+            padding: 0.25rem 0.5rem;
+            margin-right: 0.25rem;
+            border-radius: 0.25rem;
+            background-color: white;
+            border: 1px solid #e5e7eb;
+            color: #4b5563;
+            transition: all 0.2s;
+        }
+        .editor-toolbar button:hover {
+            background-color: #f3f4f6;
+            border-color: #d1d5db;
+        }
+        .editor-toolbar button.active {
+            background-color: #800000;
+            border-color: #800000;
+            color: white;
+        }
+        .editor-content {
+            border: 1px solid #e5e7eb;
+            border-radius: 0 0 0.5rem 0.5rem;
+            min-height: 200px;
+            padding: 1rem;
+            background-color: white;
+        }
+        .editor-preview {
+            border: 1px solid #e5e7eb;
+            border-radius: 0 0 0.5rem 0.5rem;
+            min-height: 200px;
+            padding: 1rem;
+            background-color: white;
+            display: none;
+        }
+        .editor-preview.active {
+            display: block;
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <!-- Navbar -->
+    <nav class="bg-gradient-to-r from-[#4a0000] via-[#800000] to-[#4a0000] text-white px-6 py-4 fixed w-full top-0 z-50 shadow-lg rounded-b-2xl gradient-flow">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-3 min-w-[160px] pr-8">
+                <i class="fas fa-atom text-3xl animate-spin-slow mt-1"></i>
+                <h1 class="text-3xl font-extrabold tracking-wider ml-1">Slink</h1>
+            </div>
+            <div class="flex-1 flex justify-end">
+                <div class="hidden md:flex space-x-8">
+                    <a href="/" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                    <a href="/directory" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md">
+                        <i class="fas fa-users"></i>
+                        <span>Directory</span>
+                    </a>
+                    <a href="/profile" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md">
+                        <i class="fas fa-user"></i>
+                        <span>My Profile</span>
+                    </a>
+                    <a href="/about" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md">
+                        <i class="fas fa-info-circle"></i>
+                        <span>About</span>
+                    </a>
+                    <a href="/logout" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </div>
+                <button id="nav-toggle" class="text-white transition-all hover:scale-110 md:hidden ml-2">
+                    <i class="fas fa-chevron-down text-2xl"></i>
+                </button>
+            </div>
+        </div>
+        <div id="nav-menu" class="hidden mt-4 transition-all duration-300 ease-in-out md:hidden max-w-6xl mx-auto">
+            <div class="flex flex-col space-y-2">
+                <a href="/" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md p-2">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+                <a href="/directory" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md p-2">
+                    <i class="fas fa-users"></i>
+                    <span>Directory</span>
+                </a>
+                <a href="/profile" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md p-2">
+                    <i class="fas fa-user"></i>
+                    <span>My Profile</span>
+                </a>
+                <a href="/about" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md p-2">
+                    <i class="fas fa-info-circle"></i>
+                    <span>About</span>
+                </a>
+                <a href="/logout" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md p-2">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8 mt-20">
+        <div class="max-w-4xl mx-auto">
+            <div class="bg-white rounded-xl p-6 shadow-lg">
+                <div class="flex items-center mb-6">
+                    <i class="fas fa-pen-fancy text-3xl text-[#800000] mr-3"></i>
+                    <h1 class="text-2xl sm:text-3xl font-bold gradient-text">Create New Post</h1>
+                </div>
+
+                <form id="createPostForm" action="/create-post" method="POST" class="space-y-6">
+                    <div>
+                        <label for="content" class="block text-sm font-medium text-gray-700 mb-2">Post Content</label>
+                        <div class="editor-toolbar">
+                            <button type="button" data-format="bold" title="Bold"><i class="fas fa-bold"></i></button>
+                            <button type="button" data-format="italic" title="Italic"><i class="fas fa-italic"></i></button>
+                            <button type="button" data-format="heading" title="Heading"><i class="fas fa-heading"></i></button>
+                            <button type="button" data-format="link" title="Link"><i class="fas fa-link"></i></button>
+                            <button type="button" data-format="code" title="Code"><i class="fas fa-code"></i></button>
+                            <button type="button" data-format="list" title="List"><i class="fas fa-list"></i></button>
+                            <button type="button" data-format="quote" title="Quote"><i class="fas fa-quote-right"></i></button>
+                            <button type="button" id="previewBtn" title="Preview"><i class="fas fa-eye"></i></button>
+                        </div>
+                        <div id="editorContent" class="editor-content" contenteditable="true"></div>
+                        <div id="editorPreview" class="editor-preview"></div>
+                        <input type="hidden" name="content" id="contentInput">
+                    </div>
+
+                    <div>
+                        <label for="tags" class="block text-sm font-medium text-gray-700 mb-2">Tags (comma-separated)</label>
+                        <input type="text" id="tags" name="tags" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/20 focus:bg-gray-50 transition-all duration-300" placeholder="e.g., physics, quantum, research">
+                        <div id="tagContainer" class="flex flex-wrap mt-2"></div>
+                    </div>
+
+                    <!-- Posting Guidelines -->
+                    <div class="bg-gray-50 rounded-lg p-4 space-y-2">
+                        <h3 class="font-semibold text-gray-800">📝 Posting Guidelines</h3>
+                        <ul class="text-sm text-gray-600 space-y-1">
+                            <li>✨ Be clear and concise in your post</li>
+                            <li>🔍 Use relevant tags to help others find your post</li>
+                            <li>🤝 Be respectful and constructive in discussions</li>
+                            <li>📚 Cite sources when sharing information</li>
+                            <li>🎯 Keep posts focused on a single topic</li>
+                        </ul>
+                    </div>
+
+                    <button type="submit" class="w-full bg-[#800000] text-white py-3 px-6 rounded-lg text-lg font-bold transition-all duration-300 transform hover:scale-[1.02] shadow-[inset_6px_6px_12px_rgba(0,0,0,0.3)]">
+                        Create Post
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Toast -->
+    <div id="errorToast" class="error-toast w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2">
+        <div class="flex items-center justify-center">
+            <i class="fas fa-exclamation-circle mr-2 text-xl"></i>
+            <span id="errorMessage" class="text-lg font-semibold"></span>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // Navbar toggle
+            $('#nav-toggle').on('click', function() {
+                $('#nav-menu').slideToggle();
+                $(this).find('i').toggleClass('fa-chevron-down fa-chevron-up');
+            });
+
+            // Load saved content from localStorage
+            const savedContent = localStorage.getItem('postContent');
+            const savedTags = localStorage.getItem('postTags');
+            if (savedContent) {
+                $('#editorContent').html(savedContent);
+            }
+            if (savedTags) {
+                $('#tags').val(savedTags);
+                updateTagCards();
+            }
+
+            // Save content to localStorage on input
+            $('#editorContent').on('input', function() {
+                localStorage.setItem('postContent', $(this).html());
+            });
+
+            $('#tags').on('input', function() {
+                localStorage.setItem('postTags', $(this).val());
+                updateTagCards();
+            });
+
+            // Clear localStorage on successful form submission
+            $('#createPostForm').on('submit', function() {
+                const content = $('#editorContent').html();
+                $('#contentInput').val(content);
+                localStorage.removeItem('postContent');
+                localStorage.removeItem('postTags');
+            });
+
+            // WYSIWYG Editor functionality
+            $('.editor-toolbar button').on('click', function() {
+                const format = $(this).data('format');
+                const selection = window.getSelection();
+                const range = selection.getRangeAt(0);
+                const selectedText = range.toString();
+
+                switch(format) {
+                    case 'bold':
+                        document.execCommand('bold', false, null);
+                        break;
+                    case 'italic':
+                        document.execCommand('italic', false, null);
+                        break;
+                    case 'heading':
+                        document.execCommand('formatBlock', false, '<h2>');
+                        break;
+                    case 'link':
+                        const url = prompt('Enter URL:');
+                        if (url) {
+                            document.execCommand('createLink', false, url);
+                        }
+                        break;
+                    case 'code':
+                        document.execCommand('formatBlock', false, '<pre>');
+                        break;
+                    case 'list':
+                        document.execCommand('insertUnorderedList', false, null);
+                        break;
+                    case 'quote':
+                        document.execCommand('formatBlock', false, '<blockquote>');
+                        break;
+                }
+                $(this).toggleClass('active');
+            });
+
+            // Preview functionality
+            $('#previewBtn').on('click', function() {
+                const content = $('#editorContent').html();
+                const markdown = convertToMarkdown(content);
+                const preview = marked.parse(markdown);
+                $('#editorPreview').html(preview);
+                $('#editorContent, #editorPreview').toggleClass('active');
+                $(this).find('i').toggleClass('fa-eye fa-eye-slash');
+            });
+
+            // Tag handling
+            function updateTagCards() {
+                const tags = $('#tags').val().split(',').map(tag => tag.trim()).filter(tag => tag);
+                const $container = $('#tagContainer');
+                $container.empty();
+                
+                tags.forEach(tag => {
+                    const $tag = $(`<span class="tag-card">${tag}<span class="remove-tag"><i class="fas fa-times"></i></span></span>`);
+                    $tag.find('.remove-tag').on('click', function() {
+                        const newTags = tags.filter(t => t !== tag).join(', ');
+                        $('#tags').val(newTags);
+                        localStorage.setItem('postTags', newTags);
+                        updateTagCards();
+                    });
+                    $container.append($tag);
+                });
+            }
+
+            // Helper function to convert HTML to Markdown
+            function convertToMarkdown(html) {
+                // This is a simple conversion. For production, use a proper HTML-to-Markdown converter
+                return html
+                    .replace(/<strong>(.*?)<\/strong>/g, '**$1**')
+                    .replace(/<em>(.*?)<\/em>/g, '*$1*')
+                    .replace(/<h2>(.*?)<\/h2>/g, '## $1')
+                    .replace(/<a href="(.*?)">(.*?)<\/a>/g, '[$2]($1)')
+                    .replace(/<pre>(.*?)<\/pre>/g, '```\n$1\n```')
+                    .replace(/<ul>(.*?)<\/ul>/g, '$1')
+                    .replace(/<li>(.*?)<\/li>/g, '- $1')
+                    .replace(/<blockquote>(.*?)<\/blockquote>/g, '> $1')
+                    .replace(/<br\s*\/?>/g, '\n')
+                    .replace(/<div>(.*?)<\/div>/g, '$1\n');
+            }
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slink | Forum</title>
+    <link rel="icon" href="/images/slink-logo.png" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @keyframes gradient-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .gradient-text {
+            background: linear-gradient(45deg, #800000, #cc0000);
+            background-size: 200% 200%;
+            animation: gradient-flow 3s ease-in-out infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .animate-spin-slow {
+            animation: spin-slow 8s linear infinite;
+        }
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        .tag-card {
+            background-color: #800000;
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            display: inline-flex;
+            align-items: center;
+            margin: 0.25rem;
+            transition: all 0.2s ease;
+        }
+        .tag-card:hover {
+            transform: scale(1.05);
+            background-color: #a94442;
+        }
+        .post-card {
+            transition: all 0.3s ease;
+        }
+        .post-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <!-- Navbar -->
+    <nav class="bg-gradient-to-r from-[#4a0000] via-[#800000] to-[#4a0000] text-white px-6 py-4 fixed w-full top-0 z-50 shadow-lg rounded-b-2xl gradient-flow">
+        <div class="max-w-6xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-3 min-w-[160px] pr-8">
+                <i class="fas fa-atom text-3xl animate-spin-slow mt-1"></i>
+                <h1 class="text-3xl font-extrabold tracking-wider ml-1">Slink</h1>
+            </div>
+            <div class="flex-1 flex justify-end">
+                <div class="hidden md:flex space-x-8">
+                    <a href="/" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md">
+                        <i class="fas fa-home"></i>
+                        <span>Home</span>
+                    </a>
+                    <a href="/directory" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md">
+                        <i class="fas fa-users"></i>
+                        <span>Directory</span>
+                    </a>
+                    <a href="/profile" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md">
+                        <i class="fas fa-user"></i>
+                        <span>My Profile</span>
+                    </a>
+                    <a href="/about" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md">
+                        <i class="fas fa-info-circle"></i>
+                        <span>About</span>
+                    </a>
+                    <a href="/logout" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Logout</span>
+                    </a>
+                </div>
+                <button id="nav-toggle" class="text-white transition-all hover:scale-110 md:hidden ml-2">
+                    <i class="fas fa-chevron-down text-2xl"></i>
+                </button>
+            </div>
+        </div>
+        <div id="nav-menu" class="hidden mt-4 transition-all duration-300 ease-in-out md:hidden max-w-6xl mx-auto">
+            <div class="flex flex-col space-y-2">
+                <a href="/" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md p-2">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+                <a href="/directory" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md p-2">
+                    <i class="fas fa-users"></i>
+                    <span>Directory</span>
+                </a>
+                <a href="/profile" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md p-2">
+                    <i class="fas fa-user"></i>
+                    <span>My Profile</span>
+                </a>
+                <a href="/about" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md p-2">
+                    <i class="fas fa-info-circle"></i>
+                    <span>About</span>
+                </a>
+                <a href="/logout" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md p-2">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8 mt-20">
+        <div class="max-w-6xl mx-auto">
+            <!-- Header -->
+            <div class="flex items-center justify-between mb-8">
+                <div class="flex items-center">
+                    <i class="fas fa-comments text-3xl text-[#800000] mr-3"></i>
+                    <h1 class="text-2xl sm:text-3xl font-bold gradient-text">Forum</h1>
+                </div>
+                <a href="/createPost" class="bg-[#800000] text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300 transform hover:scale-[1.02] shadow-[inset_6px_6px_12px_rgba(0,0,0,0.3)]">
+                    <i class="fas fa-plus mr-2"></i>New Post
+                </a>
+            </div>
+
+            <!-- Filter Section -->
+            <div class="bg-white rounded-xl p-4 mb-6 shadow-lg">
+                <div class="flex flex-wrap items-center gap-4">
+                    <div class="flex-1 min-w-[200px]">
+                        <input type="text" id="searchInput" placeholder="Search posts..." 
+                            class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/20 focus:bg-gray-50 transition-all duration-300">
+                    </div>
+                    <div class="flex items-center space-x-4">
+                        <select id="sortSelect" class="px-4 py-2 rounded-lg border border-gray-300 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/20 focus:bg-gray-50 transition-all duration-300">
+                            <option value="newest">Newest First</option>
+                            <option value="oldest">Oldest First</option>
+                            <option value="mostUpvoted">Most Upvoted</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Posts Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <% posts.forEach(post => { %>
+                    <div class="post-card bg-white rounded-xl p-6 shadow-lg">
+                        <div class="flex items-start justify-between mb-4">
+                            <div class="flex items-center">
+                                <i class="fas fa-user-circle text-2xl text-[#800000] mr-2"></i>
+                                <div>
+                                    <h3 class="font-semibold text-gray-800"><%= post.author %></h3>
+                                    <p class="text-sm text-gray-500"><%= new Date(post.createdAt).toLocaleDateString() %></p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <button class="text-gray-500 hover:text-[#800000] transition-colors duration-300">
+                                    <i class="fas fa-arrow-up"></i>
+                                    <span class="text-sm"><%= post.upvotes.length %></span>
+                                </button>
+                                <button class="text-gray-500 hover:text-[#800000] transition-colors duration-300">
+                                    <i class="fas fa-arrow-down"></i>
+                                    <span class="text-sm"><%= post.downvotes.length %></span>
+                                </button>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 mb-4 line-clamp-3"><%= post.content %></p>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <% post.tags.forEach(tag => { %>
+                                <span class="tag-card"><%= tag %></span>
+                            <% }); %>
+                        </div>
+                        <div class="flex items-center justify-between text-sm text-gray-500">
+                            <div class="flex items-center">
+                                <i class="fas fa-comment mr-1"></i>
+                                <span><%= post.comments.length %> comments</span>
+                            </div>
+                            <a href="/post/<%= post._id %>" class="text-[#800000] hover:underline">Read more</a>
+                        </div>
+                    </div>
+                <% }); %>
+            </div>
+
+            <!-- No Posts Message -->
+            <% if (posts.length === 0) { %>
+                <div class="text-center py-12">
+                    <i class="fas fa-comments text-6xl text-gray-300 mb-4"></i>
+                    <h3 class="text-xl font-semibold text-gray-600 mb-2">No Posts Yet</h3>
+                    <p class="text-gray-500">Be the first to start a discussion!</p>
+                </div>
+            <% } %>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            // Navbar toggle
+            $('#nav-toggle').on('click', function() {
+                $('#nav-menu').slideToggle();
+                $(this).find('i').toggleClass('fa-chevron-down fa-chevron-up');
+            });
+
+            // Search functionality
+            $('#searchInput').on('input', function() {
+                const searchTerm = $(this).val().toLowerCase();
+                $('.post-card').each(function() {
+                    const content = $(this).find('p').text().toLowerCase();
+                    const author = $(this).find('h3').text().toLowerCase();
+                    const tags = $(this).find('.tag-card').map(function() {
+                        return $(this).text().toLowerCase();
+                    }).get();
+                    
+                    const matches = content.includes(searchTerm) || 
+                                  author.includes(searchTerm) || 
+                                  tags.some(tag => tag.includes(searchTerm));
+                    
+                    $(this).toggle(matches);
+                });
+            });
+
+            // Sort functionality
+            $('#sortSelect').on('change', function() {
+                const sortBy = $(this).val();
+                const posts = $('.post-card').toArray();
+                
+                posts.sort((a, b) => {
+                    switch(sortBy) {
+                        case 'newest':
+                            return new Date($(b).find('.text-gray-500').text()) - new Date($(a).find('.text-gray-500').text());
+                        case 'oldest':
+                            return new Date($(a).find('.text-gray-500').text()) - new Date($(b).find('.text-gray-500').text());
+                        case 'mostUpvoted':
+                            return parseInt($(b).find('.fa-arrow-up + span').text()) - parseInt($(a).find('.fa-arrow-up + span').text());
+                        default:
+                            return 0;
+                    }
+                });
+                
+                $('.grid').append(posts);
+            });
+        });
+    </script>
+</body>
+</html> 
