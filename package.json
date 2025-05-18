@@ -14,7 +14,8 @@
     "ejs": "^3.1.10",
     "express": "^4.21.2",
     "express-session": "^1.18.1",
-    "mongoose": "^7.8.7"
+    "mongoose": "^7.8.7",
+    "sanitize-html": "^2.17.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.1"

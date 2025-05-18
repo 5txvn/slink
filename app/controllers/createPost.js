@@ -1,6 +1,7 @@
 //import modules
 const Post = require('../models/Post');
 const path = require('path');
+const sanitizeHtml = require('sanitize-html');
 
 exports.createPost = async (req, res) => {
     const { title, content, tags } = req.body;
@@ -10,8 +11,8 @@ exports.createPost = async (req, res) => {
         const post = await Post.create({
             author,
             title,
-            content,
-            tags
+            content: sanitizeHtml(content),
+            tags: tags.split(',').map(tag => tag.trim())
         });
         await post.save();
         res.redirect(`/post/${post._id}`);
