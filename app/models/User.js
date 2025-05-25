@@ -90,6 +90,36 @@ const userSchema = new mongoose.Schema({
         trim: true,
         default: "n/a"
     },
+    socialLinks: {
+        linkedin: {
+            type: String,
+            default: "n/a"
+        },
+        github: {
+            type: String,
+            default: "n/a"
+        },
+        twitter: {
+            type: String,
+            default: "n/a"
+        },
+        instagram: {
+            type: String,
+            default: "n/a"
+        },
+        reddit: {
+            type: String,
+            default: "n/a"
+        },
+        discord: {
+            type: String,
+            default: "n/a"
+        },
+        website: {
+            type: String,
+            default: "n/a"
+        }
+    },
     createdAt: {
         type: Date,
         default: Date.now
