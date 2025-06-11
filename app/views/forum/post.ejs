@@ -159,7 +159,6 @@
                 </div>
 
                 <div class="border-t border-gray-200 pt-4">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Comments (<%= post.comments.length %>)</h3>
                     
                     <!-- Comment Form -->
                     <form id="commentForm" action="/post/<%= post._id %>/comment" method="POST" class="mb-6">
@@ -190,6 +189,7 @@
                     </form>
 
                     <!-- Comments List -->
+                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Comments (<%= post.comments.length %>)</h3>
                     <div class="space-y-4">
                         <% post.comments.forEach(comment => { %>
                             <div class="comment-card bg-gray-50 rounded-lg p-4 border border-gray-300">

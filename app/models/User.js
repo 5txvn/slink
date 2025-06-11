@@ -95,10 +95,6 @@ const userSchema = new mongoose.Schema({
             type: String,
             default: "n/a"
         },
-        github: {
-            type: String,
-            default: "n/a"
-        },
         twitter: {
             type: String,
             default: "n/a"

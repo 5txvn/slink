@@ -9,48 +9,48 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        html, body {
+            overflow: scroll;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar {
+            display: none;
+        }
         @keyframes gradient-flow {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
         .gradient-text {
-            background: linear-gradient(45deg, #800000, #cc0000);
+            background: linear-gradient(45deg, #602234, #602234);
             background-size: 200% 200%;
             animation: gradient-flow 3s ease-in-out infinite;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
-        .atom {
+        .dot-pattern {
+            background-image: radial-gradient(#602234 0.5px, transparent 0.5px);
+            background-size: 30px 30px;
+            background-color: #f0ece2;
+        }
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .nav-link::after {
+            content: '';
             position: absolute;
-            color: #718096;
-            opacity: 0.3;
-            pointer-events: none;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #602234;
+            transition: width 0.3s ease;
         }
-        @keyframes spin-slow {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
-        }
-        .animate-spin-slow {
-            animation: spin-slow 8s linear infinite;
-        }
-        .hide-scrollbar {
-            scrollbar-width: none;
-            -ms-overflow-style: none;
-        }
-        .hide-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .navbar {
-            position: sticky;
-            top: 0;
-            z-index: 50;
-            background: #fff;
-            box-shadow: 0 2px 12px #e0e0e0;
-            transition: box-shadow 0.2s;
-        }
-        .navbar .fa-atom {
-            animation: spin-slow 8s linear infinite;
+        .nav-link:hover::after {
+            width: 100%;
         }
         .card-hover {
             transition: transform 0.3s ease, box-shadow 0.3s ease;
@@ -60,125 +60,418 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
         .button-shadow {
-            box-shadow: inset 2px 2px 4px rgba(0,0,0,0.1);
+            box-shadow: inset -4px -4px 8px rgba(0,0,0,0.1);
         }
         .button-shadow:hover {
-            box-shadow: inset 3px 3px 6px rgba(0,0,0,0.15);
+            box-shadow: inset -6px -6px 12px rgba(0,0,0,0.15); 
         }
-        body {
-            overflow: auto;
-            scrollbar-width: none;
-            -ms-overflow-style: none;
+        @keyframes spin-slow {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
         }
-        ::-webkit-scrollbar {
-            display: none;
+        .animate-spin-slow {
+            animation: spin-slow 8s linear infinite;
+        }
+        .message-bubble {
+            position: relative;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: messageAppear 0.5s forwards;
+        }
+        .message-bubble::before {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            width: 0;
+            height: 0;
+            border-style: solid;
+        }
+        .message-bubble.left::before {
+            left: 0;
+            bottom: -10px;
+            border-width: 24px 24px 0 0;
+            border-color: #000 transparent transparent transparent;
+        }
+        .message-bubble.right::before {
+            right: 0;
+            bottom: -10px;
+            border-width: 24px 0 0 24px;
+            border-color: #000 transparent transparent transparent;
+        }
+        @keyframes messageAppear {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .typing-indicator {
+            display: flex;
+            gap: 6px;
+            padding: 12px 16px;
+            background: #f0f0f0;
+            border-radius: 16px;
+            width: fit-content;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: typingAppear 0.5s forwards;
+        }
+        .typing-dot {
+            width: 10px;
+            height: 10px;
+            background: #666;
+            border-radius: 50%;
+            animation: typingAnimation 1.4s infinite;
+        }
+        .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes typingAnimation {
+            0%, 60%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-4px); }
+        }
+        @keyframes typingAppear {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .stats-card {
+            transition: all 0.3s ease;
+        }
+        .stats-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        .checkmark {
+            opacity: 0;
+            transform: scale(0);
+            transition: all 0.3s ease;
+        }
+        .checkmark.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+        .text-reveal {
+            position: relative;
+            overflow: hidden;
+        }
+        .text-reveal::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #f0ece2;
+            animation: revealText 1.5s forwards;
+        }
+        @keyframes revealText {
+            to {
+                transform: translateX(100%);
+            }
+        }
+        .input-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: black;
+        }
+        .input-with-icon {
+            padding-left: 40px;
+        }
+        .char-counter {
+            font-size: 0.875rem;
+            font-weight: bold;
+            color: #602234;
+            text-align: right;
+            margin-top: 0.25rem;
         }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen flex flex-col hide-scrollbar" style="overflow:auto;">
-    <!-- Floating Atoms Background -->
-    <div id="atoms-container"></div>
-    <!-- Sticky Navbar -->
-    <nav class="navbar flex items-center justify-between px-6 py-4">
-        <div class="flex items-center gap-3">
-            <i class="fas fa-atom text-2xl text-[#800000] animate-spin-slow"></i>
-            <span class="text-2xl font-bold gradient-text">Slink</span>
+<body class="min-h-screen flex flex-col dot-pattern">
+    <!-- Navbar -->
+    <nav class="w-full z-50 flex items-center justify-between px-6 py-4 mt-8">
+        <div class="flex items-center gap-3 mx-auto md:mx-0 md:ml-12">
+            <i class="fas fa-atom text-3xl md:text-4xl text-[#602234] animate-spin-slow"></i>
+            <span class="text-3xl md:text-4xl font-bold text-[#602234]">Slink</span>
         </div>
-        <div class="flex gap-4">
-            <a href="/authenticate" class="text-[#800000] font-semibold hover:underline transition">Sign Up / Log In</a>
+        <div class="hidden md:flex gap-8 mr-12">
+            <a href="/about" class="nav-link text-[#602234] text-xl font-semibold flex items-center gap-2">
+                <i class="fas fa-info-circle"></i> About
+            </a>
+            <a href="/authenticate" class="nav-link text-[#602234] text-xl font-semibold flex items-center gap-2">
+                <i class="fas fa-sign-in-alt"></i> Log In
+            </a>
+            <a href="/authenticate" class="nav-link text-[#602234] text-xl font-semibold flex items-center gap-2">
+                <i class="fas fa-user-plus"></i> Sign Up
+            </a>
+            <a href="#contact" class="nav-link text-[#602234] text-xl font-semibold flex items-center gap-2">
+                <i class="fas fa-envelope"></i> Contact
+            </a>
         </div>
     </nav>
+
     <!-- Main Content -->
-    <main class="flex-1 flex flex-col items-center px-4 py-8 md:py-12 relative z-10">
+    <main class="flex-1 flex flex-col items-center px-4 py-8 md:py-12 relative z-10 mt-0 md:mt-32">
         <!-- Hero Section -->
-        <div class="w-full max-w-[90vw] md:max-w-[80vw] lg:max-w-[70vw] bg-white rounded-2xl shadow-xl p-8 md:p-14 flex flex-col items-center card-hover mb-12">
-            <h1 class="gradient-text text-4xl md:text-6xl lg:text-7xl font-extrabold mb-4 text-center">Welcome to Slink</h1>
-            <p class="text-lg md:text-2xl lg:text-3xl text-gray-700 mb-6 text-center">A modern alumni directory and connection platform for SEM. Discover, connect, and grow your network with fellow alumni, students, and staff. 🤝</p>
-            <div class="flex flex-col md:flex-row gap-4 w-full justify-center mb-4">
-                <a href="/authenticate" class="w-3/4 px-8 py-4 mt-4 rounded-xl bg-[#800000] text-white xl:text-2xl lg:text-xl text-lg font-bold button-shadow hover:bg-[#a94442] transition-all text-center">Get Started 🚀</a>
+        <div class="w-full max-w-[90vw] md:max-w-[80vw] lg:max-w-[70vw] flex flex-col md:flex-row items-center justify-between gap-12 mb-16">
+            <!-- Left Side Content -->
+            <div class="flex-1 text-center md:text-left">
+                <h1 class="text-6xl md:text-7xl lg:text-8xl font-extrabold mb-6">
+                    Connect with <span class="gradient-text">Alumni</span>
+                </h1>
+                <p class="text-2xl md:text-3xl text-gray-700 mb-8">
+                    Join the Slink community and build meaningful connections with other SEM students and alumni today.
+                </p>
+                <div class="flex flex-col md:flex-row gap-4 justify-center md:justify-start">
+                    <a href="/authenticate" class="inline-block px-8 py-4 rounded-xl bg-[#602234] text-white text-2xl font-bold button-shadow hover:bg-[#4a1a28] transition-all">
+                        Get Started <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                    <a href="/about" class="inline-block px-8 py-4 rounded-xl bg-white text-[#602234] text-2xl font-bold button-shadow hover:bg-gray-50 transition-all border border-[#602234]">
+                        More Info <i class="fas fa-info-circle ml-2"></i>
+                    </a>
+                </div>
             </div>
-            <!--
-            <div class="mt-6 text-gray-500 text-center text-base md:text-lg">
-                <span>Built for SEM alumni, students, staff, and parents.<br>Safe, private, and easy to use. 🔒</span>
+
+            <!-- Right Side Animated Card -->
+            <div class="hidden md:flex flex-1 bg-white rounded-2xl shadow-xl p-6 card-hover">
+                <div class="relative h-[550px] w-full overflow-hidden">
+                    <!-- Contact Header -->
+                    <div class="flex flex-col items-center mb-8">
+                        <div class="w-16 h-16 rounded-full bg-black flex items-center justify-center mb-3">
+                            <i class="fas fa-user text-white text-2xl"></i>
+                        </div>
+                        <h3 class="font-bold text-black text-xl">SEM Alum</h3>
+                    </div>
+                    <!-- Message Bubbles -->
+                    <div class="typing-indicator absolute top-24 left-4" style="animation-delay: 0s;">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                    <div class="message-bubble left absolute top-32 left-4 bg-black text-white p-4 rounded-2xl max-w-[85%] text-lg" style="animation-delay: 1.5s;">
+                        <p>Hey! I'm an SEM alum from '15. Would love to connect!</p>
+                    </div>
+                    <div class="typing-indicator absolute top-44 right-4" style="animation-delay: 2.5s;">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                    <div class="message-bubble right absolute top-52 right-4 bg-black text-white p-4 rounded-2xl max-w-[85%] text-lg" style="animation-delay: 4s;">
+                        <p>Of course! I'm currently working in tech. How about you?</p>
+                    </div>
+                    <div class="typing-indicator absolute top-64 left-4" style="animation-delay: 5s;">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                    <div class="message-bubble left absolute top-72 left-4 bg-black text-white p-4 rounded-2xl max-w-[85%] text-lg" style="animation-delay: 6.5s;">
+                        <p>I'm in finance. Let's grab coffee sometime!</p>
+                    </div>
+                    <div class="typing-indicator absolute top-[336px] right-4" style="animation-delay: 7.5s;">
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                        <div class="typing-dot"></div>
+                    </div>
+                    <div class="message-bubble right absolute top-[368px] right-4 bg-black text-white p-4 rounded-2xl max-w-[85%] text-lg" style="animation-delay: 9s;">
+                        <p>Sounds great! Looking forward to meeting you!</p>
+                    </div>
+                    <hr class="absolute top-[460px] left-0 w-full border-t border-gray-200 opacity-0 transition-opacity duration-500" id="conversationHr">
+                </div>
             </div>
-        -->
         </div>
 
         <!-- Features Section -->
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-[90vw] md:max-w-[80vw] lg:max-w-[70vw]">
-            <!-- Feature Card 1 -->
-            <div class="bg-white rounded-2xl shadow-xl p-6 card-hover">
-                <div class="text-4xl mb-4">👥</div>
-                <h3 class="text-2xl font-bold text-[#800000] mb-2">Connect with Alumni</h3>
-                <p class="text-gray-600">Find and connect with fellow SEM alumni from all graduating classes. Build your professional network and stay in touch with old friends.</p>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-[90vw] md:max-w-[80vw] lg:max-w-[70vw] mb-16">
+            <!-- Alumni Network Card -->
+            <div class="bg-white rounded-2xl shadow-xl p-8 card-hover">
+                <h3 class="text-3xl font-bold text-[#602234] mb-4">Alumni Network</h3>
+                <ul class="space-y-4">
+                    <li class="flex items-center gap-3">
+                        <i class="fas fa-users text-[#602234] text-xl"></i>
+                        <span class="text-lg">Connect with graduates from all graduating classes</span>
+                        <i class="fas fa-check-circle text-[#602234] checkmark ml-auto"></i>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fas fa-calendar-check text-[#602234] text-xl"></i>
+                        <span class="text-lg">Access exclusive networking events</span>
+                        <i class="fas fa-check-circle text-[#602234] checkmark ml-auto"></i>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fas fa-road text-[#602234] text-xl"></i>
+                        <span class="text-lg">Share your professional journey</span>
+                        <i class="fas fa-check-circle text-[#602234] checkmark ml-auto"></i>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fas fa-handshake text-[#602234] text-xl"></i>
+                        <span class="text-lg">Find mentors in your industry</span>
+                        <i class="fas fa-check-circle text-[#602234] checkmark ml-auto"></i>
+                    </li>
+                </ul>
             </div>
 
-            <!-- Feature Card 2 -->
-            <div class="bg-white rounded-2xl shadow-xl p-6 card-hover">
-                <div class="text-4xl mb-4">🎓</div>
-                <h3 class="text-2xl font-bold text-[#800000] mb-2">Stay Updated</h3>
-                <p class="text-gray-600">Keep up with the latest news, events, and opportunities within the SEM community. Never miss an important update or gathering.</p>
-            </div>
-
-            <!-- Feature Card 3 -->
-            <div class="bg-white rounded-2xl shadow-xl p-6 card-hover">
-                <div class="text-4xl mb-4">💼</div>
-                <h3 class="text-2xl font-bold text-[#800000] mb-2">Career Growth</h3>
-                <p class="text-gray-600">Access mentorship opportunities, job postings, and career advice from experienced alumni across various industries.</p>
+            <!-- Community Forum Card -->
+            <div class="bg-white rounded-2xl shadow-xl p-8 card-hover">
+                <h3 class="text-3xl font-bold text-[#602234] mb-4">Community Forum</h3>
+                <ul class="space-y-4">
+                    <li class="flex items-center gap-3">
+                        <i class="fas fa-comments text-[#602234] text-xl"></i>
+                        <span class="text-lg">Engage in meaningful discussions</span>
+                        <i class="fas fa-check-circle text-[#602234] checkmark ml-auto"></i>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fas fa-lightbulb text-[#602234] text-xl"></i>
+                        <span class="text-lg">Share industry insights and opportunities</span>
+                        <i class="fas fa-check-circle text-[#602234] checkmark ml-auto"></i>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fas fa-user-graduate text-[#602234] text-xl"></i>
+                        <span class="text-lg">Get advice from experienced professionals</span>
+                        <i class="fas fa-check-circle text-[#602234] checkmark ml-auto"></i>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fas fa-newspaper text-[#602234] text-xl"></i>
+                        <span class="text-lg">Stay updated with community news</span>
+                        <i class="fas fa-check-circle text-[#602234] checkmark ml-auto"></i>
+                    </li>
+                </ul>
             </div>
         </div>
 
         <!-- Stats Section -->
-        <div class="w-full max-w-[90vw] md:max-w-[80vw] lg:max-w-[70vw] mt-12 bg-white rounded-2xl shadow-xl p-8 card-hover">
-            <h2 class="text-3xl md:text-4xl font-bold text-center text-[#800000] mb-8">Our Community in Numbers 📊</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div class="text-center">
-                    <div class="text-4xl font-bold text-[#800000] mb-2"><%= numAlumni %></div>
-                    <p class="text-gray-600">Active Alumni</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-[90vw] md:max-w-[80vw] lg:max-w-[70vw]">
+            <div class="stats-card bg-white rounded-2xl shadow-xl p-8 text-center">
+                <div class="text-5xl font-bold text-[#602234] mb-2"><%= numAlumni %></div>
+                <p class="text-gray-600 text-xl text-reveal">Active Alumni</p>
+                <div class="mt-4 text-[#602234]">
+                    <i class="fas fa-users text-3xl"></i>
                 </div>
-                <div class="text-center">
-                    <div class="text-4xl font-bold text-[#800000] mb-2"><%= numStudents %></div>
-                    <p class="text-gray-600">Active Students</p>
+            </div>
+
+            <div class="stats-card bg-white rounded-2xl shadow-xl p-8 text-center">
+                <div class="text-5xl font-bold text-[#602234] mb-2"><%= numStudents %></div>
+                <p class="text-gray-600 text-xl text-reveal">Active Students</p>
+                <div class="mt-4 text-[#602234]">
+                    <i class="fas fa-graduation-cap text-3xl"></i>
                 </div>
-                <div class="text-center">
-                    <div class="text-4xl font-bold text-[#800000] mb-2"><%= numStaffParents %></div>
-                    <p class="text-gray-600">Active Staff & Parents</p>
+            </div>
+
+            <div class="stats-card bg-white rounded-2xl shadow-xl p-8 text-center">
+                <div class="text-5xl font-bold text-[#602234] mb-2"><%= numStaffParents %></div>
+                <p class="text-gray-600 text-xl text-reveal">Active Staff & Parents</p>
+                <div class="mt-4 text-[#602234]">
+                    <i class="fas fa-chalkboard-teacher text-3xl"></i>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Section -->
+        <div id="contact" class="w-full max-w-[90vw] md:max-w-[80vw] lg:max-w-[70vw] mt-16">
+            <h2 class="text-4xl font-bold text-[#602234] mb-8 text-center">Contact Us</h2>
+            <div class="w-full md:w-2/3 mx-auto">
+                <div class="bg-white rounded-2xl shadow-xl p-8 card-hover">
+                    <form class="space-y-6">
+                        <div>
+                            <label class="block text-gray-700 mb-2 font-semibold">Name</label>
+                            <div class="relative">
+                                <div class="flex flex-row">
+                                    <div class="rounded-l-lg bg-gray-100 flex items-center justify-center px-4 border border-r-0 border-gray-300">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <input type="text" class="w-full px-4 py-3 rounded-r-lg border border-gray-300 focus:border-[#602234] focus:ring-2 focus:ring-[#602234] focus:ring-opacity-50 input-with-icon" placeholder="Your name" maxlength="50">
+                                </div>
+                                <div class="char-counter">0/50</div>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2 font-semibold">Email</label>
+                            <div class="relative">
+                                <div class="flex flex-row">
+                                    <div class="rounded-l-lg bg-gray-100 flex items-center justify-center px-4 border border-r-0 border-gray-300">
+                                        <i class="fas fa-envelope"></i>
+                                    </div>
+                                    <input type="email" class="w-full px-4 py-3 rounded-r-lg border border-gray-300 focus:border-[#602234] focus:ring-2 focus:ring-[#602234] focus:ring-opacity-50 input-with-icon" placeholder="Your email" maxlength="100">
+                                </div>
+                                <div class="char-counter">0/100</div>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-gray-700 mb-2 font-semibold">Message</label>
+                            <textarea class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-[#602234] focus:ring-2 focus:ring-[#602234] focus:ring-opacity-50" rows="4" placeholder="Your message" maxlength="500"></textarea>
+                            <div class="char-counter">0/500</div>
+                        </div>
+                        <button type="submit" class="w-full px-6 py-3 bg-[#602234] text-white rounded-lg hover:bg-[#4a1a28] transition-all flex items-center justify-center gap-2">
+                            <i class="fas fa-paper-plane"></i>
+                            Send Message
+                        </button>
+                    </form>
                 </div>
             </div>
         </div>
     </main>
+
     <script>
-        // Floating Atoms Animation
-        $(document).ready(function() {
-            function createAtom() {
-                const atom = $('<i class="fas fa-atom atom"></i>');
-                const container = $('#atoms-container');
-                const containerWidth = $(window).width();
-                const containerHeight = $(window).height();
-                const size = window.innerWidth < 640 ? 'text-5xl' : window.innerWidth < 1024 ? 'text-6xl' : 'text-7xl';
-                atom.addClass(size);
-                let x = Math.random() * containerWidth;
-                let y = Math.random() * containerHeight;
-                const speed = 2;
-                let vx = (Math.random() - 0.5) * speed;
-                let vy = (Math.random() - 0.5) * speed;
-                let rotation = Math.random() * 360;
-                let rotationSpeed = (Math.random() - 0.5) * 2;
-                atom.css({ left: x + 'px', top: y + 'px', transform: `rotate(${rotation}deg)` });
-                container.append(atom);
-                function animate() {
-                    x += vx;
-                    y += vy;
-                    rotation += rotationSpeed;
-                    if (x <= 0 || x >= containerWidth) { vx *= -1; x = x <= 0 ? 0 : containerWidth; }
-                    if (y <= 0 || y >= containerHeight) { vy *= -1; y = y <= 0 ? 0 : containerHeight; }
-                    atom.css({ left: x + 'px', top: y + 'px', transform: `rotate(${rotation}deg)` });
-                    requestAnimationFrame(animate);
-                }
-                animate();
+        // Checkmark Animation
+        function animateCheckmarks() {
+            const checkmarks = document.querySelectorAll('.checkmark');
+            const totalCheckmarks = checkmarks.length;
+            const halfCheckmarks = totalCheckmarks / 2;
+            let currentIndex = 0;
+            let reverseIndex = halfCheckmarks - 1;
+
+            function showNextCheckmark() {
+                // Hide previous checkmarks
+                checkmarks.forEach(checkmark => checkmark.classList.remove('visible'));
+
+                // Show current checkmark in forward order for first card
+                checkmarks[currentIndex].classList.add('visible');
+                currentIndex = (currentIndex + 1) % halfCheckmarks;
+
+                // Show current checkmark in reverse order for second card
+                checkmarks[reverseIndex + halfCheckmarks].classList.add('visible');
+                reverseIndex = (reverseIndex - 1 + halfCheckmarks) % halfCheckmarks;
             }
-            const numAtoms = 8;
-            for (let i = 0; i < numAtoms; i++) { createAtom(); }
+
+            // Initial animation
+            showNextCheckmark();
+            // Continue animation
+            setInterval(showNextCheckmark, 500);
+        }
+
+        // Start checkmark animation
+        animateCheckmarks();
+
+        // Message Animation
+        const messages = document.querySelectorAll('.message-bubble');
+        const typingIndicators = document.querySelectorAll('.typing-indicator');
+        const conversationHr = document.getElementById('conversationHr');
+
+        messages.forEach((message, index) => {
+            message.addEventListener('animationstart', () => {
+                typingIndicators[index].style.display = 'none';
+            });
+
+            // Add HR animation after last message
+            if (index === messages.length - 1) {
+                message.addEventListener('animationend', () => {
+                    setTimeout(() => {
+                        conversationHr.style.opacity = '1';
+                    }, 500);
+                });
+            }
+        });
+
+        // Character Counter
+        function updateCharCounter(input, counter) {
+            const maxLength = input.getAttribute('maxlength');
+            const currentLength = input.value.length;
+            counter.textContent = `${currentLength}/${maxLength}`;
+        }
+
+        // Initialize character counters
+        document.querySelectorAll('input, textarea').forEach(input => {
+            const counter = input.parentElement.querySelector('.char-counter');
+            input.addEventListener('input', () => updateCharCounter(input, counter));
         });
     </script>
 </body>

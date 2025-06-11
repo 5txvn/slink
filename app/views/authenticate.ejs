@@ -15,7 +15,7 @@
             100% { background-position: 0% 50%; }
         }
         .gradient-text {
-            background: linear-gradient(45deg, #800000, #cc0000);
+            background: linear-gradient(45deg, #602234, #602234);
             background-size: 200% 200%;
             animation: gradient-flow 3s ease-in-out infinite;
             -webkit-background-clip: text;
@@ -23,7 +23,7 @@
         }
         .atom {
             position: absolute;
-            color: #718096;
+            color: #602234;
             opacity: 0.4;
             pointer-events: none;
         }
@@ -34,7 +34,7 @@
             transform: translateX(-50%);
             padding: 1rem;
             border-radius: 0.5rem;
-            background: #800000;
+            background: #602234;
             color: white;
             display: none;
             z-index: 50;
@@ -48,7 +48,7 @@
         }
         .error-toast:hover {
             transform: translateX(-50%) scale(1.02);
-            background: #600000;
+            background: #4a1a28;
         }
         .custom-select-options {
             display: none;
@@ -69,7 +69,7 @@
             color: #718096;
         }
         .custom-select-option:hover {
-            background: #800000;
+            background: #602234;
             color: white;
         }
         .custom-select-option.selected {
@@ -82,31 +82,33 @@
         .animate-spin-slow {
             animation: spin-slow 8s linear infinite;
         }
-        body {
+        body, html, .authenticate-form {
             overflow: auto;
             scrollbar-width: none;
             -ms-overflow-style: none;
         }
-        ::-webkit-scrollbar {
+        body::-webkit-scrollbar,
+        html::-webkit-scrollbar,
+        .authenticate-form::-webkit-scrollbar {
             display: none;
         }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4">
+<body class="bg-[#f0ece2] min-h-screen flex items-center justify-center p-4">
     <!-- Floating Atoms Background -->
     <div id="atoms-container"></div>
 
-    <div class="w-full max-w-2xl relative z-10">
+    <div class="w-full max-w-2xl md:max-w-3xl lg:max-w-4xl relative z-10">
         <div id="authCard" class="bg-white rounded-xl p-8 shadow-lg transition-all duration-500 ease-in-out">
             <div class="flex items-center justify-center mb-8">
-                <i class="fas fa-atom text-4xl mr-3 text-[#800000] animate-spin-slow"></i>
-                <h1 class="text-3xl font-bold gradient-text">Welcome to Slink</h1>
+                <i class="fas fa-atom text-4xl mr-3 text-[#602234] animate-spin-slow"></i>
+                <h1 class="text-3xl md:text-4xl font-bold gradient-text">Welcome to Slink</h1>
             </div>
             
             <!-- Form Toggle Switch -->
             <div class="flex justify-center mb-8">
                 <div class="bg-gray-200 rounded-full p-1 flex relative">
-                    <div id="toggleSlider" class="absolute bg-[#800000] rounded-full transition-all duration-500 ease-in-out" style="width: 50%; height: calc(100% - 0.5rem); top: 0.25rem;"></div>
+                    <div id="toggleSlider" class="absolute bg-[#602234] rounded-full transition-all duration-500 ease-in-out" style="width: 50%; height: calc(100% - 0.5rem); top: 0.25rem;"></div>
                     <button id="loginToggle" class="px-6 py-2 rounded-full text-white font-semibold transition-all duration-300 relative z-10">
                         Log In
                     </button>
@@ -117,24 +119,25 @@
             </div>
 
             <!-- Forms Container -->
-            <div class="relative">
+            <div class="relative authenticate-form">
                 <!-- Login Form -->
-                <form id="loginForm" action="/authenticate/login" method="POST" class="space-y-6 transition-all duration-500 ease-in-out">
+                <form id="loginForm" action="/authenticate/login" method="POST" class="w-full space-y-6 transition-all duration-500 ease-in-out pb-4">
                     <div class="relative">
                         <i class="fas fa-envelope absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                         <input type="text" name="email" required autocomplete="off"
-                               class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/20 focus:bg-gray-50 transition-all duration-300"
+                               class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:border-[#602234] focus:ring-2 focus:ring-[#602234]/20 focus:bg-gray-50 transition-all duration-300"
                                placeholder="Enter your email">
                     </div>
                     <div class="relative">
                         <i class="fas fa-lock absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                         <input type="password" name="password" required autocomplete="off"
-                               class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/20 focus:bg-gray-50 transition-all duration-300"
+                               class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:border-[#602234] focus:ring-2 focus:ring-[#602234]/20 focus:bg-gray-50 transition-all duration-300"
                                placeholder="Enter your password">
                     </div>
                     <button type="submit" 
-                            class="w-full bg-[#800000] text-white py-4 rounded-lg text-lg font-bold transition-all duration-300 transform hover:scale-[1.02] shadow-[inset_6px_6px_12px_rgba(0,0,0,0.3)]">
+                            class="w-full bg-[#602234] text-white py-4 rounded-lg text-lg font-bold transition-all duration-300 transform hover:scale-[1.02] shadow-[inset_-8px_-8px_16px_rgba(0,0,0,0.3)]">
                         Log In
+                        <i class="fas fa-key ml-2"></i>
                     </button>
                 </form>
 
@@ -143,37 +146,37 @@
                     <div class="relative">
                         <i class="fas fa-user absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                         <input type="text" name="name" required autocomplete="off"
-                               class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/20 focus:bg-gray-50 transition-all duration-300"
+                               class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:border-[#602234] focus:ring-2 focus:ring-[#602234]/20 focus:bg-gray-50 transition-all duration-300"
                                placeholder="Enter your full name">
                     </div>
                     <div class="relative">
                         <i class="fas fa-envelope absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                         <input type="text" name="email" required autocomplete="off"
-                               class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/20 focus:bg-gray-50 transition-all duration-300"
+                               class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:border-[#602234] focus:ring-2 focus:ring-[#602234]/20 focus:bg-gray-50 transition-all duration-300"
                                placeholder="Enter your email">
                     </div>
                     <div class="relative">
                         <i class="fas fa-at absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                         <input type="text" name="username" required autocomplete="off"
-                               class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/20 focus:bg-gray-50 transition-all duration-300"
+                               class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:border-[#602234] focus:ring-2 focus:ring-[#602234]/20 focus:bg-gray-50 transition-all duration-300"
                                placeholder="Choose a username">
                     </div>
                     <div class="relative">
                         <i class="fas fa-lock absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                         <input type="password" name="password" required autocomplete="off"
-                               class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/20 focus:bg-gray-50 transition-all duration-300"
+                               class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:border-[#602234] focus:ring-2 focus:ring-[#602234]/20 focus:bg-gray-50 transition-all duration-300"
                                placeholder="Create a password">
                     </div>
                     <div class="relative">
                         <i class="fas fa-lock absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
                         <input type="password" name="confirmPassword" required autocomplete="off"
-                               class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/20 focus:bg-gray-50 transition-all duration-300"
+                               class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:border-[#602234] focus:ring-2 focus:ring-[#602234]/20 focus:bg-gray-50 transition-all duration-300"
                                placeholder="Confirm your password">
                         <i id="passwordMatchIcon" class="fas absolute right-3 top-1/2 transform -translate-y-1/2 hidden"></i>
                     </div>
                     <div class="relative custom-select">
                         <i class="fas fa-user-tag absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400"></i>
-                        <div class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/20 transition-all duration-300 cursor-pointer text-gray-500" id="roleSelect">
+                        <div class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:border-[#602234] focus:ring-2 focus:ring-[#602234]/20 transition-all duration-300 cursor-pointer text-gray-500" id="roleSelect">
                             Select your role
                         </div>
                         <div class="custom-select-options">
@@ -185,8 +188,9 @@
                         <input type="hidden" name="position" required>
                     </div>
                     <button type="submit" 
-                            class="w-full bg-[#800000] text-white py-4 rounded-lg text-lg font-bold transition-all duration-300 transform hover:scale-[1.02] shadow-[inset_6px_6px_12px_rgba(0,0,0,0.3)]">
+                            class="w-full bg-[#602234] text-white py-4 rounded-lg text-lg font-bold transition-all duration-300 transform hover:scale-[1.02] shadow-[inset_-8px_-8px_16px_rgba(0,0,0,0.3)]">
                         Sign Up
+                        <i class="fas fa-user-plus ml-2"></i>
                     </button>
                 </form>
             </div>
@@ -203,6 +207,9 @@
 
     <script>
         $(document).ready(function() {
+            // setTimeout(() => {
+            //     $('#signupForm').removeClass('hidden');
+            // }, 1000);
             // Form Toggle with Smooth Animation
             $('#loginToggle').click(function() {
                 $('#loginForm').css({

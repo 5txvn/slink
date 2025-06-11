@@ -93,14 +93,40 @@
         @media (max-width: 640px) {
             .neumorphic-btn { font-size: 1rem; padding-top: 0.7rem; padding-bottom: 0.7rem; }
         }
+        .error-toast {
+            position: fixed;
+            top: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            background: #800000;
+            color: white;
+            display: none;
+            z-index: 50;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            transition: all 0.3s ease;
+            animation: slideDown 0.3s ease-out;
+        }
+        @keyframes slideDown {
+            from { transform: translate(-50%, -100%); }
+            to { transform: translate(-50%, 0); }
+        }
+        .error-toast:hover {
+            transform: translateX(-50%) scale(1.02);
+            background: #600000;
+        }
+        .autocomplete-dropdown {
+            display: none;
+        }
     </style>
 </head>
 <body class="bg-gray-100 min-h-screen">
     <div id="navbar-container"></div>
     <div id="notification" class="notification"></div>
 
-    <main class="container mx-auto px-4 py-8 mt-16">
-        <div class="max-w-7xl mx-auto">
+    <main class="container w-[90vw] mx-auto py-8 mt-16">
+        <div class="w-full">
             <form id="profile-form" class="space-y-6">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     <!-- Edit Profile Card (now a grid card) -->
@@ -214,11 +240,44 @@
                                 </div>
                             </div>
                             <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">GitHub</label>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Twitter</label>
                                 <div class="relative">
-                                    <i class="fab fa-github absolute left-3 input-icon text-gray-400"></i>
-                                    <input type="url" name="github" class="modern-input w-full pl-10 pr-4 py-3 text-lg pr-12" placeholder="https://github.com/...">
-                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full" id="github-valid" style="background:#10B981;"></span>
+                                    <i class="fab fa-twitter absolute left-3 input-icon text-gray-400"></i>
+                                    <input type="url" name="twitter" class="modern-input w-full pl-10 pr-4 py-3 text-lg pr-12" placeholder="https://twitter.com/...">
+                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full" id="twitter-valid" style="background:#10B981;"></span>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Instagram</label>
+                                <div class="relative">
+                                    <i class="fab fa-instagram absolute left-3 input-icon text-gray-400"></i>
+                                    <input type="url" name="instagram" class="modern-input w-full pl-10 pr-4 py-3 text-lg pr-12" placeholder="https://instagram.com/...">
+                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full" id="instagram-valid" style="background:#10B981;"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Social Links Continued -->
+                    <div class="rounded-xl shadow-lg bg-white p-6">
+                        <h2 class="text-xl font-bold text-[#800000] mb-4 flex items-center gap-2">
+                            🔗 More Social Links
+                        </h2>
+                        <div class="space-y-4">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Reddit</label>
+                                <div class="relative">
+                                    <i class="fab fa-reddit absolute left-3 input-icon text-gray-400"></i>
+                                    <input type="url" name="reddit" class="modern-input w-full pl-10 pr-4 py-3 text-lg pr-12" placeholder="https://reddit.com/u/...">
+                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full" id="reddit-valid" style="background:#10B981;"></span>
+                                </div>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Discord</label>
+                                <div class="relative">
+                                    <i class="fab fa-discord absolute left-3 input-icon text-gray-400"></i>
+                                    <input type="text" name="discord" class="modern-input w-full pl-10 pr-4 py-3 text-lg pr-12" placeholder="username#0000">
+                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full" id="discord-valid" style="background:#10B981;"></span>
                                 </div>
                             </div>
                             <div>
@@ -227,31 +286,6 @@
                                     <i class="fas fa-globe absolute left-3 input-icon text-gray-400"></i>
                                     <input type="url" name="website" class="modern-input w-full pl-10 pr-4 py-3 text-lg pr-12" placeholder="https://...">
                                     <span class="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full" id="website-valid" style="background:#10B981;"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Skills & Interests -->
-                    <div class="rounded-xl shadow-lg bg-white p-6">
-                        <h2 class="text-xl font-bold text-[#800000] mb-4 flex items-center gap-2">
-                            ⭐ Skills & Interests
-                        </h2>
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Skills</label>
-                                <div class="relative">
-                                    <i class="fas fa-tools absolute left-3 input-icon text-gray-400"></i>
-                                    <input type="text" name="skills" class="modern-input w-full pl-10 pr-4 py-3 text-lg pr-12" placeholder="e.g., JavaScript">
-                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full" id="skills-valid" style="background:#10B981;"></span>
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Interests</label>
-                                <div class="relative">
-                                    <i class="fas fa-heart absolute left-3 input-icon text-gray-400"></i>
-                                    <input type="text" name="interests" class="modern-input w-full pl-10 pr-4 py-3 text-lg pr-12" placeholder="e.g., Web Development">
-                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full" id="interests-valid" style="background:#10B981;"></span>
                                 </div>
                             </div>
                         </div>
@@ -269,6 +303,14 @@
         </div>
     </main>
 
+    <!-- Error Toast -->
+    <div id="errorToast" class="error-toast w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2">
+        <div class="flex items-center justify-center">
+            <i class="fas fa-exclamation-circle mr-2 text-xl"></i>
+            <span id="errorMessage" class="text-lg font-semibold"></span>
+        </div>
+    </div>
+
     <script type="module">
         import Navbar from './navbar.js';
 
@@ -282,33 +324,31 @@
 
         // Show notification
         function showNotification(message, type = 'success') {
-            const notification = $('#notification');
-            notification.removeClass('success error').addClass(type);
-            notification.html(`
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center">
-                        <i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'} mr-2"></i>
-                        <span>${message}</span>
-                    </div>
-                    <button class="text-white hover:text-gray-200" onclick="$(this).parent().parent().fadeOut()">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-            `);
-            notification.fadeIn();
-            setTimeout(() => notification.fadeOut(), 5000);
+            const notification = $('#errorToast');
+            notification.find('i').removeClass('fa-exclamation-circle fa-check-circle').addClass(type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle');
+            notification.find('#errorMessage').text(message);
+            notification.fadeIn().delay(3000).fadeOut();
         }
 
         // Populate form with user data
         function populateForm() {
             const form = $('#profile-form');
             for (const [key, value] of Object.entries(userData)) {
-                const input = form.find(`[name="${key}"]`);
-                if (input.length) {
-                    if (input.attr('type') === 'checkbox') {
-                        input.prop('checked', value);
-                    } else {
-                        input.val(value || '');
+                if (key === 'socialLinks') {
+                    for (const [socialKey, socialValue] of Object.entries(value)) {
+                        const input = form.find(`[name="${socialKey}"]`);
+                        if (input.length) {
+                            input.val(socialValue === 'n/a' ? '' : socialValue);
+                        }
+                    }
+                } else {
+                    const input = form.find(`[name="${key}"]`);
+                    if (input.length) {
+                        if (input.attr('type') === 'checkbox') {
+                            input.prop('checked', value);
+                        } else {
+                            input.val(value || '');
+                        }
                     }
                 }
             }
@@ -348,7 +388,59 @@
         // Initialize form
         $(document).ready(function() {
             populateForm();
+
+            // Fetch autocomplete data
+            fetch('/info.json')
+                .then(response => response.json())
+                .then(data => {
+                    // Initialize autocomplete for universities
+                    initializeAutocomplete('school', data.universities);
+                    // Initialize autocomplete for majors
+                    initializeAutocomplete('major', data.majors);
+                    // Initialize autocomplete for positions
+                    initializeAutocomplete('currentPosition', data.positions);
+                })
+                .catch(error => console.error('Error loading autocomplete data:', error));
         });
+
+        // Initialize autocomplete functionality
+        function initializeAutocomplete(inputName, options) {
+            const input = $(`input[name="${inputName}"]`);
+            const dropdown = $('<div class="autocomplete-dropdown absolute w-full bg-white border border-gray-300 rounded-lg mt-1 shadow-lg z-50 max-h-60 overflow-y-auto"></div>');
+            
+            input.after(dropdown);
+            
+            input.on('input', function() {
+                const value = $(this).val().toLowerCase();
+                const matches = options.filter(option => 
+                    option.toLowerCase().includes(value)
+                ).slice(0, 10);
+                
+                dropdown.empty();
+                
+                if (matches.length > 0 && value.length > 0) {
+                    matches.forEach(match => {
+                        const item = $('<div class="p-2 hover:bg-gray-100 cursor-pointer"></div>')
+                            .text(match)
+                            .on('click', function() {
+                                input.val(match);
+                                dropdown.hide();
+                            });
+                        dropdown.append(item);
+                    });
+                    dropdown.show();
+                } else {
+                    dropdown.hide();
+                }
+            });
+            
+            // Hide dropdown when clicking outside
+            $(document).on('click', function(e) {
+                if (!$(e.target).closest(`input[name="${inputName}"], .autocomplete-dropdown`).length) {
+                    dropdown.hide();
+                }
+            });
+        }
     </script>
     <script>
         // Input validation functions (jQuery)

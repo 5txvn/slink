@@ -6,7 +6,7 @@ require('dotenv').config();
 
 //express setup
 const app = express();
-const PORT = 3000;
+const PORT = 8080 || process.env.PORT;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
@@ -44,6 +44,6 @@ app.use('/post', require('./app/routes/forum/post'));
 app.use('/my-posts', require('./app/routes/forum/myPosts'));
 
 //start server
-app.listen(process.env.PORT || 3000, () => {
+app.listen(PORT, () => {
     console.log(`Slink is running on port ${PORT}`);
 }); 
