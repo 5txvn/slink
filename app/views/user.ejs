@@ -117,6 +117,52 @@
             .main-info { align-items: center; text-align: center; }
             .info-section { flex-direction: column; gap: 1rem; }
         }
+        .dot-pattern {
+            background-image: radial-gradient(rgba(96, 34, 52, 0.5) 1px, transparent 1px);
+            background-size: 20px 20px;
+            background-color: #ffffff;
+        }
+        @keyframes gradient-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .gradient-text {
+            background: linear-gradient(45deg, #602234, #602234);
+            background-size: 200% 200%;
+            animation: gradient-flow 3s ease-in-out infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+        .profile-card {
+            transition: all 0.3s ease;
+        }
+        .profile-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .info-card {
+            transition: all 0.3s ease;
+        }
+        .info-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .social-link {
+            transition: all 0.3s ease;
+        }
+        .social-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .connect-button {
+            transition: all 0.3s ease;
+        }
+        .connect-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
     </style>
     <script>
         // Set random avatar background
@@ -127,31 +173,37 @@
         });
     </script>
 </head>
-<body class="bg-gray-100 min-h-screen">
+<body class="bg-gray-100 min-h-screen dot-pattern">
     <div id="navbar-container"></div>
     <main class="container mx-auto px-4 py-8 mt-16">
         <!-- Profile Header Card -->
-        <div class="bg-white rounded-3xl shadow-lg p-8 md:p-12 mb-8 flex flex-col md:flex-row items-center gap-8">
+        <div class="bg-white rounded-3xl shadow-lg p-8 md:p-12 mb-8 flex flex-col md:flex-row items-center gap-8 profile-card">
             <div class="w-32 h-32 md:w-40 md:h-40 rounded-2xl flex items-center justify-center text-white text-5xl shadow-lg" id="profile-avatar">
                 <i class="fas fa-user"></i>
             </div>
             <div class="flex-1 text-center md:text-left">
-                <h1 class="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-800 mb-2"><%= JSON.parse(user).name %></h1>
-                <p class="text-xl md:text-2xl text-[#800000] font-semibold mb-2">@<%= JSON.parse(user).username %></p>
+                <h1 class="text-3xl md:text-4xl lg:text-5xl font-extrabold gradient-text mb-2"><%= JSON.parse(user).name %></h1>
+                <p class="text-xl md:text-2xl text-[#602234] font-semibold mb-2">@<%= JSON.parse(user).username %></p>
                 <p class="text-lg md:text-xl text-gray-600 font-medium">
                     <i class="fas fa-briefcase mr-2"></i>
                     <%= JSON.parse(user).position.charAt(0).toUpperCase() + JSON.parse(user).position.slice(1) %>
                 </p>
             </div>
+            <form action="/user/<%= JSON.parse(user).username %>/connect" method="POST" class="flex items-center">
+                <button type="submit" class="connect-button bg-[#602234] hover:bg-[#4a1a28] text-white font-semibold py-3 px-8 rounded-xl transition-all duration-300 flex items-center space-x-2">
+                    <i class="fas fa-user-plus"></i>
+                    <span>Connect</span>
+                </button>
+            </form>
         </div>
 
         <!-- Info Cards Section -->
         <div class="space-y-6">
             <!-- Education Card -->
-            <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 transform transition-all duration-300 hover:shadow-xl">
+            <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 info-card">
                 <div class="flex items-center mb-4">
-                    <i class="fas fa-graduation-cap text-2xl text-[#800000] mr-3"></i>
-                    <h2 class="text-2xl font-bold text-[#800000]">Education</h2>
+                    <i class="fas fa-graduation-cap text-2xl text-[#602234] mr-3"></i>
+                    <h2 class="text-2xl font-bold text-[#602234]">Education</h2>
                 </div>
                 <div class="space-y-3 text-lg">
                     <div class="flex items-center">
@@ -173,16 +225,16 @@
             </div>
 
             <!-- Contact Card -->
-            <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 transform transition-all duration-300 hover:shadow-xl">
+            <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 info-card">
                 <div class="flex items-center mb-4">
-                    <i class="fas fa-address-card text-2xl text-[#800000] mr-3"></i>
-                    <h2 class="text-2xl font-bold text-[#800000]">Contact</h2>
+                    <i class="fas fa-address-card text-2xl text-[#602234] mr-3"></i>
+                    <h2 class="text-2xl font-bold text-[#602234]">Contact</h2>
                 </div>
                 <div class="space-y-3 text-lg">
                     <div class="flex items-center">
                         <i class="fas fa-envelope text-gray-600 w-8"></i>
                         <span class="font-semibold">Email:</span>
-                        <a href="mailto:<%= JSON.parse(user).email %>" class="ml-2 text-[#800000] hover:underline">
+                        <a href="mailto:<%= JSON.parse(user).email %>" class="ml-2 text-[#602234] hover:underline">
                             <%= JSON.parse(user).email %>
                         </a>
                     </div>
@@ -195,10 +247,10 @@
             </div>
 
             <!-- About Card -->
-            <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 transform transition-all duration-300 hover:shadow-xl">
+            <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 info-card">
                 <div class="flex items-center mb-4">
-                    <i class="fas fa-user-circle text-2xl text-[#800000] mr-3"></i>
-                    <h2 class="text-2xl font-bold text-[#800000]">About</h2>
+                    <i class="fas fa-user-circle text-2xl text-[#602234] mr-3"></i>
+                    <h2 class="text-2xl font-bold text-[#602234]">About</h2>
                 </div>
                 <div class="text-lg leading-relaxed">
                     <%= JSON.parse(user).bio %>
@@ -206,30 +258,58 @@
             </div>
 
             <!-- Social Links Card -->
-            <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 transform transition-all duration-300 hover:shadow-xl">
+            <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 info-card">
                 <div class="flex items-center mb-4">
-                    <i class="fas fa-link text-2xl text-[#800000] mr-3"></i>
-                    <h2 class="text-2xl font-bold text-[#800000]">Social Links</h2>
+                    <i class="fas fa-link text-2xl text-[#602234] mr-3"></i>
+                    <h2 class="text-2xl font-bold text-[#602234]">Social Links</h2>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <% if (user.linkedin) { %>
-                        <a href="<%= user.linkedin %>" target="_blank" 
-                           class="flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
+                    <% if (JSON.parse(user).linkedin) { %>
+                        <a href="<%= JSON.parse(user).linkedin %>" target="_blank" 
+                           class="social-link flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
                             <i class="fab fa-linkedin text-2xl text-[#0077B5] mr-3"></i>
                             <span class="text-lg font-medium">LinkedIn</span>
                         </a>
                     <% } %>
-                    <% if (user.github) { %>
-                        <a href="<%= user.github %>" target="_blank"
-                           class="flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
+                    <% if (JSON.parse(user).github) { %>
+                        <a href="<%= JSON.parse(user).github %>" target="_blank"
+                           class="social-link flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
                             <i class="fab fa-github text-2xl text-gray-800 mr-3"></i>
                             <span class="text-lg font-medium">GitHub</span>
                         </a>
                     <% } %>
-                    <% if (user.website) { %>
-                        <a href="<%= user.website %>" target="_blank"
-                           class="flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
-                            <i class="fas fa-globe text-2xl text-[#800000] mr-3"></i>
+                    <% if (JSON.parse(user).discord) { %>
+                        <a href="<%= JSON.parse(user).discord %>" target="_blank"
+                           class="social-link flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
+                            <i class="fab fa-discord text-2xl text-[#7289DA] mr-3"></i>
+                            <span class="text-lg font-medium">Discord</span>
+                        </a>
+                    <% } %>
+                    <% if (JSON.parse(user).instagram) { %>
+                        <a href="<%= JSON.parse(user).instagram %>" target="_blank"
+                           class="social-link flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
+                            <i class="fab fa-instagram text-2xl text-[#E1306C] mr-3"></i>
+                            <span class="text-lg font-medium">Instagram</span>
+                        </a>
+                    <% } %>
+                    <% if (JSON.parse(user).reddit) { %>
+                        <a href="<%= JSON.parse(user).reddit %>" target="_blank"
+                           class="social-link flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
+                            <i class="fab fa-reddit text-2xl text-[#FF4500] mr-3"></i>
+                            <span class="text-lg font-medium">Reddit</span>
+                        </a>
+                    <% } %>
+                    <% if (JSON.parse(user).twitter) { %>
+                        <a href="<%= JSON.parse(user).twitter %>" target="_blank"
+                           class="social-link flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
+                            <i class="fab fa-twitter text-2xl text-[#1DA1F2] mr-3"></i>
+                            <span class="text-lg font-medium">Twitter</span>
+                        </a>
+                    <% } %>
+                    <% if (JSON.parse(user).website) { %>
+                        <a href="<%= JSON.parse(user).website %>" target="_blank"
+                           class="social-link flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
+                            <i class="fas fa-globe text-2xl text-[#602234] mr-3"></i>
                             <span class="text-lg font-medium">Website</span>
                         </a>
                     <% } %>
@@ -258,7 +338,7 @@
                 }
             );
             //change color of icon
-            const colors = ['#800000', '#191919', '#707070'];
+            const colors = ['#602234', '#191919', '#707070'];
             const bg = colors[Math.floor(Math.random() * colors.length)];
             $("#profile-avatar").addClass(`bg-[${bg}]`);
         });

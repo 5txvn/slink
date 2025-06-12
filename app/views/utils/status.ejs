@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SpellingTree | Status</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        html, body {
+            overflow: scroll;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar {
+            display: none;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes countdown {
+            from { width: 100%; }
+            to { width: 0%; }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        .countdown-bar {
+            animation: countdown 5s linear forwards;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen flex items-center justify-center p-4">
+    <div class="max-w-md w-full">
+        <!-- Status Card -->
+        <div class="bg-white rounded-2xl shadow-xl p-8 animate-fade-in">
+            <!-- Status Icon -->
+            <div class="w-20 h-20 mx-auto mb-6 rounded-full flex items-center justify-center
+                <%= status === 'success' ? 'bg-green-100' : 
+                   status === 'warning' ? 'bg-yellow-100' : 
+                   'bg-red-100' %>">
+                <i class="fa <%= status === 'success' ? 'fa-check text-green-600' : 
+                              status === 'warning' ? 'fa-exclamation-triangle text-yellow-600' : 
+                              'fa-times text-red-600' %> text-3xl"></i>
+            </div>
+
+            <!-- Status Message -->
+            <h1 class="text-2xl font-bold text-center mb-4
+                <%= status === 'success' ? 'text-green-600' : 
+                   status === 'warning' ? 'text-yellow-600' : 
+                   'text-red-600' %>">
+                <%= title %>
+            </h1>
+            <p class="text-gray-600 text-center mb-8"><%= message %></p>
+
+            <!-- Countdown Bar -->
+            <div class="w-full h-2 bg-gray-200 rounded-full mb-8 overflow-hidden">
+                <div class="h-full countdown-bar
+                    <%= status === 'success' ? 'bg-green-500' : 
+                       status === 'warning' ? 'bg-yellow-500' : 
+                       'bg-red-500' %>">
+                </div>
+            </div>
+
+            <!-- Manual Redirect Button -->
+            <div class="text-center">
+                <a href="<%= redirectUrl %>" 
+                   class="inline-flex items-center px-6 py-3 rounded-lg font-semibold text-white
+                          <%= status === 'success' ? 'bg-green-500 hover:bg-green-600' : 
+                             status === 'warning' ? 'bg-yellow-500 hover:bg-yellow-600' : 
+                             'bg-red-500 hover:bg-red-600' %> 
+                          transition-colors duration-300">
+                    Continue
+                    <i class="fa fa-arrow-right ml-2"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            setTimeout(function() {
+                window.location.href = '<%= redirectUrl %>';
+            }, 5000);
+        });
+    </script>
+</body>
+</html>

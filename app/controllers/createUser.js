@@ -14,7 +14,8 @@ exports.createUser = async (req, res) => {
     });
 
     //check if user already exists
-    if(existingUser) return res.status(409).render(path.join(__dirname, '../views', 'error.ejs'), {
+    if(existingUser) return res.status(409).render(path.join(__dirname, '../views/utils/status.ejs'), {
+        status: 'error',
         title: "User error",
         message: "Username or email already exists, please try using a different username or email.",
         redirectUrl: "/authenticate"
@@ -36,10 +37,11 @@ exports.createUser = async (req, res) => {
         req.session.email = email;
         res.redirect('/welcome');
     } catch (error) {
-        //handle server error
-        return res.status(500).render(path.join(__dirname, '../views', 'error.ejs'), {
-            title: "Server error occured",
-            message: `Error message: ${error.message}`,
+        console.error(`Error occurred while creating user: ${error}`);
+        return res.status(500).render(path.join(__dirname, '../views/utils/status.ejs'), {
+            status: 'error',
+            title: "Internal Server Error",
+            message: `An error occurred while creating your account, please try again later.`,
             redirectUrl: "/authenticate"
         });
     }

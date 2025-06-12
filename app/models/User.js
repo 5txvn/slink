@@ -116,6 +116,54 @@ const userSchema = new mongoose.Schema({
             default: "n/a"
         }
     },
+    recentlyViewedUsers: {
+        type: [{
+            user: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User',
+                required: true
+            },
+            viewedAt: {
+                type: Date,
+                default: Date.now
+            }
+        }],
+        default: []
+    },
+    connections: {
+        type: [{
+            user: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User',
+                required: true
+            },
+            viewedAt: {
+                type: Date,
+                default: Date.now
+            }
+        }],
+        default: []
+    },
+    outBoundConnections: {
+        type: [{
+            user: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User',
+                required: true
+            }
+        }],
+        default: []
+    },
+    inBoundConnections: {
+        type: [{
+            user: {
+                type: mongoose.Schema.Types.ObjectId,
+                ref: 'User',
+                required: true
+            }
+        }],
+        default: []
+    },
     createdAt: {
         type: Date,
         default: Date.now

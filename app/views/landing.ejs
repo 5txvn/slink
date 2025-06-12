@@ -31,8 +31,6 @@
             -webkit-text-fill-color: transparent;
         }
         .dot-pattern {
-            background-image: radial-gradient(#602234 0.5px, transparent 0.5px);
-            background-size: 30px 30px;
             background-color: #f0ece2;
         }
         .nav-link {
@@ -60,10 +58,10 @@
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
         .button-shadow {
-            box-shadow: inset -4px -4px 8px rgba(0,0,0,0.1);
+            box-shadow: inset -2px -2px 4px rgba(0,0,0,0.1);
         }
         .button-shadow:hover {
-            box-shadow: inset -6px -6px 12px rgba(0,0,0,0.15); 
+            box-shadow: inset -4px -4px 8px rgba(0,0,0,0.15); 
         }
         @keyframes spin-slow {
             from { transform: rotate(0deg); }
@@ -212,15 +210,15 @@
     </nav>
 
     <!-- Main Content -->
-    <main class="flex-1 flex flex-col items-center px-4 py-8 md:py-12 relative z-10 mt-0 md:mt-32">
+    <main class="flex-1 flex flex-col items-center px-4 relative z-10 mt-0 md:mt-24">
         <!-- Hero Section -->
-        <div class="w-full max-w-[90vw] md:max-w-[80vw] lg:max-w-[70vw] flex flex-col md:flex-row items-center justify-between gap-12 mb-16">
+        <div class="w-full max-w-[92vw] flex flex-row items-center justify-between gap-12 mb-16">
             <!-- Left Side Content -->
-            <div class="flex-1 text-center md:text-left">
-                <h1 class="text-6xl md:text-7xl lg:text-8xl font-extrabold mb-6">
-                    Connect with <span class="gradient-text">Alumni</span>
+            <div class="flex flex-col items-center xl:items-start flex-1 text-center md:text-left">
+                <h1 class="text-center xl:text-left text-6xl md:text-7xl lg:text-8xl font-extrabold mb-12 xl:mb-8">
+                    Connect with <br class="block xl:hidden"><span class="gradient-text">Alumni</span>
                 </h1>
-                <p class="text-2xl md:text-3xl text-gray-700 mb-8">
+                <p class="text-center xl:text-left text-2xl md:text-3xl text-gray-700 mb-12 xl:mb-8">
                     Join the Slink community and build meaningful connections with other SEM students and alumni today.
                 </p>
                 <div class="flex flex-col md:flex-row gap-4 justify-center md:justify-start">
@@ -234,7 +232,7 @@
             </div>
 
             <!-- Right Side Animated Card -->
-            <div class="hidden md:flex flex-1 bg-white rounded-2xl shadow-xl p-6 card-hover">
+            <div class="hidden xl:flex flex-1 bg-white rounded-2xl shadow-xl p-6 card-hover">
                 <div class="relative h-[550px] w-full overflow-hidden">
                     <!-- Contact Header -->
                     <div class="flex flex-col items-center mb-8">
@@ -244,36 +242,36 @@
                         <h3 class="font-bold text-black text-xl">SEM Alum</h3>
                     </div>
                     <!-- Message Bubbles -->
-                    <div class="typing-indicator absolute top-24 left-4" style="animation-delay: 0s;">
+                    <div class="typing-indicator absolute top-32 left-4" style="animation-delay: 0s;">
                         <div class="typing-dot"></div>
                         <div class="typing-dot"></div>
                         <div class="typing-dot"></div>
                     </div>
-                    <div class="message-bubble left absolute top-32 left-4 bg-black text-white p-4 rounded-2xl max-w-[85%] text-lg" style="animation-delay: 1.5s;">
+                    <div class="message-bubble left absolute top-32 left-4 bg-black text-white p-4 rounded-2xl max-w-[90%] text-lg" style="animation-delay: 1.5s;">
                         <p>Hey! I'm an SEM alum from '15. Would love to connect!</p>
                     </div>
-                    <div class="typing-indicator absolute top-44 right-4" style="animation-delay: 2.5s;">
+                    <div class="typing-indicator absolute top-52 right-4" style="animation-delay: 2.5s;">
                         <div class="typing-dot"></div>
                         <div class="typing-dot"></div>
                         <div class="typing-dot"></div>
                     </div>
-                    <div class="message-bubble right absolute top-52 right-4 bg-black text-white p-4 rounded-2xl max-w-[85%] text-lg" style="animation-delay: 4s;">
+                    <div class="message-bubble right absolute top-52 right-4 bg-black text-white p-4 rounded-2xl max-w-[90%] text-lg" style="animation-delay: 4s;">
                         <p>Of course! I'm currently working in tech. How about you?</p>
                     </div>
-                    <div class="typing-indicator absolute top-64 left-4" style="animation-delay: 5s;">
+                    <div class="typing-indicator absolute top-72 left-4" style="animation-delay: 5s;">
                         <div class="typing-dot"></div>
                         <div class="typing-dot"></div>
                         <div class="typing-dot"></div>
                     </div>
-                    <div class="message-bubble left absolute top-72 left-4 bg-black text-white p-4 rounded-2xl max-w-[85%] text-lg" style="animation-delay: 6.5s;">
+                    <div class="message-bubble left absolute top-72 left-4 bg-black text-white p-4 rounded-2xl max-w-[90%] text-lg" style="animation-delay: 6.5s;">
                         <p>I'm in finance. Let's grab coffee sometime!</p>
                     </div>
-                    <div class="typing-indicator absolute top-[336px] right-4" style="animation-delay: 7.5s;">
+                    <div class="typing-indicator absolute top-[368px] right-4" style="animation-delay: 7.5s;">
                         <div class="typing-dot"></div>
                         <div class="typing-dot"></div>
                         <div class="typing-dot"></div>
                     </div>
-                    <div class="message-bubble right absolute top-[368px] right-4 bg-black text-white p-4 rounded-2xl max-w-[85%] text-lg" style="animation-delay: 9s;">
+                    <div class="message-bubble right absolute top-[368px] right-4 bg-black text-white p-4 rounded-2xl max-w-[90%] text-lg" style="animation-delay: 9s;">
                         <p>Sounds great! Looking forward to meeting you!</p>
                     </div>
                     <hr class="absolute top-[460px] left-0 w-full border-t border-gray-200 opacity-0 transition-opacity duration-500" id="conversationHr">
@@ -282,7 +280,7 @@
         </div>
 
         <!-- Features Section -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-[90vw] md:max-w-[80vw] lg:max-w-[70vw] mb-16">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-[92vw] mb-16">
             <!-- Alumni Network Card -->
             <div class="bg-white rounded-2xl shadow-xl p-8 card-hover">
                 <h3 class="text-3xl font-bold text-[#602234] mb-4">Alumni Network</h3>
@@ -339,7 +337,7 @@
         </div>
 
         <!-- Stats Section -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-[90vw] md:max-w-[80vw] lg:max-w-[70vw]">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-[92vw]">
             <div class="stats-card bg-white rounded-2xl shadow-xl p-8 text-center">
                 <div class="text-5xl font-bold text-[#602234] mb-2"><%= numAlumni %></div>
                 <p class="text-gray-600 text-xl text-reveal">Active Alumni</p>
@@ -366,9 +364,9 @@
         </div>
 
         <!-- Contact Section -->
-        <div id="contact" class="w-full max-w-[90vw] md:max-w-[80vw] lg:max-w-[70vw] mt-16">
+        <div id="contact" class="w-full max-w-[92vw] mt-16">
             <h2 class="text-4xl font-bold text-[#602234] mb-8 text-center">Contact Us</h2>
-            <div class="w-full md:w-2/3 mx-auto">
+            <div class="w-full max-w-[92vw] mx-auto">
                 <div class="bg-white rounded-2xl shadow-xl p-8 card-hover">
                     <form class="space-y-6">
                         <div>

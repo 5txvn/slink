@@ -9,6 +9,48 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        html, body {
+            overflow: scroll;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar {
+            display: none;
+        }
+        .dot-pattern {
+            background-image: radial-gradient(rgba(96, 34, 52, 0.5) 1px, transparent 1px), radial-gradient(rgba(0, 0, 0, 0.5) 1px, transparent 1px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            background-color: #ffffff;
+        }
+        .modern-card {
+            background: #fff;
+            border-radius: 1.25rem;
+            box-shadow: 0 4px 24px 0 rgba(60,0,0,0.08), 0 1.5px 8px #e0e0e0;
+            transition: box-shadow 0.2s;
+        }
+        .modern-card:hover {
+            box-shadow: 0 8px 32px 0 rgba(60,0,0,0.13), 0 2.5px 12px #e0e0e0;
+        }
+        .modern-input {
+            background: #f7f7fa;
+            border-radius: 0.75rem;
+            border: 2px solid #e5e7eb;
+            box-shadow: 0 1.5px 6px #ececec;
+            transition: border 0.2s, box-shadow 0.2s;
+        }
+        .modern-input:focus {
+            border: 2px solid #602234;
+            box-shadow: 0 2px 12px #e0e0e0;
+        }
+        .input-icon {
+            top: 50% !important;
+            transform: translateY(-50%) !important;
+        }
+        .modal {
+            max-width: 800px !important;
+        }
         body::-webkit-scrollbar { width: 10px; background: transparent; }
         body::-webkit-scrollbar-thumb {
             background: linear-gradient(180deg, #800000, #fff);
@@ -69,13 +111,13 @@
             100% { background-position: 0% 50%; }
         }
         /* Table header icon colors */
-        .icon-user { color: #800000; }
+        .icon-user { color: #602234; }
         .icon-university { color: #6b7280; }
-        .icon-graduation { color: #800000; }
+        .icon-graduation { color: #602234; }
         .icon-calendar { color: #6b7280; }
-        .icon-briefcase { color: #800000; }
+        .icon-briefcase { color: #602234; }
         .icon-building { color: #6b7280; }
-        .icon-location { color: #800000; }
+        .icon-location { color: #602234; }
         /* Hide up/down arrows in table headers */
         .sort-icon { display: none !important; }
         .neumorphic {
@@ -93,10 +135,10 @@
             transform: scale(0.95);
         }
         .maroon-bg {
-            background-color: #800000;
+            background-color: #602234;
         }
         .maroon-text {
-            color: #800000;
+            color: #602234;
         }
         .hover-scale {
             transition: transform 0.2s ease;
@@ -143,7 +185,7 @@
             opacity: 1;
         }
         .filter-tag {
-            background-color: #800000;
+            background-color: #602234;
             color: white;
             padding: 4px 12px;
             border-radius: 16px;
@@ -162,7 +204,7 @@
         }
         .clickable {
             cursor: pointer;
-            color: #800000;
+            color: #602234;
         }
         .clickable:hover {
             text-decoration: underline;
@@ -259,7 +301,7 @@
             overflow-y: auto;
         }
         .filter-checkbox {
-            accent-color: #800000;
+            accent-color: #602234;
             width: 1.1em;
             height: 1.1em;
             border-radius: 0.3em;
@@ -277,7 +319,7 @@
             font-weight: bold;
             margin-top: 1em;
             margin-bottom: 0.5em;
-            color: #4a0000;
+            color: #602234;
         }
         .search-filter-input {
             width: 100%;
@@ -288,14 +330,14 @@
         }
         .search-filter-input:focus {
             outline: none;
-            border-color: #800000;
-            box-shadow: 0 0 0 3px rgba(128, 0, 0, 0.1);
+            border-color: #602234;
+            box-shadow: 0 0 0 3px rgba(96, 34, 52, 0.1);
         }
         .dynamic-checkboxes {
             margin-bottom: 1rem;
         }
         .close-button {
-            background-color: #800000;
+            background: #602234;
             color: white;
             padding: 0.5rem 1.5rem;
             border-radius: 0.375rem;
@@ -303,7 +345,7 @@
             transition: all 0.2s ease;
         }
         .close-button:hover {
-            background-color: #4a0000;
+            background-color: #4a1a28;
         }
         .neumorphic-inner {
             background: #f0f0f0;
@@ -367,7 +409,7 @@
             transition: box-shadow 0.2s, transform 0.2s;
         }
         .filter-checkbox:checked, .column-toggle:checked {
-            box-shadow: 0 0 0 4px #80000022;
+            box-shadow: 0 0 0 4px #60223422;
             transform: scale(1.12);
         }
         /* Filter modal checkboxes alignment and style */
@@ -383,7 +425,7 @@
         #filter-modal .filter-checkbox:checked {
             box-shadow: none !important;
             outline: none !important;
-            border: 2px solid #bbb !important;
+            border: 2px solid #602234 !important;
         }
         #filter-modal .dynamic-checkboxes {
             margin-left: 0 !important;
@@ -398,162 +440,145 @@
         }
     </style>
 </head>
-<body class="bg-gray-100">
+<body class="min-h-screen flex flex-col dot-pattern">
     <div id="navbar-container"></div>
 
-    <!-- Directory Title Card -->
-    <div id="directory-title-card" class="flex flex-col items-center justify-center py-3 md:py-5 mb-2 md:mb-3 max-w-5xl mx-auto hidden md:flex" style="margin-top:3rem;">
-        <h1 class="directory-title text-4xl sm:text-5xl md:text-6xl font-extrabold mt-8 md:mt-12 mb-4 md:mb-8 pb-4 leading-tight bg-gradient-to-r from-[#800000] via-gray-500 to-gray-400 bg-clip-text text-transparent animate-gradient-flow">Alumni Directory</h1>
-    </div>
-
-    <!-- Main Content -->
-    <main class="container mx-auto px-4 md:px-6 mt-4 md:mt-6">
-        <!-- Table Controls -->
-        <div class="flex flex-col md:flex-row justify-between items-stretch md:items-center gap-2 md:gap-3 mb-2 md:mb-3">
-            <div class="flex flex-col md:flex-row gap-2 md:gap-3 w-full md:w-auto">
-                <button id="filter-btn" class="flex items-center justify-center px-6 py-3 md:py-4 rounded-xl hover:scale-105 transition-transform font-bold bg-gray-100 border border-gray-300 text-base md:text-lg">
-                    <i class="fas fa-filter mr-3"></i>Filter
-                </button>
-                <button id="columns-btn" class="flex items-center justify-center px-6 py-3 md:py-4 rounded-xl hover:scale-105 transition-transform font-bold bg-gray-100 border border-gray-300 text-base md:text-lg">
-                    <i class="fas fa-columns mr-3"></i>Columns
-                </button>
+    <main class="container w-[90vw] mx-auto py-8 mt-16">
+        <div class="w-full">
+            <!-- Search and Filter Section -->
+            <div class="modern-card p-6 mb-8">
+                <div class="flex flex-col md:flex-row gap-4 items-center justify-between">
+                    <div class="relative w-full md:w-1/2">
+                        <i class="fas fa-search absolute left-3 input-icon text-gray-400"></i>
+                        <input type="text" id="searchInput" class="modern-input w-full pl-10 pr-4 py-3 text-lg" placeholder="Search alumni...">
+                    </div>
+                    <div class="flex gap-4">
+                        <button id="filterBtn" class="bg-[#602234] hover:bg-[#4a1a28] text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center">
+                            <i class="fas fa-filter mr-2"></i>
+                            Filter
+                        </button>
+                        <button id="columnsBtn" class="bg-black hover:bg-gray-800 text-white font-semibold py-2 px-4 rounded-lg transition-colors flex items-center">
+                            <i class="fas fa-columns mr-2"></i>
+                            Columns
+                        </button>
+                    </div>
+                </div>
             </div>
-            <div class="relative w-full md:w-auto md:flex-1 md:max-w-xl">
-                <input id="search-alumni-input" type="text" placeholder="Search alumni..." class="w-full px-6 py-3 md:py-4 rounded-xl bg-white border border-gray-300 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/10 text-base md:text-lg">
-                <i class="fas fa-search absolute right-5 top-1/2 -translate-y-1/2 text-xl md:text-2xl text-gray-400"></i>
-            </div>
-        </div>
 
-        <!-- Active Filters -->
-        <div id="active-filters" class="mb-2 md:mb-3">
-            <!-- Filter tags will be added here -->
-        </div>
-
-        <!-- Alumni Table -->
-        <div class="neumorphic rounded-lg overflow-hidden">
-            <div class="overflow-x-auto">
-                <table class="w-full text-base md:text-lg">
-                    <thead class="table-header">
-                        <tr class="text-left">
-                            <th class="px-4 py-3 cursor-pointer hover:bg-gray-100 border-b-2 border-gray-300">
-                                <div class="flex items-center">
-                                    <i class="fas fa-user icon-user text-base mr-2"></i>
-                                    Name
-                                </div>
-                            </th>
-                            <th class="px-4 py-3 cursor-pointer hover:bg-gray-100 border-b-2 border-gray-300">
-                                <div class="flex items-center">
-                                    <i class="fas fa-university icon-university text-base mr-2"></i>
-                                    School
-                                </div>
-                            </th>
-                            <th class="px-4 py-3 cursor-pointer hover:bg-gray-100 border-b-2 border-gray-300">
-                                <div class="flex items-center">
-                                    <i class="fas fa-graduation-cap icon-graduation text-base mr-2"></i>
-                                    Major
-                                </div>
-                            </th>
-                            <th class="px-4 py-3 cursor-pointer hover:bg-gray-100 border-b-2 border-gray-300">
-                                <div class="flex items-center">
-                                    <i class="fas fa-calendar icon-calendar text-base mr-2"></i>
-                                    Year
-                                </div>
-                            </th>
-                            <th class="px-4 py-3 cursor-pointer hover:bg-gray-100 border-b-2 border-gray-300">
-                                <div class="flex items-center">
-                                    <i class="fas fa-briefcase icon-briefcase text-base mr-2"></i>
-                                    Position
-                                </div>
-                            </th>
-                            <th class="px-4 py-3 cursor-pointer hover:bg-gray-100 border-b-2 border-gray-300">
-                                <div class="flex items-center">
-                                    <i class="fas fa-building icon-building text-base mr-2"></i>
-                                    Company
-                                </div>
-                            </th>
-                            <th class="px-4 py-3 cursor-pointer hover:bg-gray-100 border-b-2 border-gray-300">
-                                <div class="flex items-center">
-                                    <i class="fas fa-map-marker-alt icon-location text-base mr-2"></i>
-                                    Location
-                                </div>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody id="alumni-table-body">
-                        <!-- Table rows will be populated here -->
-                    </tbody>
-                </table>
+            <!-- Directory Table -->
+            <div class="modern-card p-6">
+                <div class="overflow-x-auto">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b-2 border-gray-200">
+                                <th class="text-left py-4 px-6">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-user text-[#602234] mr-2"></i>
+                                        Name
+                                    </div>
+                                </th>
+                                <th class="text-left py-4 px-6">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-graduation-cap text-black mr-2"></i>
+                                        School
+                                    </div>
+                                </th>
+                                <th class="text-left py-4 px-6">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-book text-[#602234] mr-2"></i>
+                                        Major
+                                    </div>
+                                </th>
+                                <th class="text-left py-4 px-6">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-briefcase text-black mr-2"></i>
+                                        Position
+                                    </div>
+                                </th>
+                                <th class="text-left py-4 px-6">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-building text-[#602234] mr-2"></i>
+                                        Company
+                                    </div>
+                                </th>
+                                <th class="text-left py-4 px-6">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-map-marker-alt text-black mr-2"></i>
+                                        Location
+                                    </div>
+                                </th>
+                                <th class="text-left py-4 px-6">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-link text-[#602234] mr-2"></i>
+                                        Actions
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% alumni.forEach(alum => { %>
+                                <tr class="border-b border-gray-200 hover:bg-gray-50">
+                                    <td class="py-4 px-6">
+                                        <div class="flex items-center">
+                                            <div class="w-10 h-10 rounded-full bg-[#602234] flex items-center justify-center text-white text-lg mr-4">
+                                                <%= alum.name.split(' ').map(n => n[0]).join('') %>
+                                            </div>
+                                            <div>
+                                                <div class="font-semibold text-gray-800"><%= alum.name %></div>
+                                                <div class="text-sm text-gray-500">@<%= alum.username %></div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="py-4 px-6 text-gray-600"><%= alum.school %></td>
+                                    <td class="py-4 px-6 text-gray-600"><%= alum.major %></td>
+                                    <td class="py-4 px-6 text-gray-600"><%= alum.currentPosition %></td>
+                                    <td class="py-4 px-6 text-gray-600"><%= alum.company %></td>
+                                    <td class="py-4 px-6 text-gray-600"><%= alum.location %></td>
+                                    <td class="py-4 px-6">
+                                        <div class="flex items-center space-x-4">
+                                            <a href="/user/<%= alum.username %>" class="text-[#602234] hover:text-[#4a1a28] transition-colors">
+                                                <i class="fas fa-eye text-xl"></i>
+                                            </a>
+                                            <a href="/messages/<%= alum.username %>" class="text-black hover:text-gray-700 transition-colors">
+                                                <i class="fas fa-comment text-xl"></i>
+                                            </a>
+                                        </div>
+                                    </td>
+                                </tr>
+                            <% }); %>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </main>
 
     <!-- Filter Modal -->
-    <div id="filter-modal" class="modal">
-        <div class="modal-content nice-modal relative bg-white rounded-2xl shadow-[inset_0_12px_32px_#e0e0e0,inset_12px_0_32px_#c0bebe]">
-            <div class="flex justify-between items-center mb-8">
-                <h2 class="text-2xl font-bold maroon-text flex items-center gap-2"><i class="fas fa-filter"></i>Filter Alumni</h2>
-                <button id="close-filter-modal" class="text-gray-500 hover:text-gray-700">
+    <div id="filterModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="modal bg-white rounded-xl p-8 w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-[#602234]">Filter Alumni</h2>
+                <button id="closeFilterModal" class="text-gray-500 hover:text-gray-700">
                     <i class="fas fa-times text-xl"></i>
                 </button>
             </div>
-            <form id="filter-form">
-                <div class="filter-group">
-                    <div class="filter-group-title flex items-center gap-2 text-lg font-semibold mb-1"><i class="fas fa-university"></i>School</div>
-                    <div style="position:relative;">
-                        <input type="text" class="search-filter-input bg-white border border-gray-300 rounded-lg px-4 py-2 placeholder-gray-400 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/10" placeholder="Search for a school..." data-filter-type="School" id="school-search-input" autocomplete="off">
-                        <div class="autocomplete-dropdown" id="school-autocomplete" style="display:none;"></div>
-                    </div>
-                    <div class="dynamic-checkboxes" id="school-dynamic-checkboxes"></div>
-                </div>
-                <div class="filter-group">
-                    <div class="filter-group-title flex items-center gap-2 text-lg font-semibold mb-1"><i class="fas fa-graduation-cap"></i>Major</div>
-                    <div style="position:relative;">
-                        <input type="text" class="search-filter-input bg-white border border-gray-300 rounded-lg px-4 py-2 placeholder-gray-400 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/10" placeholder="Search for a major..." data-filter-type="Major" id="major-search-input" autocomplete="off">
-                        <div class="autocomplete-dropdown" id="major-autocomplete" style="display:none;"></div>
-                    </div>
-                    <div class="dynamic-checkboxes" id="major-dynamic-checkboxes"></div>
-                </div>
-                <div class="filter-group">
-                    <div class="filter-group-title flex items-center gap-2 text-lg font-semibold mb-1"><i class="fas fa-calendar"></i>Graduation Year</div>
-                    <div style="position:relative;">
-                        <input type="text" class="search-filter-input bg-white border border-gray-300 rounded-lg px-4 py-2 placeholder-gray-400 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/10" placeholder="Search for a year..." data-filter-type="Year" id="year-search-input" autocomplete="off">
-                        <div class="autocomplete-dropdown" id="year-autocomplete" style="display:none;"></div>
-                    </div>
-                    <div class="dynamic-checkboxes" id="year-dynamic-checkboxes"></div>
-                </div>
-                <div class="filter-group">
-                    <div class="filter-group-title flex items-center gap-2 text-lg font-semibold mb-1"><i class="fas fa-briefcase"></i>Current Position</div>
-                    <div style="position:relative;">
-                        <input type="text" class="search-filter-input bg-white border border-gray-300 rounded-lg px-4 py-2 placeholder-gray-400 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/10" placeholder="Search for a position..." data-filter-type="Position" id="position-search-input" autocomplete="off">
-                        <div class="autocomplete-dropdown" id="position-autocomplete" style="display:none;"></div>
-                    </div>
-                    <div class="dynamic-checkboxes" id="position-dynamic-checkboxes"></div>
-                </div>
-                <div class="flex justify-end mt-4">
-                    <button type="button" id="close-filter-modal-btn" class="px-6 py-3 rounded-lg bg-[#800000] text-white text-lg font-bold shadow-[inset_0_6px_16px_#5a0000,inset_6px_0_16px_#a94442]">
-                        Close
-                    </button>
-                </div>
-            </form>
+            <div class="space-y-6">
+                <!-- Filter options here -->
+            </div>
         </div>
     </div>
 
     <!-- Columns Modal -->
-    <div id="columns-modal" class="modal">
-        <div class="modal-content nice-modal bg-white rounded-2xl shadow-[inset_0_12px_32px_#e0e0e0,inset_12px_0_32px_#c0bebe]">
-            <div class="flex justify-between items-center mb-8">
-                <h2 class="text-2xl font-bold maroon-text flex items-center gap-2"><i class="fas fa-columns"></i>Show/Hide Columns</h2>
-                <button id="close-columns-modal" class="text-gray-500 hover:text-gray-700">
+    <div id="columnsModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="modal bg-white rounded-xl p-8 w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-bold text-[#602234]">Customize Columns</h2>
+                <button id="closeColumnsModal" class="text-gray-500 hover:text-gray-700">
                     <i class="fas fa-times text-xl"></i>
                 </button>
             </div>
-            <div class="space-y-4" id="column-toggles">
-                <!-- Column toggles will be populated here -->
-            </div>
-            <div class="flex justify-end mt-4">
-                <button id="close-columns-modal-btn" class="px-6 py-3 rounded-lg bg-[#800000] text-white text-lg font-bold shadow-[inset_0_6px_16px_#5a0000,inset_6px_0_16px_#a94442]">
-                    Close
-                </button>
+            <div class="space-y-6">
+                <!-- Column options here -->
             </div>
         </div>
     </div>
@@ -561,291 +586,60 @@
     <script type="module">
         import Navbar from './navbar.js';
 
-        // Get real alumni data from server
-        const alumniData = JSON.parse('<%- alumni %>');
-        
-        // Pagination state
-        let currentPage = 1;
-        const itemsPerPage = 100;
-        let filteredData = alumniData;
-
-        // Column configuration
-        const columns = [
-            { id: 'name', label: 'Name', visible: true },
-            { id: 'school', label: 'School', visible: true },
-            { id: 'major', label: 'Major', visible: true },
-            { id: 'year', label: 'Year', visible: true },
-            { id: 'position', label: 'Position', visible: true },
-            { id: 'company', label: 'Company', visible: true },
-            { id: 'location', label: 'Location', visible: true }
-        ];
-
-        // Active filters (now supports multiple values per key)
-        let activeFilters = new Map();
-
         // Initialize navbar
         const navbar = new Navbar();
         document.getElementById('navbar-container').innerHTML = navbar.render();
         navbar.init();
 
-        // Add filter tag
-        function addFilterTag(key, value) {
-            if (!activeFilters.has(key)) {
-                activeFilters.set(key, new Set());
+        // Modal functionality
+        const filterModal = document.getElementById('filterModal');
+        const columnsModal = document.getElementById('columnsModal');
+        const filterBtn = document.getElementById('filterBtn');
+        const columnsBtn = document.getElementById('columnsBtn');
+        const closeFilterModal = document.getElementById('closeFilterModal');
+        const closeColumnsModal = document.getElementById('closeColumnsModal');
+
+        filterBtn.addEventListener('click', () => {
+            filterModal.classList.remove('hidden');
+            filterModal.classList.add('flex');
+        });
+
+        columnsBtn.addEventListener('click', () => {
+            columnsModal.classList.remove('hidden');
+            columnsModal.classList.add('flex');
+        });
+
+        closeFilterModal.addEventListener('click', () => {
+            filterModal.classList.add('hidden');
+            filterModal.classList.remove('flex');
+        });
+
+        closeColumnsModal.addEventListener('click', () => {
+            columnsModal.classList.add('hidden');
+            columnsModal.classList.remove('flex');
+        });
+
+        // Close modals when clicking outside
+        window.addEventListener('click', (e) => {
+            if (e.target === filterModal) {
+                filterModal.classList.add('hidden');
+                filterModal.classList.remove('flex');
             }
-            activeFilters.get(key).add(value);
-            renderFilterTags();
-            applyActiveFilters();
-        }
-
-        // Remove filter tag
-        function removeFilterTag(key, value) {
-            if (activeFilters.has(key)) {
-                activeFilters.get(key).delete(value);
-                if (activeFilters.get(key).size === 0) {
-                    activeFilters.delete(key);
-                }
-            }
-            renderFilterTags();
-            applyActiveFilters();
-        }
-
-        // Render filter tags
-        function renderFilterTags() {
-            const container = $('#active-filters');
-            container.empty();
-            for (let [key, values] of activeFilters) {
-                for (let value of values) {
-                    const tag = `
-                        <div class="filter-tag inline-flex items-center bg-[#800000] text-white px-4 py-2 rounded-full text-base font-medium mr-2 mb-2 whitespace-nowrap" data-key="${key}" data-value="${value}">
-                            <span>${key}: ${value}</span>
-                            <span class="close ml-2 cursor-pointer hover:opacity-80"><i class="fas fa-times"></i></span>
-                        </div>
-                    `;
-                    container.append(tag);
-                }
-            }
-        }
-
-        // Apply active filters
-        function applyActiveFilters() {
-            filteredData = alumniData.filter(alumni => {
-                for (let [key, values] of activeFilters) {
-                    const alumniValue = String(alumni[key.toLowerCase()]);
-                    if (values.size > 0 && !Array.from(values).some(value => 
-                        String(value).toLowerCase() === alumniValue.toLowerCase()
-                    )) {
-                        return false;
-                    }
-                }
-                return true;
-            });
-            currentPage = 1;
-            renderTable();
-            updatePaginationInfo();
-            // After filtering, re-hide any columns that are toggled off
-            columns.forEach((col, idx) => {
-                if (!col.visible) {
-                    $(`table thead th`).eq(idx).hide();
-                    $(`#alumni-table-body tr`).each(function() {
-                        $(this).find('td').eq(idx).hide();
-                    });
-                }
-            });
-        }
-
-        // Update pagination info
-        function updatePaginationInfo() {
-            const total = filteredData.length;
-            const start = (currentPage - 1) * itemsPerPage + 1;
-            const end = Math.min(currentPage * itemsPerPage, total);
-            
-            $('#pagination-info').html(`
-                <div class="text-sm text-gray-600">
-                    Showing ${start}-${end} out of ${total} students
-                </div>
-            `);
-        }
-
-        // Render alumni table
-        function renderTable() {
-            const tableBody = $('#alumni-table-body');
-            tableBody.empty();
-            filteredData.forEach(alumni => {
-                const row = `
-                    <tr class="border-b border-gray-200 hover:bg-gray-50 transition-colors">
-                        <td class="px-4 py-3">
-                            <a href="/user/${alumni.username}" class="text-black hover:text-[#800000] transition-colors">${alumni.name}</a>
-                        </td>
-                        <td class="px-4 py-3"><span class="clickable hover:text-[#800000] transition-colors" data-key="School" data-value="${alumni.school}">${alumni.school}</span></td>
-                        <td class="px-4 py-3 hidden lg:table-cell"><span class="clickable hover:text-[#800000] transition-colors" data-key="Major" data-value="${alumni.major}">${alumni.major}</span></td>
-                        <td class="px-4 py-3 hidden md:table-cell"><span class="clickable hover:text-[#800000] transition-colors" data-key="Year" data-value="${alumni.graduationYear}">${alumni.graduationYear}</span></td>
-                        <td class="px-4 py-3 hidden md:table-cell"><span class="clickable hover:text-[#800000] transition-colors" data-key="Position" data-value="${alumni.currentPosition}">${alumni.currentPosition}</span></td>
-                        <td class="px-4 py-3 hidden sm:table-cell"><span class="clickable hover:text-[#800000] transition-colors" data-key="Company" data-value="${alumni.company}">${alumni.company}</span></td>
-                        <td class="px-4 py-3 hidden sm:table-cell"><span class="clickable hover:text-[#800000] transition-colors" data-key="Location" data-value="${alumni.location}">${alumni.location}</span></td>
-                    </tr>
-                `;
-                tableBody.append(row);
-            });
-            // Add click handlers for clickable cells
-            $('.clickable').off('click').on('click', function() {
-                const key = $(this).data('key');
-                const value = $(this).data('value');
-                addFilterTag(key, value);
-            });
-        }
-
-        // Populate column toggles
-        function populateColumnToggles() {
-            const container = $('#column-toggles');
-            container.empty();
-            columns.forEach(column => {
-                const toggle = `
-                    <label class="filter-label transition-all duration-200 flex items-center gap-3 bg-gray-50 rounded-lg px-3 py-2 shadow-sm hover:bg-gray-100">
-                        <input type="checkbox" id="${column.id}-toggle" class="filter-checkbox column-toggle transition-transform duration-200 ease-in-out scale-100 checked:scale-110 checked:bg-[#800000]" data-column-id="${column.id}" ${column.visible ? 'checked' : ''}>
-                        <span class="text-lg font-medium">${column.label}</span>
-                    </label>
-                `;
-                container.append(toggle);
-            });
-        }
-
-        // Initialize searchable filter inputs
-        function initializeSearchableFilters() {
-            // Helper for each filter type
-            function setupAutocomplete(inputId, dropdownId, dynamicId, filterType) {
-                const input = $(inputId);
-                const dropdown = $(dropdownId);
-                const dynamic = $(dynamicId);
-                input.on('input', function() {
-                    const searchTerm = input.val().toLowerCase();
-                    if (!searchTerm) {
-                        dropdown.hide();
-                        return;
-                    }
-                    const uniqueValues = [...new Set(alumniData.map(alumni => alumni[filterType.toLowerCase()]))];
-                    const filteredValues = uniqueValues.filter(value => value.toLowerCase().includes(searchTerm)).slice(0, 10);
-                    dropdown.empty();
-                    if (filteredValues.length === 0) {
-                        dropdown.hide();
-                        return;
-                    }
-                    filteredValues.forEach(value => {
-                        dropdown.append(`<div class="autocomplete-option" data-value="${value}">${value}</div>`);
-                    });
-                    dropdown.show();
-                });
-                // Click on autocomplete option
-                dropdown.on('click', '.autocomplete-option', function() {
-                    const value = $(this).data('value');
-                    // Add checked checkbox below input
-                    if (dynamic.find(`input[value='${value}']`).length === 0) {
-                        dynamic.append(`
-                            <label class="filter-label">
-                                <input type="checkbox" class="filter-checkbox single-filter-checkbox" data-filter-type="${filterType}" value="${value}" checked>
-                                ${value}
-                            </label>
-                        `);
-                        addFilterTag(filterType, value);
-                        applyActiveFilters();
-                    }
-                    dropdown.hide();
-                    input.val('');
-                });
-                // Hide dropdown on blur
-                input.on('blur', function() {
-                    setTimeout(() => dropdown.hide(), 200);
-                });
-            }
-            setupAutocomplete('#school-search-input', '#school-autocomplete', '#school-dynamic-checkboxes', 'School');
-            setupAutocomplete('#major-search-input', '#major-autocomplete', '#major-dynamic-checkboxes', 'Major');
-            setupAutocomplete('#year-search-input', '#year-autocomplete', '#year-dynamic-checkboxes', 'Year');
-            setupAutocomplete('#position-search-input', '#position-autocomplete', '#position-dynamic-checkboxes', 'Position');
-        }
-
-        // Remove filter and checkbox when unticked
-        $(document).on('change', '.single-filter-checkbox', function() {
-            const filterType = $(this).data('filter-type');
-            const value = $(this).val();
-            if (!$(this).is(':checked')) {
-                removeFilterTag(filterType, value);
-                $(this).closest('.filter-label').remove();
+            if (e.target === columnsModal) {
+                columnsModal.classList.add('hidden');
+                columnsModal.classList.remove('flex');
             }
         });
 
-        $(document).ready(function() {
-            // If navbar is fixed, add margin to title card
-            if ($('#navbar-container').css('position') === 'fixed' || $('#navbar-container').css('position') === 'sticky') {
-                $('#directory-title-card').css('margin-top', $('#navbar-container').outerHeight() + 32 + 'px');
-            }
-            // Initialize table and filters
-            renderTable();
-            populateColumnToggles();
-            initializeSearchableFilters();
-            updatePaginationInfo();
-
-            // Add pagination info container
-            $('.table-container').before(`
-                <div id="pagination-info" class="mb-4"></div>
-            `);
-
-            // Close filter modal
-            $('#close-filter-modal-btn').click(function() {
-                $('#filter-modal').hide();
-            });
-
-            // Close columns modal
-            $('#close-columns-modal-btn').click(function() {
-                $('#columns-modal').hide();
-            });
-
-            // Restore filter and columns button functionality
-            $('#filter-btn').off('click').on('click', () => $('#filter-modal').show());
-            $('#columns-btn').off('click').on('click', () => $('#columns-modal').show());
-            $('#close-filter-modal, #close-columns-modal').off('click').on('click', function() {
-                $(this).closest('.modal').hide();
-            });
-            $('.modal').off('click').on('click', function(e) {
-                if (e.target === this) {
-                    $(this).hide();
-                }
-            });
-
-            // Directory title card gradient animation (force reflow for animation)
-            $('.directory-title').css('animation', 'none');
-            setTimeout(() => {
-                $('.directory-title').css('animation', 'gradient-flow 3s ease-in-out infinite');
-            }, 10);
-
-            // Column visibility controls (fix: hide/show entire column)
-            $(document).on('change', '.column-toggle', function() {
-                const columnId = $(this).data('column-id');
-                const isVisible = $(this).is(':checked');
-                columns.find(col => col.id === columnId).visible = isVisible;
-                // Find the index of the column in the table
-                const thIndex = columns.findIndex(col => col.id === columnId);
-                // Hide/show header
-                $(`table thead th`).eq(thIndex).toggle(isVisible);
-                // Hide/show all cells in that column
-                $(`#alumni-table-body tr`).each(function() {
-                    $(this).find('td').eq(thIndex).toggle(isVisible);
-                });
-            });
-
-            // Remove filter tag on click (fix)
-            $(document).on('click', '.filter-tag .close', function() {
-                const key = $(this).closest('.filter-tag').data('key');
-                const value = $(this).closest('.filter-tag').data('value');
-                removeFilterTag(key, value);
-            });
-
-            // Live search for alumni name
-            $(document).on('input', '#search-alumni-input', function() {
-                const searchVal = $(this).val().toLowerCase();
-                filteredData = alumniData.filter(alumni => alumni.name.toLowerCase().includes(searchVal));
-                currentPage = 1;
-                renderTable();
-                updatePaginationInfo();
+        // Search functionality
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('input', (e) => {
+            const searchTerm = e.target.value.toLowerCase();
+            const rows = document.querySelectorAll('tbody tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                row.style.display = text.includes(searchTerm) ? '' : 'none';
             });
         });
     </script>

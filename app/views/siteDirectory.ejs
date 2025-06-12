@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slink | Site Directory</title>
+    <link rel="icon" href="/images/slink-logo.png" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .site-tree-section {
+            position: relative;
+            padding-left: 3rem;
+            margin-bottom: 2rem;
+        }
+        .site-tree-section::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background: currentColor;
+        }
+        .site-tree-link {
+            position: relative;
+            display: flex;
+            align-items: center;
+            margin: 1rem 0;
+            font-size: 1.25rem;
+        }
+        .site-tree-link::before {
+            content: '';
+            position: absolute;
+            left: -3rem;
+            width: 1.5rem;
+            height: 3px;
+            background: currentColor;
+        }
+        .site-tree-dot {
+            width: 1rem;
+            height: 1rem;
+            border-radius: 50%;
+            margin-right: 1rem;
+        }
+        .site-tree-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            color: #602234;
+        }
+        .site-tree-subtitle {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: currentColor;
+        }
+    </style>
+</head>
+<body class="min-h-screen bg-white">
+    <div id="navbar-container"></div>
+
+    <div class="container mx-auto px-4 py-8 mt-20">
+        <div class="max-w-7xl mx-auto">
+            <h1 class="site-tree-title text-center mb-12">Site Directory</h1>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
+                <!-- Community Section -->
+                <div class="site-tree-section text-[#602234]">
+                    <h2 class="site-tree-subtitle">Community</h2>
+                    <div class="site-tree-link">
+                        <div class="site-tree-dot bg-[#602234]"></div>
+                        <a href="/directory" class="text-[#602234] hover:text-[#4a1a28] transition-colors">Alumni Directory</a>
+                    </div>
+                    <div class="site-tree-link">
+                        <div class="site-tree-dot bg-[#602234]"></div>
+                        <a href="/forum" class="text-[#602234] hover:text-[#4a1a28] transition-colors">Forum</a>
+                    </div>
+                    <div class="site-tree-link">
+                        <div class="site-tree-dot bg-[#602234]"></div>
+                        <a href="/events" class="text-[#602234] hover:text-[#4a1a28] transition-colors">Events</a>
+                    </div>
+                </div>
+
+                <!-- Profile Section -->
+                <div class="site-tree-section text-black">
+                    <h2 class="site-tree-subtitle">Profile</h2>
+                    <div class="site-tree-link">
+                        <div class="site-tree-dot bg-black"></div>
+                        <a href="/profile" class="text-black hover:text-gray-700 transition-colors">My Profile</a>
+                    </div>
+                    <div class="site-tree-link">
+                        <div class="site-tree-dot bg-black"></div>
+                        <a href="/settings" class="text-black hover:text-gray-700 transition-colors">Settings</a>
+                    </div>
+                    <div class="site-tree-link">
+                        <div class="site-tree-dot bg-black"></div>
+                        <a href="/notifications" class="text-black hover:text-gray-700 transition-colors">Notifications</a>
+                    </div>
+                </div>
+
+                <!-- Resources Section -->
+                <div class="site-tree-section text-[#602234]">
+                    <h2 class="site-tree-subtitle">Resources</h2>
+                    <div class="site-tree-link">
+                        <div class="site-tree-dot bg-[#602234]"></div>
+                        <a href="/about" class="text-[#602234] hover:text-[#4a1a28] transition-colors">About Slink</a>
+                    </div>
+                    <div class="site-tree-link">
+                        <div class="site-tree-dot bg-[#602234]"></div>
+                        <a href="/help" class="text-[#602234] hover:text-[#4a1a28] transition-colors">Help Center</a>
+                    </div>
+                    <div class="site-tree-link">
+                        <div class="site-tree-dot bg-[#602234]"></div>
+                        <a href="/contact" class="text-[#602234] hover:text-[#4a1a28] transition-colors">Contact Us</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import Navbar from '../public/components/navbar.js';
+        
+        // Initialize navbar
+        const navbar = new Navbar();
+        document.getElementById('navbar-container').innerHTML = navbar.render();
+        navbar.init();
+    </script>
+</body>
+</html> 

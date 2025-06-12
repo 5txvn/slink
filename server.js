@@ -36,6 +36,7 @@ app.use('/welcome', require('./app/routes/welcome'));
 app.use('/directory', require('./app/routes/directory'));
 app.use('/user', require('./app/routes/viewUser'));
 app.use('/about', require('./app/routes/about'));
+app.use('/site-directory', require('./app/routes/siteDirectory'));
 
 //forum routes
 app.use('/create-post', require('./app/routes/forum/createPost'));

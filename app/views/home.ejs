@@ -9,17 +9,95 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        html, body {
+            overflow: scroll;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar {
+            display: none;
+        }
         @keyframes gradient-flow {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
         .gradient-text {
-            background: linear-gradient(45deg, #800000, #cc0000);
+            background: linear-gradient(45deg, #602234, #602234);
             background-size: 200% 200%;
             animation: gradient-flow 3s ease-in-out infinite;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
+        .dot-pattern {
+            background-image: radial-gradient(rgba(96, 34, 52, 0.5) 1px, transparent 1px);
+            background-size: 20px 20px;
+            background-color: #ffffff;
+        }
+        .nav-link {
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: -2px;
+            left: 0;
+            background-color: #602234;
+            transition: width 0.3s ease;
+        }
+        .nav-link:hover::after {
+            width: 100%;
+        }
+        .feature-card {
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f8f8 100%);
+            border: 2px solid;
+            min-height: 300px;
+            display: flex;
+            flex-direction: column;
+        }
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .connection-card {
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f8f8 100%);
+            border: 1px solid rgba(96, 34, 52, 0.1);
+        }
+        .connection-card:hover {
+            transform: translateX(5px);
+            box-shadow: 0 10px 15px -3px rgba(96, 34, 52, 0.1), 0 4px 6px -2px rgba(96, 34, 52, 0.05);
+        }
+        .recent-user-card {
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, #ffffff 0%, #f8f8f8 100%);
+            border: 1px solid rgba(96, 34, 52, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        .recent-user-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(96, 34, 52, 0.1) 0%, rgba(96, 34, 52, 0) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .recent-user-card:hover::before {
+            opacity: 1;
+        }
+        .recent-user-card:hover {
+            transform: translateY(-5px) rotate(1deg);
+            box-shadow: 0 20px 25px -5px rgba(96, 34, 52, 0.1), 0 10px 10px -5px rgba(96, 34, 52, 0.04);
         }
         .animate-spin-slow {
             animation: spin-slow 8s linear infinite;
@@ -28,155 +106,339 @@
             from { transform: rotate(0deg); }
             to { transform: rotate(360deg); }
         }
-        .feature-card {
-            transition: all 0.3s ease;
+        .navbar-gradient {
+            background: linear-gradient(45deg, #8a3242, #602234);
+            background-size: 200% 200%;
+            animation: gradient-flow 3s ease-in-out infinite;
         }
-        .feature-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.1);
+        .site-tree-section {
+            position: relative;
+            padding-left: 2rem;
+        }
+        .site-tree-section::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: currentColor;
+        }
+        .site-tree-link {
+            position: relative;
+            display: flex;
+            align-items: center;
+            margin: 0.5rem 0;
+        }
+        .site-tree-link::before {
+            content: '';
+            position: absolute;
+            left: -2rem;
+            width: 1rem;
+            height: 2px;
+            background: currentColor;
+        }
+        .site-tree-dot {
+            width: 0.75rem;
+            height: 0.75rem;
+            border-radius: 50%;
+            margin-right: 0.75rem;
         }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen">
-    <!-- Navbar -->
-    <nav class="bg-gradient-to-r from-[#4a0000] via-[#800000] to-[#4a0000] text-white px-6 py-4 fixed w-full top-0 z-50 shadow-lg rounded-b-2xl gradient-flow">
-        <div class="max-w-6xl mx-auto flex items-center justify-between">
-            <div class="flex items-center space-x-3 min-w-[160px] pr-8">
-                <i class="fas fa-atom text-3xl animate-spin-slow mt-1"></i>
-                <h1 class="text-3xl font-extrabold tracking-wider ml-1">Slink</h1>
-            </div>
-            <div class="flex-1 flex justify-end">
-                <div class="hidden md:flex space-x-8">
-                    <a href="/" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md">
-                        <i class="fas fa-home"></i>
-                        <span>Home</span>
-                    </a>
-                    <a href="/directory" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md">
-                        <i class="fas fa-users"></i>
-                        <span>Directory</span>
-                    </a>
-                    <a href="/profile" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md">
-                        <i class="fas fa-user"></i>
-                        <span>My Profile</span>
-                    </a>
-                    <a href="/about" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md">
-                        <i class="fas fa-info-circle"></i>
-                        <span>About</span>
-                    </a>
-                    <a href="/logout" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span>Logout</span>
-                    </a>
-                </div>
-                <button id="nav-toggle" class="text-white transition-all hover:scale-110 md:hidden ml-2">
-                    <i class="fas fa-chevron-down text-2xl"></i>
-                </button>
-            </div>
-        </div>
-        <div id="nav-menu" class="hidden mt-4 transition-all duration-300 ease-in-out md:hidden max-w-6xl mx-auto">
-            <div class="flex flex-col space-y-2">
-                <a href="/" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md p-2">
-                    <i class="fas fa-home"></i>
-                    <span>Home</span>
-                </a>
-                <a href="/directory" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md p-2">
-                    <i class="fas fa-users"></i>
-                    <span>Directory</span>
-                </a>
-                <a href="/profile" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md p-2">
-                    <i class="fas fa-user"></i>
-                    <span>My Profile</span>
-                </a>
-                <a href="/about" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md p-2">
-                    <i class="fas fa-info-circle"></i>
-                    <span>About</span>
-                </a>
-                <a href="/logout" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md p-2">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Logout</span>
-                </a>
-            </div>
-        </div>
-    </nav>
+<body class="min-h-screen flex flex-col dot-pattern">
+    <div id="navbar-container"></div>
 
     <!-- Main Content -->
     <div class="container mx-auto px-4 py-8 mt-20">
-        <div class="max-w-6xl mx-auto">
+        <div class="max-w-7xl mx-auto">
             <!-- Welcome Section -->
-            <div class="bg-white rounded-xl p-8 shadow-lg mb-8">
-                <div class="flex items-center mb-6">
-                    <h1 class="text-3xl sm:text-4xl font-bold gradient-text">Welcome to Slink</h1>
+            <div class="bg-white rounded-xl p-8 shadow-lg mb-12">
+                <div class="flex items-center mb-8">
+                    <h1 class="text-4xl sm:text-5xl xl:text-6xl 2xl:text-7xl leading-normal font-bold gradient-text bg-clip-text pb-2">Welcome, <%= name %></h1>
                 </div>
-                <p class="text-gray-600 text-lg mb-6">
+                <p class="text-gray-600 text-lg xl:text-xl 2xl:text-2xl mb-6">
                     Connect with fellow alumni, share your experiences, and stay updated with the latest news and opportunities.
                 </p>
             </div>
 
             <!-- Quick Access Grid -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
                 <!-- Directory Card -->
-                <a href="/directory" class="feature-card bg-white rounded-xl p-6 shadow-lg">
-                    <div class="flex items-center mb-4">
-                        <i class="fas fa-users text-3xl text-[#800000] mr-4"></i>
-                        <h2 class="text-xl font-semibold text-gray-800">Alumni Directory</h2>
+                <a href="/directory" class="feature-card bg-white rounded-xl p-6 shadow-lg relative overflow-hidden border-[#602234]">
+                    <div class="flex flex-col items-center mb-4">
+                        <div class="w-20 h-20 rounded-full bg-[#602234] flex items-center justify-center mb-4">
+                            <i class="fas fa-users text-3xl text-white"></i>
+                        </div>
+                        <h2 class="text-2xl font-semibold text-gray-800 text-center">Alumni Directory</h2>
                     </div>
-                    <p class="text-gray-600">Browse and connect with fellow alumni from your institution.</p>
+                    <p class="text-gray-600 text-lg text-center mb-4">Browse and connect with fellow alumni from your institution.</p>
+                    <div class="mt-auto flex justify-center">
+                        <div class="w-12 h-12 rounded-full bg-[#602234] flex items-center justify-center">
+                            <i class="fas fa-arrow-right text-white text-xl"></i>
+                        </div>
+                    </div>
                 </a>
 
                 <!-- Forum Card -->
-                <a href="/forum" class="feature-card bg-white rounded-xl p-6 shadow-lg">
-                    <div class="flex items-center mb-4">
-                        <i class="fas fa-comments text-3xl text-[#800000] mr-4"></i>
-                        <h2 class="text-xl font-semibold text-gray-800">Forum</h2>
+                <a href="/forum" class="feature-card bg-white rounded-xl p-6 shadow-lg relative overflow-hidden border-black">
+                    <div class="flex flex-col items-center mb-4">
+                        <div class="w-20 h-20 rounded-full bg-black flex items-center justify-center mb-4">
+                            <i class="fas fa-comments text-3xl text-white"></i>
+                        </div>
+                        <h2 class="text-2xl font-semibold text-gray-800 text-center">Forum</h2>
                     </div>
-                    <p class="text-gray-600">Join discussions, share insights, and engage with the community.</p>
+                    <p class="text-gray-600 text-lg text-center mb-4">Join discussions, share insights, and engage with the community.</p>
+                    <div class="mt-auto flex justify-center">
+                        <div class="w-12 h-12 rounded-full bg-black flex items-center justify-center">
+                            <i class="fas fa-arrow-right text-white text-xl"></i>
+                        </div>
+                    </div>
                 </a>
 
                 <!-- Profile Card -->
-                <a href="/profile" class="feature-card bg-white rounded-xl p-6 shadow-lg">
-                    <div class="flex items-center mb-4">
-                        <i class="fas fa-user text-3xl text-[#800000] mr-4"></i>
-                        <h2 class="text-xl font-semibold text-gray-800">My Profile</h2>
+                <a href="/profile" class="feature-card bg-white rounded-xl p-6 shadow-lg relative overflow-hidden border-[#602234]">
+                    <div class="flex flex-col items-center mb-4">
+                        <div class="w-20 h-20 rounded-full bg-[#602234] flex items-center justify-center mb-4">
+                            <i class="fas fa-user text-3xl text-white"></i>
+                        </div>
+                        <h2 class="text-2xl font-semibold text-gray-800 text-center">My Profile</h2>
                     </div>
-                    <p class="text-gray-600">View and update your profile information and preferences.</p>
+                    <p class="text-gray-600 text-lg text-center mb-4">View and update your profile information and preferences.</p>
+                    <div class="mt-auto flex justify-center">
+                        <div class="w-12 h-12 rounded-full bg-[#602234] flex items-center justify-center">
+                            <i class="fas fa-arrow-right text-white text-xl"></i>
+                        </div>
+                    </div>
                 </a>
+            </div>
 
-                <!-- My Posts Card -->
-                <a href="/my-posts" class="feature-card bg-white rounded-xl p-6 shadow-lg">
-                    <div class="flex items-center mb-4">
-                        <i class="fas fa-file-alt text-3xl text-[#800000] mr-4"></i>
-                        <h2 class="text-xl font-semibold text-gray-800">My Posts</h2>
-                    </div>
-                    <p class="text-gray-600">Manage your forum posts and track engagement.</p>
-                </a>
+            <!-- Connection Requests Section -->
+            <% if (connectionRequests && connectionRequests.length > 0) { %>
+            <div class="mb-16">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-2xl xl:text-3xl 2xl:text-4xl font-bold text-[#602234]">Connection Requests</h2>
+                    <button class="toggle-section text-[#602234] hover:text-[#4a1a28] transition-colors">
+                        <i class="fas fa-chevron-up text-xl"></i>
+                    </button>
+                </div>
+                <div class="connection-requests-content space-y-6">
+                    <% connectionRequests.forEach(request => { %>
+                        <div class="connection-card bg-white rounded-xl p-6 shadow-lg">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <div class="w-16 h-16 rounded-full bg-[#602234] flex items-center justify-center text-white text-2xl mr-6">
+                                        <%= request.user.name.split(' ').map(n => n[0]).join('') %>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-semibold text-gray-800"><%= request.user.name %></h3>
+                                        <p class="text-gray-600 text-lg"><%= request.user.school %></p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-4">
+                                    <form action="/accept-connection/<%= request.user.username %>" method="POST" class="inline">
+                                        <button type="submit" class="bg-[#602234] hover:bg-[#4a1a28] text-white font-semibold py-2 px-4 rounded-lg transition-colors">
+                                            Accept
+                                        </button>
+                                    </form>
+                                    <form action="/reject-connection/<%= request.user.username %>" method="POST" class="inline">
+                                        <button type="submit" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-lg transition-colors">
+                                            Reject
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+            </div>
+            <% } %>
 
-                <!-- About Card -->
-                <a href="/about" class="feature-card bg-white rounded-xl p-6 shadow-lg">
-                    <div class="flex items-center mb-4">
-                        <i class="fas fa-info-circle text-3xl text-[#800000] mr-4"></i>
-                        <h2 class="text-xl font-semibold text-gray-800">About</h2>
-                    </div>
-                    <p class="text-gray-600">Learn more about Slink and its mission.</p>
-                </a>
+            <!-- Recently Viewed Users -->
+            <div class="mb-16">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-2xl xl:text-3xl 2xl:text-4xl font-bold text-[#602234]">Recently Viewed</h2>
+                    <button class="toggle-section text-[#602234] hover:text-[#4a1a28] transition-colors">
+                        <i class="fas fa-chevron-up text-xl"></i>
+                    </button>
+                </div>
+                <div class="recently-viewed-content grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <% if (recentlyViewedUsers && recentlyViewedUsers.length > 0) { %>
+                        <% recentlyViewedUsers.forEach(viewed => { %>
+                            <div class="recent-user-card bg-white rounded-xl p-8 shadow-lg">
+                                <div class="flex items-center mb-6">
+                                    <div class="w-20 h-20 rounded-full bg-[#602234] flex items-center justify-center text-white text-3xl mr-6">
+                                        <%= viewed.user.name.split(' ').map(n => n[0]).join('') %>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-2xl font-semibold text-gray-800"><%= viewed.user.name %></h3>
+                                        <p class="text-gray-600 text-lg"><%= viewed.user.school %></p>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-gray-500">Last viewed: <%= formatTimeAgo(viewed.viewedAt) %></span>
+                                    <a href="/user/<%= viewed.user.username %>" class="text-[#602234] hover:text-[#4a1a28] transition-colors">
+                                        <i class="fas fa-external-link-alt text-xl"></i>
+                                    </a>
+                                </div>
+                            </div>
+                        <% }); %>
+                    <% } else { %>
+                        <div class="bg-white rounded-xl p-8 shadow-lg border-2 border-dashed border-[#602234] flex flex-col items-center justify-center text-center">
+                            <div class="w-20 h-20 rounded-full bg-[#602234] flex items-center justify-center text-white text-3xl mb-6">
+                                <i class="fas fa-user"></i>
+                            </div>
+                            <h3 class="text-2xl font-semibold text-gray-800 mb-4">No Recently Viewed Users</h3>
+                            <p class="text-gray-600 text-lg mb-6">Explore users in the directory to add them to this section.</p>
+                            <a href="/directory" class="text-[#602234] hover:text-[#4a1a28] transition-colors flex items-center">
+                                <span class="mr-2">Browse Directory</span>
+                                <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
 
-                <!-- Create Post Card -->
-                <a href="/create-post" class="feature-card bg-white rounded-xl p-6 shadow-lg">
-                    <div class="flex items-center mb-4">
-                        <i class="fas fa-pen-fancy text-3xl text-[#800000] mr-4"></i>
-                        <h2 class="text-xl font-semibold text-gray-800">Create Post</h2>
+            <!-- Connections -->
+            <div class="mb-16">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-2xl xl:text-3xl 2xl:text-4xl font-bold text-[#602234]">Your Connections</h2>
+                    <button class="toggle-section text-[#602234] hover:text-[#4a1a28] transition-colors">
+                        <i class="fas fa-chevron-up text-xl"></i>
+                    </button>
+                </div>
+                <div class="connections-content space-y-6">
+                    <% if (connections && connections.length > 0) { %>
+                        <% connections.forEach(connection => { %>
+                            <div class="connection-card bg-white rounded-xl p-6 shadow-lg">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center">
+                                        <div class="w-16 h-16 rounded-full bg-[#602234] flex items-center justify-center text-white text-2xl mr-6">
+                                            <%= connection.name.split(' ').map(n => n[0]).join('') %>
+                                        </div>
+                                        <div>
+                                            <h3 class="text-xl font-semibold text-gray-800"><%= connection.name %></h3>
+                                            <p class="text-gray-600 text-lg"><%= connection.school %></p>
+                                        </div>
+                                    </div>
+                                    <div class="flex items-center space-x-6">
+                                        <span class="text-sm text-gray-500">Connected: <%= formatTimeAgo(connection.connectedAt) %></span>
+                                        <a href="/messages/<%= connection.username %>" class="text-[#602234] hover:text-[#4a1a28] transition-colors">
+                                            <i class="fas fa-comment text-xl"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        <% }); %>
+                    <% } else { %>
+                        <div class="bg-white rounded-xl p-6 shadow-lg">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <div class="w-16 h-16 rounded-full bg-[#602234] flex items-center justify-center text-white text-2xl mr-6">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-semibold text-gray-800">No Connections Yet</h3>
+                                        <p class="text-gray-600 text-lg">Start connecting with fellow alumni to build your network.</p>
+                                    </div>
+                                </div>
+                                <a href="/directory" class="text-[#602234] hover:text-[#4a1a28] transition-colors flex items-center">
+                                    <span class="mr-2">Find Alumni</span>
+                                    <i class="fas fa-arrow-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+
+            <!-- Site Directory -->
+            <div class="bg-white rounded-xl p-8 shadow-lg">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-2xl xl:text-3xl 2xl:text-4xl font-bold text-[#602234]">Site Directory</h2>
+                    <a href="/site-directory" class="text-[#602234] hover:text-[#4a1a28] transition-colors flex items-center space-x-2">
+                        <span class="text-lg">View Full Directory</span>
+                        <i class="fas fa-arrow-right"></i>
+                    </a>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Community Section -->
+                    <div class="site-tree-section text-[#602234]">
+                        <h3 class="text-xl font-semibold mb-4">Community</h3>
+                        <div class="site-tree-link">
+                            <div class="site-tree-dot bg-[#602234]"></div>
+                            <a href="/directory" class="text-[#602234] hover:text-[#4a1a28] transition-colors relative after:content-[''] after:absolute after:w-0 after:h-0.5 after:bg-[#602234] after:left-0 after:-bottom-0.5 after:transition-all hover:after:w-full">Alumni Directory</a>
+                        </div>
+                        <div class="site-tree-link">
+                            <div class="site-tree-dot bg-[#602234]"></div>
+                            <a href="/forum" class="text-[#602234] hover:text-[#4a1a28] transition-colors relative after:content-[''] after:absolute after:w-0 after:h-0.5 after:bg-[#602234] after:left-0 after:-bottom-0.5 after:transition-all hover:after:w-full">Forum</a>
+                        </div>
+                        <div class="site-tree-link">
+                            <div class="site-tree-dot bg-[#602234]"></div>
+                            <a href="/events" class="text-[#602234] hover:text-[#4a1a28] transition-colors relative after:content-[''] after:absolute after:w-0 after:h-0.5 after:bg-[#602234] after:left-0 after:-bottom-0.5 after:transition-all hover:after:w-full">Events</a>
+                        </div>
                     </div>
-                    <p class="text-gray-600">Start a new discussion in the forum.</p>
-                </a>
+                    <!-- Profile Section -->
+                    <div class="site-tree-section text-black">
+                        <h3 class="text-xl font-semibold mb-4">Profile</h3>
+                        <div class="site-tree-link">
+                            <div class="site-tree-dot bg-black"></div>
+                            <a href="/profile" class="text-black hover:text-gray-700 transition-colors relative after:content-[''] after:absolute after:w-0 after:h-0.5 after:bg-black after:left-0 after:-bottom-0.5 after:transition-all hover:after:w-full">My Profile</a>
+                        </div>
+                        <div class="site-tree-link">
+                            <div class="site-tree-dot bg-black"></div>
+                            <a href="/settings" class="text-black hover:text-gray-700 transition-colors relative after:content-[''] after:absolute after:w-0 after:h-0.5 after:bg-black after:left-0 after:-bottom-0.5 after:transition-all hover:after:w-full">Settings</a>
+                        </div>
+                        <div class="site-tree-link">
+                            <div class="site-tree-dot bg-black"></div>
+                            <a href="/notifications" class="text-black hover:text-gray-700 transition-colors relative after:content-[''] after:absolute after:w-0 after:h-0.5 after:bg-black after:left-0 after:-bottom-0.5 after:transition-all hover:after:w-full">Notifications</a>
+                        </div>
+                    </div>
+                    <!-- Resources Section -->
+                    <div class="site-tree-section text-[#602234]">
+                        <h3 class="text-xl font-semibold mb-4">Resources</h3>
+                        <div class="site-tree-link">
+                            <div class="site-tree-dot bg-[#602234]"></div>
+                            <a href="/about" class="text-[#602234] hover:text-[#4a1a28] transition-colors relative after:content-[''] after:absolute after:w-0 after:h-0.5 after:bg-[#602234] after:left-0 after:-bottom-0.5 after:transition-all hover:after:w-full">About Slink</a>
+                        </div>
+                        <div class="site-tree-link">
+                            <div class="site-tree-dot bg-[#602234]"></div>
+                            <a href="/help" class="text-[#602234] hover:text-[#4a1a28] transition-colors relative after:content-[''] after:absolute after:w-0 after:h-0.5 after:bg-[#602234] after:left-0 after:-bottom-0.5 after:transition-all hover:after:w-full">Help Center</a>
+                        </div>
+                        <div class="site-tree-link">
+                            <div class="site-tree-dot bg-[#602234]"></div>
+                            <a href="/contact" class="text-[#602234] hover:text-[#4a1a28] transition-colors relative after:content-[''] after:absolute after:w-0 after:h-0.5 after:bg-[#602234] after:left-0 after:-bottom-0.5 after:transition-all hover:after:w-full">Contact Us</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 
-    <script>
-        $(document).ready(function() {
-            // Navbar toggle
-            $('#nav-toggle').on('click', function() {
-                $('#nav-menu').slideToggle();
-                $(this).find('i').toggleClass('fa-chevron-down fa-chevron-up');
+    <script type="module">
+        import Navbar from '../../components/navbar.js';
+        
+        // Initialize navbar
+        const navbar = new Navbar();
+        document.getElementById('navbar-container').innerHTML = navbar.render();
+        navbar.init();
+
+
+        // Toggle section visibility
+        document.querySelectorAll('.toggle-section').forEach(button => {
+            button.addEventListener('click', function() {
+                const content = this.closest('div').nextElementSibling;
+                const icon = this.querySelector('i');
+                
+                if (content.style.display === 'none') {
+                    content.style.display = '';
+                    icon.classList.remove('fa-chevron-down');
+                    icon.classList.add('fa-chevron-up');
+                } else {
+                    content.style.display = 'none';
+                    icon.classList.remove('fa-chevron-up');
+                    icon.classList.add('fa-chevron-down');
+                }
             });
         });
     </script>
