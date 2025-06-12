@@ -9,13 +9,28 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        html, body {
+            overflow: scroll;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar {
+            display: none;
+        }
+        .dot-pattern {
+            background-image: radial-gradient(rgba(96, 34, 52, 0.5) 1px, transparent 1px), radial-gradient(rgba(0, 0, 0, 0.5) 1px, transparent 1px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+            background-color: #ffffff;
+        }
         @keyframes gradient-flow {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
         .gradient-text {
-            background: linear-gradient(45deg, #800000, #cc0000);
+            background: linear-gradient(45deg, #602234, #602234);
             background-size: 200% 200%;
             animation: gradient-flow 3s ease-in-out infinite;
             -webkit-background-clip: text;
@@ -29,7 +44,7 @@
             to { transform: rotate(360deg); }
         }
         .tag-card {
-            background-color: #800000;
+            background-color: #602234;
             color: white;
             padding: 0.25rem 0.75rem;
             border-radius: 9999px;
@@ -41,89 +56,81 @@
         }
         .tag-card:hover {
             transform: scale(1.05);
-            background-color: #a94442;
+            background-color: #800000;
         }
         .post-card {
             transition: all 0.3s ease;
+            background: #fff0f3;
+            border: 2px solid #602234;
         }
         .post-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 4px 6px -1px rgba(96, 34, 52, 0.1), 0 2px 4px -1px rgba(96, 34, 52, 0.06);
+        }
+        .profile-circle {
+            background: #000 !important;
+        }
+        .custom-dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .custom-dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: white;
+            min-width: 200px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            z-index: 1;
+            border-radius: 0.5rem;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .custom-dropdown-content.show {
+            display: block;
+        }
+        .custom-dropdown-item {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .custom-dropdown-item:hover {
+            background-color: #f3f4f6;
+        }
+        .custom-dropdown-item.active {
+            background-color: #602234;
+            color: white;
+        }
+        .custom-dropdown-search {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        .custom-dropdown-search input {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.375rem;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        .custom-dropdown-search input:focus {
+            border-color: #602234;
+            box-shadow: 0 0 0 2px rgba(96, 34, 52, 0.1);
         }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen">
-    <!-- Navbar -->
-    <nav class="bg-gradient-to-r from-[#4a0000] via-[#800000] to-[#4a0000] text-white px-6 py-4 fixed w-full top-0 z-50 shadow-lg rounded-b-2xl gradient-flow">
-        <div class="max-w-6xl mx-auto flex items-center justify-between">
-            <div class="flex items-center space-x-3 min-w-[160px] pr-8">
-                <i class="fas fa-atom text-3xl animate-spin-slow mt-1"></i>
-                <h1 class="text-3xl font-extrabold tracking-wider ml-1">Slink</h1>
-            </div>
-            <div class="flex-1 flex justify-end">
-                <div class="hidden md:flex space-x-8">
-                    <a href="/" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md">
-                        <i class="fas fa-home"></i>
-                        <span>Home</span>
-                    </a>
-                    <a href="/directory" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md">
-                        <i class="fas fa-users"></i>
-                        <span>Directory</span>
-                    </a>
-                    <a href="/profile" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md">
-                        <i class="fas fa-user"></i>
-                        <span>My Profile</span>
-                    </a>
-                    <a href="/about" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md">
-                        <i class="fas fa-info-circle"></i>
-                        <span>About</span>
-                    </a>
-                    <a href="/logout" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span>Logout</span>
-                    </a>
-                </div>
-                <button id="nav-toggle" class="text-white transition-all hover:scale-110 md:hidden ml-2">
-                    <i class="fas fa-chevron-down text-2xl"></i>
-                </button>
-            </div>
-        </div>
-        <div id="nav-menu" class="hidden mt-4 transition-all duration-300 ease-in-out md:hidden max-w-6xl mx-auto">
-            <div class="flex flex-col space-y-2">
-                <a href="/" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md p-2">
-                    <i class="fas fa-home"></i>
-                    <span>Home</span>
-                </a>
-                <a href="/directory" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md p-2">
-                    <i class="fas fa-users"></i>
-                    <span>Directory</span>
-                </a>
-                <a href="/profile" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md p-2">
-                    <i class="fas fa-user"></i>
-                    <span>My Profile</span>
-                </a>
-                <a href="/about" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md p-2">
-                    <i class="fas fa-info-circle"></i>
-                    <span>About</span>
-                </a>
-                <a href="/logout" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md p-2">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Logout</span>
-                </a>
-            </div>
-        </div>
-    </nav>
-
+<body class="dot-pattern min-h-screen">
+    <div id="navbar-container"></div>
+    
     <!-- Main Content -->
-    <div class="container mx-auto px-4 py-8 mt-20">
+    <div class="container mx-auto px-4 py-8 mt-20 w-[90vw]">
         <div class="max-w-6xl mx-auto">
             <!-- Header -->
             <div class="flex items-center justify-between mb-8">
                 <div class="flex items-center">
-                    <i class="fas fa-comments text-3xl text-[#800000] mr-3"></i>
+                    <i class="fas fa-comments text-3xl text-[#602234] mr-3"></i>
                     <h1 class="text-2xl sm:text-3xl font-bold gradient-text">Forum</h1>
                 </div>
-                <a href="/createPost" class="bg-[#800000] text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300 transform hover:scale-[1.02] shadow-[inset_6px_6px_12px_rgba(0,0,0,0.3)]">
+                <a href="/create-post" class="bg-[#602234] text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300 transform hover:scale-[1.02] shadow-[inset_6px_6px_12px_rgba(0,0,0,0.3)]">
                     <i class="fas fa-plus mr-2"></i>New Post
                 </a>
             </div>
@@ -133,20 +140,40 @@
                 <div class="flex flex-wrap items-center gap-4">
                     <div class="flex-1 min-w-[200px]">
                         <input type="text" id="searchInput" placeholder="Search posts by title..." 
-                            class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/20 focus:bg-gray-50 transition-all duration-300">
+                            class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-[#602234] focus:ring-2 focus:ring-[#602234]/20 focus:bg-gray-50 transition-all duration-300">
                     </div>
                     <div class="flex items-center space-x-4">
-                        <select id="tagFilter" class="px-4 py-2 rounded-lg border border-gray-300 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/20 focus:bg-gray-50 transition-all duration-300">
-                            <option value="">All Tags</option>
-                            <% Array.from(new Set(posts.flatMap(post => post.tags))).forEach(tag => { %>
-                                <option value="<%= tag %>"><%= tag %></option>
-                            <% }); %>
-                        </select>
-                        <select id="sortSelect" class="px-4 py-2 rounded-lg border border-gray-300 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/20 focus:bg-gray-50 transition-all duration-300">
-                            <option value="newest">Newest First</option>
-                            <option value="oldest">Oldest First</option>
-                            <option value="mostUpvoted">Most Upvoted</option>
-                        </select>
+                        <!-- Custom Tag Dropdown -->
+                        <div class="custom-dropdown">
+                            <button class="custom-dropdown-toggle px-4 py-2 rounded-lg border border-gray-300 focus:border-[#602234] focus:ring-2 focus:ring-[#602234]/20 focus:bg-gray-50 transition-all duration-300 flex items-center justify-between min-w-[150px]">
+                                <span>All Tags</span>
+                                <i class="fas fa-chevron-down ml-2"></i>
+                            </button>
+                            <div class="custom-dropdown-content">
+                                <div class="custom-dropdown-search">
+                                    <input type="text" placeholder="Search tags..." class="tag-search">
+                                </div>
+                                <div class="tag-list">
+                                    <div class="custom-dropdown-item active" data-tag="">All Tags</div>
+                                    <% Array.from(new Set(posts.flatMap(post => post.tags))).forEach(tag => { %>
+                                        <div class="custom-dropdown-item" data-tag="<%= tag %>"><%= tag %></div>
+                                    <% }); %>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Custom Sort Dropdown -->
+                        <div class="custom-dropdown">
+                            <button class="custom-dropdown-toggle px-4 py-2 rounded-lg border border-gray-300 focus:border-[#602234] focus:ring-2 focus:ring-[#602234]/20 focus:bg-gray-50 transition-all duration-300 flex items-center justify-between min-w-[150px]">
+                                <span>Newest First</span>
+                                <i class="fas fa-chevron-down ml-2"></i>
+                            </button>
+                            <div class="custom-dropdown-content">
+                                <div class="custom-dropdown-item active" data-sort="newest">Newest First</div>
+                                <div class="custom-dropdown-item" data-sort="oldest">Oldest First</div>
+                                <div class="custom-dropdown-item" data-sort="mostUpvoted">Most Upvoted</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -154,7 +181,7 @@
             <!-- Posts Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 <% posts.forEach(post => { %>
-                    <div class="post-card bg-white rounded-xl p-6 shadow-lg flex flex-col h-full cursor-pointer" data-href="/post/<%= post._id %>">
+                    <div class="post-card bg-white rounded-xl p-6 shadow-lg flex flex-col h-full cursor-pointer border-2 border-[#602234]" data-href="/post/<%= post._id %>">
                         <div class="flex items-start justify-between mb-4">
                             <div class="flex items-center">
                                 <div class="w-8 h-8 rounded-full profile-circle mr-2 flex items-center justify-center">
@@ -162,21 +189,21 @@
                                 </div>
                                 <div>
                                     <h3 class="font-semibold text-gray-800"><%= post.author %></h3>
-                                    <p class="text-sm text-gray-500"><%= new Date(post.createdAt).toISOString().split('T')[0] %></p>
+                                    <p class="text-sm text-gray-500 post-date" data-date="<%= post.createdAt %>"></p>
                                 </div>
                             </div>
                             <div class="flex items-center space-x-2">
-                                <button class="text-green-600 hover:text-green-400 transition-colors duration-300">
+                                <button class="text-[#10B981] hover:text-green-400 transition-colors duration-300">
                                     <i class="fas fa-arrow-up"></i>
                                     <span class="text-sm"><%= post.upvotes.length %></span>
                                 </button>
-                                <button class="text-red-600 hover:text-red-400 transition-colors duration-300">
+                                <button class="text-[#EF4444] hover:text-red-400 transition-colors duration-300">
                                     <i class="fas fa-arrow-down"></i>
                                     <span class="text-sm"><%= post.downvotes.length %></span>
                                 </button>
                             </div>
                         </div>
-                        <h2 class="text-xl font-bold text-gray-800 mb-6"><%= post.title %></h2>
+                        <h2 class="text-xl font-bold text-[#602234] mb-6"><%= post.title %></h2>
                         <div class="flex-grow"></div>
                         <div class="flex flex-wrap justify-center gap-2 mb-6">
                             <% post.tags.forEach(tag => { %>
@@ -188,7 +215,7 @@
                                 <i class="fas fa-comment mr-1"></i>
                                 <span><%= post.comments.length %> comments</span>
                             </div>
-                            <span class="text-[#800000]">Read more</span>
+                            <span class="text-[#602234]">Read more</span>
                         </div>
                     </div>
                 <% }); %>
@@ -205,7 +232,13 @@
         </div>
     </div>
 
-    <script>
+    <script type="module">
+        import Navbar from '../../../components/navbar.js';
+        
+        // Initialize navbar
+        const navbar = new Navbar();
+        document.getElementById('navbar-container').innerHTML = navbar.render();
+        navbar.init();
         $(document).ready(function() {
             // Generate random profile colors
             const colors = ['bg-[#800000]', 'bg-gray-700', 'bg-gray-500'];
@@ -229,9 +262,40 @@
                 });
             });
 
-            // Tag filter functionality
-            $('#tagFilter').on('change', function() {
-                const selectedTag = $(this).val().toLowerCase();
+            // Custom dropdown functionality
+            $('.custom-dropdown-toggle').on('click', function() {
+                const dropdown = $(this).next('.custom-dropdown-content');
+                $('.custom-dropdown-content').not(dropdown).removeClass('show');
+                dropdown.toggleClass('show');
+                $(this).find('i').toggleClass('fa-chevron-down fa-chevron-up');
+            });
+
+            // Close dropdowns when clicking outside
+            $(document).on('click', function(e) {
+                if (!$(e.target).closest('.custom-dropdown').length) {
+                    $('.custom-dropdown-content').removeClass('show');
+                    $('.custom-dropdown-toggle i').removeClass('fa-chevron-up').addClass('fa-chevron-down');
+                }
+            });
+
+            // Tag search functionality
+            $('.tag-search').on('input', function() {
+                const searchTerm = $(this).val().toLowerCase();
+                $('.tag-list .custom-dropdown-item').each(function() {
+                    const tag = $(this).text().toLowerCase();
+                    $(this).toggle(tag.includes(searchTerm));
+                });
+            });
+
+            // Tag selection
+            $('.tag-list .custom-dropdown-item').on('click', function() {
+                const selectedTag = $(this).data('tag');
+                $('.tag-list .custom-dropdown-item').removeClass('active');
+                $(this).addClass('active');
+                $('.custom-dropdown-toggle').first().find('span').text($(this).text());
+                $('.custom-dropdown-content').first().removeClass('show');
+                
+                // Filter posts
                 $('.post-card').each(function() {
                     if (!selectedTag) {
                         $(this).show();
@@ -240,23 +304,33 @@
                     const tags = $(this).find('.tag-card').map(function() {
                         return $(this).text().toLowerCase();
                     }).get();
-                    $(this).toggle(tags.includes(selectedTag));
+                    $(this).toggle(tags.includes(selectedTag.toLowerCase()));
                 });
             });
 
-            // Sort functionality
-            $('#sortSelect').on('change', function() {
-                const sortBy = $(this).val();
-                const posts = $('.post-card').toArray();
+            // Sort selection
+            $('.custom-dropdown-content:last-child .custom-dropdown-item').on('click', function() {
+                const sortBy = $(this).data('sort');
+                $('.custom-dropdown-content:last-child .custom-dropdown-item').removeClass('active');
+                $(this).addClass('active');
+                $('.custom-dropdown-toggle').last().find('span').text($(this).text());
+                $('.custom-dropdown-content').last().removeClass('show');
                 
+                // Sort posts
+                const posts = $('.post-card').toArray();
                 posts.sort((a, b) => {
+                    const dateA = new Date($(a).find('.post-date').data('date'));
+                    const dateB = new Date($(b).find('.post-date').data('date'));
+                    const upvotesA = parseInt($(a).find('.fa-arrow-up + span').text());
+                    const upvotesB = parseInt($(b).find('.fa-arrow-up + span').text());
+                    
                     switch(sortBy) {
                         case 'newest':
-                            return new Date($(b).find('.text-gray-500').text()) - new Date($(a).find('.text-gray-500').text());
+                            return dateB - dateA;
                         case 'oldest':
-                            return new Date($(a).find('.text-gray-500').text()) - new Date($(b).find('.text-gray-500').text());
+                            return dateA - dateB;
                         case 'mostUpvoted':
-                            return parseInt($(b).find('.fa-arrow-up + span').text()) - parseInt($(a).find('.fa-arrow-up + span').text());
+                            return upvotesB - upvotesA;
                         default:
                             return 0;
                     }
@@ -268,6 +342,16 @@
             // Make entire card clickable
             $('.post-card').on('click', function() {
                 window.location.href = $(this).data('href');
+            });
+
+            // Format post dates to local time with time included
+            $('.post-date').each(function() {
+                const dateStr = $(this).data('date');
+                if (dateStr) {
+                    const date = new Date(dateStr);
+                    const options = { year: 'numeric', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' };
+                    $(this).text(date.toLocaleString(undefined, options));
+                }
             });
         });
     </script>

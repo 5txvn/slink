@@ -15,7 +15,7 @@ router.get('/', async (req, res) => {
                 .sort({ name: 1 });
             
             res.render(path.join(__dirname, '../views', 'directory.ejs'), {
-                alumni: JSON.stringify(alumni)
+                alumni
             });
         } catch (error) {
             console.error('Error fetching alumni:', error);

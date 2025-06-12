@@ -118,180 +118,42 @@
 
     <main class="container w-[90vw] mx-auto py-8 mt-16">
         <div class="w-full">
-            <form id="profile-form" class="space-y-6">
+            <form id="profile-form" class="bg-white rounded-xl p-8 shadow-lg space-y-6 border-2 border-[#602234]">
+                <h1 class="text-3xl md:text-5xl font-extrabold gradient-text mb-6 text-center">Edit Profile</h1>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    <!-- Edit Profile Card -->
-                    <div class="modern-card p-6 flex flex-col items-center justify-center min-h-[180px]">
-                        <h1 class="text-3xl md:text-5xl font-extrabold gradient-text mb-3">Edit Profile</h1>
-                        <p class="text-lg md:text-2xl mt-8 text-black text-center font-medium">Update your profile information and add details here to help others connect with you!</p>
-                    </div>
-
-                    <!-- Basic Information -->
-                    <div class="modern-card p-6">
-                        <h2 class="text-xl font-bold text-[#602234] mb-4 flex items-center gap-2">
-                            <i class="fas fa-user-circle"></i>
-                            Basic Information
-                        </h2>
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Full Name</label>
-                                <div class="relative">
-                                    <i class="fas fa-user absolute left-3 input-icon text-gray-400"></i>
-                                    <input type="text" name="name" class="modern-input w-full pl-10 pr-4 py-3 text-lg" required>
-                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full" id="name-valid" style="background:#10B981;"></span>
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Bio</label>
-                                <div class="relative">
-                                    <i class="fas fa-pen absolute left-3 input-icon text-gray-400"></i>
-                                    <textarea name="bio" class="modern-input w-full pl-10 pr-4 py-3 text-lg h-32" placeholder="Tell us about yourself..."></textarea>
-                                    <span class="absolute right-3 top-8 w-3 h-3 rounded-full" id="bio-valid" style="background:#10B981;"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Education -->
-                    <div class="modern-card p-6">
-                        <h2 class="text-xl font-bold text-[#602234] mb-4 flex items-center gap-2">
-                            <i class="fas fa-graduation-cap"></i>
-                            Education
-                        </h2>
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">School</label>
-                                <div class="relative">
-                                    <i class="fas fa-school absolute left-3 input-icon text-gray-400"></i>
-                                    <input type="text" name="school" class="modern-input w-full pl-10 pr-4 py-3 text-lg">
-                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full" id="school-valid" style="background:#10B981;"></span>
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Major</label>
-                                <div class="relative">
-                                    <i class="fas fa-book absolute left-3 input-icon text-gray-400"></i>
-                                    <input type="text" name="major" class="modern-input w-full pl-10 pr-4 py-3 text-lg">
-                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full" id="major-valid" style="background:#10B981;"></span>
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Graduation Year</label>
-                                <div class="relative">
-                                    <i class="fas fa-calendar absolute left-3 input-icon text-gray-400"></i>
-                                    <input type="text" name="graduationYear" class="modern-input w-full pl-10 pr-4 py-3 text-lg">
-                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full" id="graduationYear-valid" style="background:#10B981;"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Professional Information -->
-                    <div class="modern-card p-6">
-                        <h2 class="text-xl font-bold text-[#602234] mb-4 flex items-center gap-2">
-                            <i class="fas fa-briefcase"></i>
-                            Professional Information
-                        </h2>
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Current Position</label>
-                                <div class="relative">
-                                    <i class="fas fa-id-badge absolute left-3 input-icon text-gray-400"></i>
-                                    <input type="text" name="currentPosition" class="modern-input w-full pl-10 pr-4 py-3 text-lg">
-                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full" id="currentPosition-valid" style="background:#10B981;"></span>
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Company</label>
-                                <div class="relative">
-                                    <i class="fas fa-building absolute left-3 input-icon text-gray-400"></i>
-                                    <input type="text" name="company" class="modern-input w-full pl-10 pr-4 py-3 text-lg">
-                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full" id="company-valid" style="background:#10B981;"></span>
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Location</label>
-                                <div class="relative">
-                                    <i class="fas fa-map-marker-alt absolute left-3 input-icon text-gray-400"></i>
-                                    <input type="text" name="location" class="modern-input w-full pl-10 pr-4 py-3 text-lg">
-                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full" id="location-valid" style="background:#10B981;"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Social Links -->
-                    <div class="modern-card p-6">
-                        <h2 class="text-xl font-bold text-[#602234] mb-4 flex items-center gap-2">
-                            <i class="fas fa-share-alt"></i>
-                            Social Links
-                        </h2>
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">LinkedIn</label>
-                                <div class="relative">
-                                    <i class="fab fa-linkedin absolute left-3 input-icon text-gray-400"></i>
-                                    <input type="url" name="linkedin" class="modern-input w-full pl-10 pr-4 py-3 text-lg" placeholder="https://linkedin.com/in/...">
-                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full" id="linkedin-valid" style="background:#10B981;"></span>
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Twitter</label>
-                                <div class="relative">
-                                    <i class="fab fa-twitter absolute left-3 input-icon text-gray-400"></i>
-                                    <input type="url" name="twitter" class="modern-input w-full pl-10 pr-4 py-3 text-lg" placeholder="https://twitter.com/...">
-                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full" id="twitter-valid" style="background:#10B981;"></span>
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Instagram</label>
-                                <div class="relative">
-                                    <i class="fab fa-instagram absolute left-3 input-icon text-gray-400"></i>
-                                    <input type="url" name="instagram" class="modern-input w-full pl-10 pr-4 py-3 text-lg" placeholder="https://instagram.com/...">
-                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full" id="instagram-valid" style="background:#10B981;"></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- More Social Links -->
-                    <div class="modern-card p-6">
-                        <h2 class="text-xl font-bold text-[#602234] mb-4 flex items-center gap-2">
-                            <i class="fas fa-link"></i>
-                            More Social Links
-                        </h2>
-                        <div class="space-y-4">
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Reddit</label>
-                                <div class="relative">
-                                    <i class="fab fa-reddit absolute left-3 input-icon text-gray-400"></i>
-                                    <input type="url" name="reddit" class="modern-input w-full pl-10 pr-4 py-3 text-lg" placeholder="https://reddit.com/u/...">
-                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full" id="reddit-valid" style="background:#10B981;"></span>
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Discord</label>
-                                <div class="relative">
-                                    <i class="fab fa-discord absolute left-3 input-icon text-gray-400"></i>
-                                    <input type="text" name="discord" class="modern-input w-full pl-10 pr-4 py-3 text-lg" placeholder="username#0000">
-                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full" id="discord-valid" style="background:#10B981;"></span>
-                                </div>
-                            </div>
-                            <div>
-                                <label class="block text-sm font-medium text-gray-700 mb-2">Personal Website</label>
-                                <div class="relative">
-                                    <i class="fas fa-globe absolute left-3 input-icon text-gray-400"></i>
-                                    <input type="url" name="website" class="modern-input w-full pl-10 pr-4 py-3 text-lg" placeholder="https://...">
-                                    <span class="absolute right-3 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full" id="website-valid" style="background:#10B981;"></span>
-                                </div>
-                            </div>
-                        </div>
+                    <div class="space-y-4 col-span-3">
+                        <label class="block text-sm font-medium text-black mb-2">Full Name</label>
+                        <input type="text" name="name" class="modern-input w-full px-4 py-3 text-lg border border-[#602234] focus:border-black focus:ring-2 focus:ring-[#602234]/20 focus:bg-gray-50 transition-all duration-300" required autocomplete="off">
+                        <label class="block text-sm font-medium text-black mb-2">Bio</label>
+                        <textarea name="bio" class="modern-input w-full px-4 py-3 text-lg h-32 border border-[#602234] focus:border-black focus:ring-2 focus:ring-[#602234]/20 focus:bg-gray-50 transition-all duration-300" placeholder="Tell us about yourself..." autocomplete="off"></textarea>
+                        <label class="block text-sm font-medium text-black mb-2">School</label>
+                        <input type="text" name="school" class="modern-input w-full px-4 py-3 text-lg border border-[#602234] focus:border-black focus:ring-2 focus:ring-[#602234]/20 focus:bg-gray-50 transition-all duration-300" autocomplete="off">
+                        <label class="block text-sm font-medium text-black mb-2">Major</label>
+                        <input type="text" name="major" class="modern-input w-full px-4 py-3 text-lg border border-[#602234] focus:border-black focus:ring-2 focus:ring-[#602234]/20 focus:bg-gray-50 transition-all duration-300" autocomplete="off">
+                        <label class="block text-sm font-medium text-black mb-2">Graduation Year</label>
+                        <input type="text" name="graduationYear" class="modern-input w-full px-4 py-3 text-lg border border-[#602234] focus:border-black focus:ring-2 focus:ring-[#602234]/20 focus:bg-gray-50 transition-all duration-300" autocomplete="off">
+                        <label class="block text-sm font-medium text-black mb-2">Current Position</label>
+                        <input type="text" name="currentPosition" class="modern-input w-full px-4 py-3 text-lg border border-[#602234] focus:border-black focus:ring-2 focus:ring-[#602234]/20 focus:bg-gray-50 transition-all duration-300" autocomplete="off">
+                        <label class="block text-sm font-medium text-black mb-2">Company</label>
+                        <input type="text" name="company" class="modern-input w-full px-4 py-3 text-lg border border-[#602234] focus:border-black focus:ring-2 focus:ring-[#602234]/20 focus:bg-gray-50 transition-all duration-300" autocomplete="off">
+                        <label class="block text-sm font-medium text-black mb-2">Location</label>
+                        <input type="text" name="location" class="modern-input w-full px-4 py-3 text-lg border border-[#602234] focus:border-black focus:ring-2 focus:ring-[#602234]/20 focus:bg-gray-50 transition-all duration-300" autocomplete="off">
+                        <label class="block text-sm font-medium text-black mb-2">LinkedIn</label>
+                        <input type="url" name="linkedin" class="modern-input w-full px-4 py-3 text-lg border border-[#602234] focus:border-black focus:ring-2 focus:ring-[#602234]/20 focus:bg-gray-50 transition-all duration-300" placeholder="https://linkedin.com/in/..." autocomplete="off">
+                        <label class="block text-sm font-medium text-black mb-2">Twitter</label>
+                        <input type="url" name="twitter" class="modern-input w-full px-4 py-3 text-lg border border-[#602234] focus:border-black focus:ring-2 focus:ring-[#602234]/20 focus:bg-gray-50 transition-all duration-300" placeholder="https://twitter.com/..." autocomplete="off">
+                        <label class="block text-sm font-medium text-black mb-2">Instagram</label>
+                        <input type="url" name="instagram" class="modern-input w-full px-4 py-3 text-lg border border-[#602234] focus:border-black focus:ring-2 focus:ring-[#602234]/20 focus:bg-gray-50 transition-all duration-300" placeholder="https://instagram.com/..." autocomplete="off">
+                        <label class="block text-sm font-medium text-black mb-2">Reddit</label>
+                        <input type="url" name="reddit" class="modern-input w-full px-4 py-3 text-lg border border-[#602234] focus:border-black focus:ring-2 focus:ring-[#602234]/20 focus:bg-gray-50 transition-all duration-300" placeholder="https://reddit.com/u/..." autocomplete="off">
+                        <label class="block text-sm font-medium text-black mb-2">Discord</label>
+                        <input type="text" name="discord" class="modern-input w-full px-4 py-3 text-lg border border-[#602234] focus:border-black focus:ring-2 focus:ring-[#602234]/20 focus:bg-gray-50 transition-all duration-300" placeholder="username#0000" autocomplete="off">
+                        <label class="block text-sm font-medium text-black mb-2">Personal Website</label>
+                        <input type="url" name="website" class="modern-input w-full px-4 py-3 text-lg border border-[#602234] focus:border-black focus:ring-2 focus:ring-[#602234]/20 focus:bg-gray-50 transition-all duration-300" placeholder="https://..." autocomplete="off">
                     </div>
                 </div>
-
-                <!-- Save Button -->
                 <div class="flex justify-center mt-8">
-                    <button type="submit" class="neumorphic-btn flex items-center justify-center text-[#602234] text-lg md:text-xl font-bold pulse-text transition-transform duration-200">
+                    <button type="submit" class="bg-[#602234] hover:bg-[#4a1a28] text-white text-lg md:text-xl font-bold rounded-lg px-8 py-4 transition-transform duration-200">
                         <i class="fas fa-save mr-2"></i>
                         Save Changes
                     </button>
@@ -385,59 +247,7 @@
         // Initialize form
         $(document).ready(function() {
             populateForm();
-
-            // Fetch autocomplete data
-            fetch('/info.json')
-                .then(response => response.json())
-                .then(data => {
-                    // Initialize autocomplete for universities
-                    initializeAutocomplete('school', data.universities);
-                    // Initialize autocomplete for majors
-                    initializeAutocomplete('major', data.majors);
-                    // Initialize autocomplete for positions
-                    initializeAutocomplete('currentPosition', data.positions);
-                })
-                .catch(error => console.error('Error loading autocomplete data:', error));
         });
-
-        // Initialize autocomplete functionality
-        function initializeAutocomplete(inputName, options) {
-            const input = $(`input[name="${inputName}"]`);
-            const dropdown = $('<div class="autocomplete-dropdown absolute w-full bg-white border border-gray-300 rounded-lg mt-1 shadow-lg z-50 max-h-60 overflow-y-auto"></div>');
-            
-            input.after(dropdown);
-            
-            input.on('input', function() {
-                const value = $(this).val().toLowerCase();
-                const matches = options.filter(option => 
-                    option.toLowerCase().includes(value)
-                ).slice(0, 10);
-                
-                dropdown.empty();
-                
-                if (matches.length > 0 && value.length > 0) {
-                    matches.forEach(match => {
-                        const item = $('<div class="p-2 hover:bg-gray-100 cursor-pointer"></div>')
-                            .text(match)
-                            .on('click', function() {
-                                input.val(match);
-                                dropdown.hide();
-                            });
-                        dropdown.append(item);
-                    });
-                    dropdown.show();
-                } else {
-                    dropdown.hide();
-                }
-            });
-            
-            // Hide dropdown when clicking outside
-            $(document).on('click', function(e) {
-                if (!$(e.target).closest(`input[name="${inputName}"], .autocomplete-dropdown`).length) {
-                    dropdown.hide();
-                }
-            });
-        }
     </script>
     <script>
         // Input validation functions (jQuery)

@@ -9,10 +9,36 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        html, body {
+            overflow: scroll;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar {
+            display: none;
+        }
+        .dot-pattern {
+            background-image: radial-gradient(rgba(96, 34, 52, 0.5) 1px, transparent 1px);
+            background-size: 20px 20px;
+            background-color: #ffffff;
+        }
+        @keyframes gradient-flow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .gradient-text {
+            background: linear-gradient(45deg, #602234, #602234);
+            background-size: 200% 200%;
+            animation: gradient-flow 3s ease-in-out infinite;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+        }
         .site-tree-section {
             position: relative;
-            padding-left: 3rem;
-            margin-bottom: 2rem;
+            padding-left: 2rem;
         }
         .site-tree-section::before {
             content: '';
@@ -20,53 +46,42 @@
             left: 0;
             top: 0;
             bottom: 0;
-            width: 3px;
+            width: 2px;
             background: currentColor;
         }
         .site-tree-link {
             position: relative;
             display: flex;
             align-items: center;
-            margin: 1rem 0;
-            font-size: 1.25rem;
+            margin: 0.5rem 0;
         }
         .site-tree-link::before {
             content: '';
             position: absolute;
-            left: -3rem;
-            width: 1.5rem;
-            height: 3px;
+            left: -2rem;
+            width: 1rem;
+            height: 2px;
             background: currentColor;
         }
         .site-tree-dot {
-            width: 1rem;
-            height: 1rem;
+            width: 0.75rem;
+            height: 0.75rem;
             border-radius: 50%;
-            margin-right: 1rem;
-        }
-        .site-tree-title {
-            font-size: 2rem;
-            margin-bottom: 2rem;
-            color: #602234;
-        }
-        .site-tree-subtitle {
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-            color: currentColor;
+            margin-right: 0.75rem;
         }
     </style>
 </head>
-<body class="min-h-screen bg-white">
+<body class="min-h-screen flex flex-col dot-pattern">
     <div id="navbar-container"></div>
 
-    <div class="container mx-auto px-4 py-8 mt-20">
+    <div class="container mx-auto px-4 py-8 mt-20 w-[90vw]">
         <div class="max-w-7xl mx-auto">
-            <h1 class="site-tree-title text-center mb-12">Site Directory</h1>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
-                <!-- Community Section -->
+            <div class="bg-white rounded-xl p-8 shadow-lg">
+                <h1 class="text-4xl sm:text-5xl xl:text-6xl 2xl:text-7xl leading-normal font-bold gradient-text bg-clip-text pb-2 mb-8">Site Directory</h1>
+                
                 <div class="site-tree-section text-[#602234]">
-                    <h2 class="site-tree-subtitle">Community</h2>
+                    <!-- Community Section -->
+                    <h2 class="text-2xl font-semibold mb-4">Community</h2>
                     <div class="site-tree-link">
                         <div class="site-tree-dot bg-[#602234]"></div>
                         <a href="/directory" class="text-[#602234] hover:text-[#4a1a28] transition-colors">Alumni Directory</a>
@@ -79,28 +94,24 @@
                         <div class="site-tree-dot bg-[#602234]"></div>
                         <a href="/events" class="text-[#602234] hover:text-[#4a1a28] transition-colors">Events</a>
                     </div>
-                </div>
 
-                <!-- Profile Section -->
-                <div class="site-tree-section text-black">
-                    <h2 class="site-tree-subtitle">Profile</h2>
+                    <!-- Profile Section -->
+                    <h2 class="text-2xl font-semibold mt-8 mb-4">Profile</h2>
                     <div class="site-tree-link">
-                        <div class="site-tree-dot bg-black"></div>
-                        <a href="/profile" class="text-black hover:text-gray-700 transition-colors">My Profile</a>
+                        <div class="site-tree-dot bg-[#602234]"></div>
+                        <a href="/profile" class="text-[#602234] hover:text-[#4a1a28] transition-colors">My Profile</a>
                     </div>
                     <div class="site-tree-link">
-                        <div class="site-tree-dot bg-black"></div>
-                        <a href="/settings" class="text-black hover:text-gray-700 transition-colors">Settings</a>
+                        <div class="site-tree-dot bg-[#602234]"></div>
+                        <a href="/settings" class="text-[#602234] hover:text-[#4a1a28] transition-colors">Settings</a>
                     </div>
                     <div class="site-tree-link">
-                        <div class="site-tree-dot bg-black"></div>
-                        <a href="/notifications" class="text-black hover:text-gray-700 transition-colors">Notifications</a>
+                        <div class="site-tree-dot bg-[#602234]"></div>
+                        <a href="/notifications" class="text-[#602234] hover:text-[#4a1a28] transition-colors">Notifications</a>
                     </div>
-                </div>
 
-                <!-- Resources Section -->
-                <div class="site-tree-section text-[#602234]">
-                    <h2 class="site-tree-subtitle">Resources</h2>
+                    <!-- Resources Section -->
+                    <h2 class="text-2xl font-semibold mt-8 mb-4">Resources</h2>
                     <div class="site-tree-link">
                         <div class="site-tree-dot bg-[#602234]"></div>
                         <a href="/about" class="text-[#602234] hover:text-[#4a1a28] transition-colors">About Slink</a>
@@ -119,7 +130,7 @@
     </div>
 
     <script type="module">
-        import Navbar from '../public/components/navbar.js';
+        import Navbar from '../../components/navbar.js';
         
         // Initialize navbar
         const navbar = new Navbar();

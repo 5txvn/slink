@@ -150,7 +150,7 @@
     <div id="navbar-container"></div>
 
     <!-- Main Content -->
-    <div class="container mx-auto px-4 py-8 mt-20">
+    <div class="container mx-auto px-4 py-8 mt-20 w-[90vw]">
         <div class="max-w-7xl mx-auto">
             <!-- Welcome Section -->
             <div class="bg-white rounded-xl p-8 shadow-lg mb-12">
@@ -265,7 +265,7 @@
                 <div class="recently-viewed-content grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     <% if (recentlyViewedUsers && recentlyViewedUsers.length > 0) { %>
                         <% recentlyViewedUsers.forEach(viewed => { %>
-                            <div class="recent-user-card bg-white rounded-xl p-8 shadow-lg">
+                            <div class="recent-user-card bg-white rounded-xl p-8 shadow-lg cursor-pointer" onclick="window.location.href='/user/<%= viewed.user.username %>'">
                                 <div class="flex items-center mb-6">
                                     <div class="w-20 h-20 rounded-full bg-[#602234] flex items-center justify-center text-white text-3xl mr-6">
                                         <%= viewed.user.name.split(' ').map(n => n[0]).join('') %>
@@ -277,14 +277,14 @@
                                 </div>
                                 <div class="flex justify-between items-center">
                                     <span class="text-sm text-gray-500">Last viewed: <%= formatTimeAgo(viewed.viewedAt) %></span>
-                                    <a href="/user/<%= viewed.user.username %>" class="text-[#602234] hover:text-[#4a1a28] transition-colors">
+                                    <a href="/user/<%= viewed.user.username %>" class="text-[#602234] hover:text-[#4a1a28] transition-colors" onclick="event.stopPropagation();">
                                         <i class="fas fa-external-link-alt text-xl"></i>
                                     </a>
                                 </div>
                             </div>
                         <% }); %>
                     <% } else { %>
-                        <div class="bg-white rounded-xl p-8 shadow-lg border-2 border-dashed border-[#602234] flex flex-col items-center justify-center text-center">
+                        <div class="bg-white rounded-xl p-8 shadow-lg border-2 border-dashed border-[#602234] flex flex-col items-center justify-center text-center transition-transform duration-200 hover:-translate-y-2">
                             <div class="w-20 h-20 rounded-full bg-[#602234] flex items-center justify-center text-white text-3xl mb-6">
                                 <i class="fas fa-user"></i>
                             </div>
@@ -331,7 +331,7 @@
                             </div>
                         <% }); %>
                     <% } else { %>
-                        <div class="bg-white rounded-xl p-6 shadow-lg">
+                        <div class="bg-white rounded-xl p-6 shadow-lg transition-transform duration-200 hover:-translate-y-2">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center">
                                     <div class="w-16 h-16 rounded-full bg-[#602234] flex items-center justify-center text-white text-2xl mr-6">
@@ -423,22 +423,22 @@
         document.getElementById('navbar-container').innerHTML = navbar.render();
         navbar.init();
 
-
-        // Toggle section visibility
-        document.querySelectorAll('.toggle-section').forEach(button => {
-            button.addEventListener('click', function() {
-                const content = this.closest('div').nextElementSibling;
-                const icon = this.querySelector('i');
-                
-                if (content.style.display === 'none') {
-                    content.style.display = '';
-                    icon.classList.remove('fa-chevron-down');
-                    icon.classList.add('fa-chevron-up');
-                } else {
-                    content.style.display = 'none';
-                    icon.classList.remove('fa-chevron-up');
-                    icon.classList.add('fa-chevron-down');
-                }
+        // Toggle section visibility with slide animation
+        $(document).ready(function() {
+            document.querySelectorAll('.toggle-section').forEach(button => {
+                button.addEventListener('click', function() {
+                    const content = this.closest('div').nextElementSibling;
+                    const icon = this.querySelector('i');
+                    if ($(content).is(':visible')) {
+                        $(content).slideUp(300);
+                        icon.classList.remove('fa-chevron-up');
+                        icon.classList.add('fa-chevron-down');
+                    } else {
+                        $(content).slideDown(300);
+                        icon.classList.remove('fa-chevron-down');
+                        icon.classList.add('fa-chevron-up');
+                    }
+                });
             });
         });
     </script>

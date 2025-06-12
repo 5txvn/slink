@@ -9,13 +9,13 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        html, body {
-            overflow: scroll;
+        body, html {
+            overflow: auto;
             scrollbar-width: none;
             -ms-overflow-style: none;
         }
-        html::-webkit-scrollbar,
-        body::-webkit-scrollbar {
+        body::-webkit-scrollbar,
+        html::-webkit-scrollbar {
             display: none;
         }
         .dot-pattern {
@@ -50,28 +50,6 @@
         }
         .modal {
             max-width: 800px !important;
-        }
-        body::-webkit-scrollbar { width: 10px; background: transparent; }
-        body::-webkit-scrollbar-thumb {
-            background: linear-gradient(180deg, #800000, #fff);
-            border-radius: 8px;
-            margin: 2px;
-            width: 8px;
-            opacity: 1;
-            transition: opacity 0.5s;
-        }
-        body.hide-scrollbar::-webkit-scrollbar-thumb { opacity: 0; }
-        body::-webkit-scrollbar-track { background: transparent; }
-        body::-webkit-scrollbar {
-            position: fixed;
-            right: 24px;
-        }
-        html {
-            scrollbar-width: thin;
-            scrollbar-color: #800000 #fff;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #a94442;
         }
         /* Neumorphic inner shadow for buttons */
         .neumorphic-btn {
@@ -539,9 +517,6 @@
                                             <a href="/user/<%= alum.username %>" class="text-[#602234] hover:text-[#4a1a28] transition-colors">
                                                 <i class="fas fa-eye text-xl"></i>
                                             </a>
-                                            <a href="/messages/<%= alum.username %>" class="text-black hover:text-gray-700 transition-colors">
-                                                <i class="fas fa-comment text-xl"></i>
-                                            </a>
                                         </div>
                                     </td>
                                 </tr>
@@ -555,14 +530,14 @@
 
     <!-- Filter Modal -->
     <div id="filterModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="modal bg-white rounded-xl p-8 w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2 max-h-[90vh] overflow-y-auto">
-            <div class="flex justify-between items-center mb-6">
+        <div class="bg-white rounded-xl p-8 w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2 max-h-[90vh] overflow-y-auto flex flex-col items-center justify-center">
+            <div class="flex justify-between items-center mb-6 w-full">
                 <h2 class="text-2xl font-bold text-[#602234]">Filter Alumni</h2>
                 <button id="closeFilterModal" class="text-gray-500 hover:text-gray-700">
                     <i class="fas fa-times text-xl"></i>
                 </button>
             </div>
-            <div class="space-y-6">
+            <div class="space-y-6 w-full">
                 <!-- Filter options here -->
             </div>
         </div>
@@ -570,65 +545,52 @@
 
     <!-- Columns Modal -->
     <div id="columnsModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="modal bg-white rounded-xl p-8 w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2 max-h-[90vh] overflow-y-auto">
-            <div class="flex justify-between items-center mb-6">
+        <div class="bg-white rounded-xl p-8 w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2 max-h-[90vh] overflow-y-auto flex flex-col items-center justify-center">
+            <div class="flex justify-between items-center mb-6 w-full">
                 <h2 class="text-2xl font-bold text-[#602234]">Customize Columns</h2>
                 <button id="closeColumnsModal" class="text-gray-500 hover:text-gray-700">
                     <i class="fas fa-times text-xl"></i>
                 </button>
             </div>
-            <div class="space-y-6">
+            <div class="space-y-6 w-full">
                 <!-- Column options here -->
             </div>
         </div>
     </div>
 
     <script type="module">
-        import Navbar from './navbar.js';
-
+        import Navbar from '../../components/navbar.js';
+        
         // Initialize navbar
         const navbar = new Navbar();
         document.getElementById('navbar-container').innerHTML = navbar.render();
         navbar.init();
 
-        // Modal functionality
-        const filterModal = document.getElementById('filterModal');
-        const columnsModal = document.getElementById('columnsModal');
-        const filterBtn = document.getElementById('filterBtn');
-        const columnsBtn = document.getElementById('columnsBtn');
-        const closeFilterModal = document.getElementById('closeFilterModal');
-        const closeColumnsModal = document.getElementById('closeColumnsModal');
-
-        filterBtn.addEventListener('click', () => {
-            filterModal.classList.remove('hidden');
-            filterModal.classList.add('flex');
-        });
-
-        columnsBtn.addEventListener('click', () => {
-            columnsModal.classList.remove('hidden');
-            columnsModal.classList.add('flex');
-        });
-
-        closeFilterModal.addEventListener('click', () => {
-            filterModal.classList.add('hidden');
-            filterModal.classList.remove('flex');
-        });
-
-        closeColumnsModal.addEventListener('click', () => {
-            columnsModal.classList.add('hidden');
-            columnsModal.classList.remove('flex');
-        });
-
-        // Close modals when clicking outside
-        window.addEventListener('click', (e) => {
-            if (e.target === filterModal) {
-                filterModal.classList.add('hidden');
-                filterModal.classList.remove('flex');
-            }
-            if (e.target === columnsModal) {
-                columnsModal.classList.add('hidden');
-                columnsModal.classList.remove('flex');
-            }
+        // Modal functionality (jQuery version for better compatibility)
+        $(function() {
+            $('#filterBtn').on('click', function() {
+                $('#filterModal').removeClass('hidden').addClass('flex');
+            });
+            $('#columnsBtn').on('click', function() {
+                $('#columnsModal').removeClass('hidden').addClass('flex');
+            });
+            $('#closeFilterModal').on('click', function() {
+                $('#filterModal').addClass('hidden').removeClass('flex');
+            });
+            $('#closeColumnsModal').on('click', function() {
+                $('#columnsModal').addClass('hidden').removeClass('flex');
+            });
+            // Close modals when clicking outside
+            $('#filterModal').on('click', function(e) {
+                if (e.target === this) {
+                    $(this).addClass('hidden').removeClass('flex');
+                }
+            });
+            $('#columnsModal').on('click', function(e) {
+                if (e.target === this) {
+                    $(this).addClass('hidden').removeClass('flex');
+                }
+            });
         });
 
         // Search functionality

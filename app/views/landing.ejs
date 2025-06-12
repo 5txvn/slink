@@ -210,7 +210,7 @@
     </nav>
 
     <!-- Main Content -->
-    <main class="flex-1 flex flex-col items-center px-4 relative z-10 mt-0 md:mt-24">
+    <main class="flex-1 flex flex-col items-center px-4 relative z-10 mt-0 md:mt-8">
         <!-- Hero Section -->
         <div class="w-full max-w-[92vw] flex flex-row items-center justify-between gap-12 mb-16">
             <!-- Left Side Content -->
@@ -288,22 +288,22 @@
                     <li class="flex items-center gap-3">
                         <i class="fas fa-users text-[#602234] text-xl"></i>
                         <span class="text-lg">Connect with graduates from all graduating classes</span>
-                        <i class="fas fa-check-circle text-[#602234] checkmark ml-auto"></i>
+                        <i class="fas fa-check-circle text-[#602234] ml-2"></i>
                     </li>
                     <li class="flex items-center gap-3">
                         <i class="fas fa-calendar-check text-[#602234] text-xl"></i>
                         <span class="text-lg">Access exclusive networking events</span>
-                        <i class="fas fa-check-circle text-[#602234] checkmark ml-auto"></i>
+                        <i class="fas fa-check-circle text-[#602234] ml-2"></i>
                     </li>
                     <li class="flex items-center gap-3">
                         <i class="fas fa-road text-[#602234] text-xl"></i>
                         <span class="text-lg">Share your professional journey</span>
-                        <i class="fas fa-check-circle text-[#602234] checkmark ml-auto"></i>
+                        <i class="fas fa-check-circle text-[#602234] ml-2"></i>
                     </li>
                     <li class="flex items-center gap-3">
                         <i class="fas fa-handshake text-[#602234] text-xl"></i>
                         <span class="text-lg">Find mentors in your industry</span>
-                        <i class="fas fa-check-circle text-[#602234] checkmark ml-auto"></i>
+                        <i class="fas fa-check-circle text-[#602234] ml-2"></i>
                     </li>
                 </ul>
             </div>
@@ -315,22 +315,22 @@
                     <li class="flex items-center gap-3">
                         <i class="fas fa-comments text-[#602234] text-xl"></i>
                         <span class="text-lg">Engage in meaningful discussions</span>
-                        <i class="fas fa-check-circle text-[#602234] checkmark ml-auto"></i>
+                        <i class="fas fa-check-circle text-[#602234] ml-2"></i>
                     </li>
                     <li class="flex items-center gap-3">
                         <i class="fas fa-lightbulb text-[#602234] text-xl"></i>
                         <span class="text-lg">Share industry insights and opportunities</span>
-                        <i class="fas fa-check-circle text-[#602234] checkmark ml-auto"></i>
+                        <i class="fas fa-check-circle text-[#602234] ml-2"></i>
                     </li>
                     <li class="flex items-center gap-3">
                         <i class="fas fa-user-graduate text-[#602234] text-xl"></i>
                         <span class="text-lg">Get advice from experienced professionals</span>
-                        <i class="fas fa-check-circle text-[#602234] checkmark ml-auto"></i>
+                        <i class="fas fa-check-circle text-[#602234] ml-2"></i>
                     </li>
                     <li class="flex items-center gap-3">
                         <i class="fas fa-newspaper text-[#602234] text-xl"></i>
                         <span class="text-lg">Stay updated with community news</span>
-                        <i class="fas fa-check-circle text-[#602234] checkmark ml-auto"></i>
+                        <i class="fas fa-check-circle text-[#602234] ml-2"></i>
                     </li>
                 </ul>
             </div>
@@ -368,7 +368,7 @@
             <h2 class="text-4xl font-bold text-[#602234] mb-8 text-center">Contact Us</h2>
             <div class="w-full max-w-[92vw] mx-auto">
                 <div class="bg-white rounded-2xl shadow-xl p-8 card-hover">
-                    <form class="space-y-6">
+                    <form class="space-y-6" action="/contact" method="POST" id="contactForm">
                         <div>
                             <label class="block text-gray-700 mb-2 font-semibold">Name</label>
                             <div class="relative">
@@ -376,7 +376,7 @@
                                     <div class="rounded-l-lg bg-gray-100 flex items-center justify-center px-4 border border-r-0 border-gray-300">
                                         <i class="fas fa-user"></i>
                                     </div>
-                                    <input type="text" class="w-full px-4 py-3 rounded-r-lg border border-gray-300 focus:border-[#602234] focus:ring-2 focus:ring-[#602234] focus:ring-opacity-50 input-with-icon" placeholder="Your name" maxlength="50">
+                                    <input type="text" name="name" class="w-full px-4 py-3 rounded-r-lg border border-gray-300 focus:border-[#602234] focus:ring-2 focus:ring-[#602234] focus:ring-opacity-50 input-with-icon" placeholder="Your name" maxlength="50">
                                 </div>
                                 <div class="char-counter">0/50</div>
                             </div>
@@ -388,14 +388,14 @@
                                     <div class="rounded-l-lg bg-gray-100 flex items-center justify-center px-4 border border-r-0 border-gray-300">
                                         <i class="fas fa-envelope"></i>
                                     </div>
-                                    <input type="email" class="w-full px-4 py-3 rounded-r-lg border border-gray-300 focus:border-[#602234] focus:ring-2 focus:ring-[#602234] focus:ring-opacity-50 input-with-icon" placeholder="Your email" maxlength="100">
+                                    <input type="email" name="email" class="w-full px-4 py-3 rounded-r-lg border border-gray-300 focus:border-[#602234] focus:ring-2 focus:ring-[#602234] focus:ring-opacity-50 input-with-icon" placeholder="Your email" maxlength="100">
                                 </div>
                                 <div class="char-counter">0/100</div>
                             </div>
                         </div>
                         <div>
                             <label class="block text-gray-700 mb-2 font-semibold">Message</label>
-                            <textarea class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-[#602234] focus:ring-2 focus:ring-[#602234] focus:ring-opacity-50" rows="4" placeholder="Your message" maxlength="500"></textarea>
+                            <textarea name="message" class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-[#602234] focus:ring-2 focus:ring-[#602234] focus:ring-opacity-50" rows="4" placeholder="Your message" maxlength="500"></textarea>
                             <div class="char-counter">0/500</div>
                         </div>
                         <button type="submit" class="w-full px-6 py-3 bg-[#602234] text-white rounded-lg hover:bg-[#4a1a28] transition-all flex items-center justify-center gap-2">
@@ -459,17 +459,17 @@
             }
         });
 
-        // Character Counter
-        function updateCharCounter(input, counter) {
-            const maxLength = input.getAttribute('maxlength');
-            const currentLength = input.value.length;
-            counter.textContent = `${currentLength}/${maxLength}`;
-        }
-
-        // Initialize character counters
-        document.querySelectorAll('input, textarea').forEach(input => {
-            const counter = input.parentElement.querySelector('.char-counter');
-            input.addEventListener('input', () => updateCharCounter(input, counter));
+        // Character Counter (jQuery version, works for all inputs and textarea in contact form)
+        $('#contactForm').find('input, textarea').each(function() {
+            var $input = $(this);
+            var $counter = $input.closest('div').find('.char-counter');
+            $input.on('input', function() {
+                var maxLength = $input.attr('maxlength');
+                var currentLength = $input.val().length;
+                $counter.text(currentLength + '/' + maxLength);
+            });
+            // Initialize counter
+            $input.trigger('input');
         });
     </script>
 </body>

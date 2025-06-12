@@ -10,17 +10,32 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <style>
+        html, body {
+            overflow: scroll;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar {
+            display: none;
+        }
+        .dot-pattern {
+            background-image: radial-gradient(rgba(96, 34, 52, 0.5) 1px, transparent 1px);
+            background-size: 20px 20px;
+            background-color: #ffffff;
+        }
         @keyframes gradient-flow {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
         .gradient-text {
-            background: linear-gradient(45deg, #800000, #cc0000);
+            background: linear-gradient(45deg, #602234, #602234);
             background-size: 200% 200%;
             animation: gradient-flow 3s ease-in-out infinite;
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
+            line-height: 1.2;
         }
         .animate-spin-slow {
             animation: spin-slow 8s linear infinite;
@@ -30,7 +45,7 @@
             to { transform: rotate(360deg); }
         }
         .tag-card {
-            background-color: #800000;
+            background-color: #602234;
             color: white;
             padding: 0.25rem 0.75rem;
             border-radius: 9999px;
@@ -42,78 +57,19 @@
         }
         .tag-card:hover {
             transform: scale(1.05);
-            background-color: #a94442;
+            background-color: #4a1a28;
         }
         .comment-card {
             transition: all 0.3s ease;
         }
         .comment-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            box-shadow: 0 4px 6px -1px rgba(96, 34, 52, 0.1), 0 2px 4px -1px rgba(96, 34, 52, 0.06);
         }
     </style>
 </head>
-<body class="bg-gray-100 min-h-screen">
-    <!-- Navbar -->
-    <nav class="bg-gradient-to-r from-[#4a0000] via-[#800000] to-[#4a0000] text-white px-6 py-4 fixed w-full top-0 z-50 shadow-lg rounded-b-2xl gradient-flow">
-        <div class="max-w-6xl mx-auto flex items-center justify-between">
-            <div class="flex items-center space-x-3 min-w-[160px] pr-8">
-                <i class="fas fa-atom text-3xl animate-spin-slow mt-1"></i>
-                <h1 class="text-3xl font-extrabold tracking-wider ml-1">Slink</h1>
-            </div>
-            <div class="flex-1 flex justify-end">
-                <div class="hidden md:flex space-x-8">
-                    <a href="/" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md">
-                        <i class="fas fa-home"></i>
-                        <span>Home</span>
-                    </a>
-                    <a href="/directory" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md">
-                        <i class="fas fa-users"></i>
-                        <span>Directory</span>
-                    </a>
-                    <a href="/profile" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md">
-                        <i class="fas fa-user"></i>
-                        <span>My Profile</span>
-                    </a>
-                    <a href="/about" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md">
-                        <i class="fas fa-info-circle"></i>
-                        <span>About</span>
-                    </a>
-                    <a href="/logout" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md">
-                        <i class="fas fa-sign-out-alt"></i>
-                        <span>Logout</span>
-                    </a>
-                </div>
-                <button id="nav-toggle" class="text-white transition-all hover:scale-110 md:hidden ml-2">
-                    <i class="fas fa-chevron-down text-2xl"></i>
-                </button>
-            </div>
-        </div>
-        <div id="nav-menu" class="hidden mt-4 transition-all duration-300 ease-in-out md:hidden max-w-6xl mx-auto">
-            <div class="flex flex-col space-y-2">
-                <a href="/" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md p-2">
-                    <i class="fas fa-home"></i>
-                    <span>Home</span>
-                </a>
-                <a href="/directory" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md p-2">
-                    <i class="fas fa-users"></i>
-                    <span>Directory</span>
-                </a>
-                <a href="/profile" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md p-2">
-                    <i class="fas fa-user"></i>
-                    <span>My Profile</span>
-                </a>
-                <a href="/about" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md p-2">
-                    <i class="fas fa-info-circle"></i>
-                    <span>About</span>
-                </a>
-                <a href="/logout" class="flex items-center space-x-2 font-semibold text-lg bg-gradient-to-r from-[#fff] via-[#e0e0e0] to-[#fff] bg-clip-text text-transparent hover:underline hover:underline-offset-8 transition-all duration-200 drop-shadow-md p-2">
-                    <i class="fas fa-sign-out-alt"></i>
-                    <span>Logout</span>
-                </a>
-            </div>
-        </div>
-    </nav>
+<body class="dot-pattern min-h-screen">
+    <div id="navbar-container"></div>
 
     <!-- Main Content -->
     <div class="container mx-auto px-4 py-8 mt-20">
@@ -122,9 +78,9 @@
             <div class="bg-white rounded-xl p-6 shadow-lg mb-6">
                 <div class="flex items-start justify-between mb-4">
                     <div class="flex-1">
-                        <h1 class="text-3xl sm:text-3xl font-bold text-gray-800 mb-4"><%= post.title %></h1>
+                        <h1 class="text-3xl sm:text-3xl font-bold text-[#602234] mb-4"><%= post.title %></h1>
                         <div class="flex items-center">
-                            <div class="w-10 h-10 rounded-full bg-[#800000] mr-3 flex items-center justify-center">
+                            <div class="w-10 h-10 rounded-full bg-[#602234] mr-3 flex items-center justify-center">
                                 <i class="fas fa-user text-white text-xl"></i>
                             </div>
                             <div>
@@ -134,11 +90,11 @@
                         </div>
                     </div>
                     <div class="flex items-center space-x-4">
-                        <button id="upvoteBtn" class="text-green-600 hover:text-green-400 transition-colors duration-300">
+                        <button id="upvoteBtn" class="text-[#602234] hover:text-[#4a1a28] transition-colors duration-300">
                             <i class="fas fa-arrow-up"></i>
                             <span class="text-sm" id="upvoteCount"><%= post.upvotes.length %></span>
                         </button>
-                        <button id="downvoteBtn" class="text-red-600 hover:text-red-400 transition-colors duration-300">
+                        <button id="downvoteBtn" class="text-[#602234] hover:text-[#4a1a28] transition-colors duration-300">
                             <i class="fas fa-arrow-down"></i>
                             <span class="text-sm" id="downvoteCount"><%= post.downvotes.length %></span>
                         </button>
@@ -150,7 +106,7 @@
                 </div>
 
                 <div class="border-t border-gray-200 pt-4 mb-6">
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Tags</h3>
+                    <h3 class="text-lg font-semibold text-[#602234] mb-4">Tags</h3>
                     <div class="flex flex-wrap gap-2">
                         <% post.tags.forEach(tag => { %>
                             <span class="tag-card text-base px-4 py-2"><%= tag.trim() %></span>
@@ -159,10 +115,8 @@
                 </div>
 
                 <div class="border-t border-gray-200 pt-4">
-                    
                     <!-- Comment Form -->
                     <form id="commentForm" action="/post/<%= post._id %>/comment" method="POST" class="mb-6">
-                        <h3 class="text-lg font-semibold text-gray-800 mb-4">Create Comment</h3>
                         <div class="flex flex-col space-y-4">
                             <div class="mb-2 flex space-x-2">
                                 <button type="button" class="wysiwyg-btn bg-gray-200 text-gray-700 px-3 py-1 rounded hover:bg-gray-300 transition-colors">
@@ -176,25 +130,30 @@
                                 </button>
                             </div>
                             <textarea name="content" rows="2" required
-                                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-[#800000] focus:ring-2 focus:ring-[#800000]/20 focus:bg-gray-50 transition-all duration-300 resize-none"
+                                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-[#602234] focus:ring-2 focus:ring-[#602234]/20 focus:bg-gray-50 transition-all duration-300 resize-none"
                                 placeholder="Write a comment..."></textarea>
-                            <div class="flex justify-center">
-                                <button type="submit"
-                                    class="w-1/2 bg-gray-100 text-[#800000] px-8 py-2 rounded-lg font-semibold transition-all duration-300 transform hover:scale-[1.02] shadow-[inset_-2px_-2px_4px_rgba(0,0,0,0.1)]">
-                                    <i class="fas fa-upload mr-2"></i>
-                                    Post
-                                </button>
-                            </div>
+                            <button type="submit"
+                                class="w-full bg-[#602234] text-white px-8 py-3 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:scale-[1.02] hover:bg-[#4a1a28]">
+                                <i class="fas fa-upload mr-2"></i>
+                                Post Comment
+                            </button>
                         </div>
                     </form>
 
+                    <!-- Comments Section Header -->
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-semibold text-[#602234]">Comments (<%= post.comments.length %>)</h3>
+                        <button class="toggle-comments text-[#602234] hover:text-[#4a1a28] transition-colors">
+                            <i class="fas fa-chevron-up text-xl"></i>
+                        </button>
+                    </div>
+
                     <!-- Comments List -->
-                    <h3 class="text-lg font-semibold text-gray-800 mb-4">Comments (<%= post.comments.length %>)</h3>
-                    <div class="space-y-4">
+                    <div class="comments-content space-y-4">
                         <% post.comments.forEach(comment => { %>
                             <div class="comment-card bg-gray-50 rounded-lg p-4 border border-gray-300">
                                 <div class="flex items-center mb-2">
-                                    <div class="w-8 h-8 rounded-full bg-[#800000] mr-2 flex items-center justify-center">
+                                    <div class="w-8 h-8 rounded-full bg-[#602234] mr-2 flex items-center justify-center">
                                         <i class="fas fa-user text-white text-sm"></i>
                                     </div>
                                     <div>
@@ -211,12 +170,26 @@
         </div>
     </div>
 
-    <script>
+    <script type="module">
+        import Navbar from '../../../components/navbar.js';
+        
+        // Initialize navbar
+        const navbar = new Navbar();
+        document.getElementById('navbar-container').innerHTML = navbar.render();
+        navbar.init();
+
         $(document).ready(function() {
-            // Navbar toggle
-            $('#nav-toggle').on('click', function() {
-                $('#nav-menu').slideToggle();
-                $(this).find('i').toggleClass('fa-chevron-down fa-chevron-up');
+            // Toggle comments section
+            $('.toggle-comments').on('click', function() {
+                const content = $('.comments-content');
+                const icon = $(this).find('i');
+                if (content.is(':visible')) {
+                    content.slideUp(300);
+                    icon.removeClass('fa-chevron-up').addClass('fa-chevron-down');
+                } else {
+                    content.slideDown(300);
+                    icon.removeClass('fa-chevron-down').addClass('fa-chevron-up');
+                }
             });
 
             // Upvote handler
