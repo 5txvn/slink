@@ -7,7 +7,8 @@ const postSchema = new mongoose.Schema({
         required: [true, "Forum post must have a title, please fill in the title field."]
     },
     author: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: true
     },
     content: {
@@ -20,17 +21,20 @@ const postSchema = new mongoose.Schema({
         default: []
     },
     upvotes: {
-        type: [String],
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'User',
         required: true,
         default: []
     },
     downvotes: {
-        type: [String],
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'User',
         required: true,
         default: []
     },
     comments: {
-        type: [Comment],
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'Comment',
         required: true,
         default: []
     },

@@ -23,7 +23,6 @@
             border-radius: 1.5rem;
             box-shadow: 0 8px 32px rgba(60,0,0,0.10), 0 1.5px 8px #e0e0e0;
             padding: 2.5rem 2rem 2rem 2rem;
-            max-width: 900px;
             margin: 3.5rem auto 2rem auto;
             display: flex;
             flex-direction: row;
@@ -42,7 +41,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 3rem;
+            font-size: 4rem;
             color: #fff;
         }
         .main-info {
@@ -60,13 +59,13 @@
         }
         .main-info .username {
             font-size: 1.2rem;
-            color: #800000;
+            color: #000;
             font-weight: 600;
             margin-bottom: 0.2rem;
         }
         .main-info .position {
             font-size: 1.1rem;
-            color: #444;
+            color: #000;
             font-weight: 500;
         }
         .info-section {
@@ -87,10 +86,10 @@
             gap: 0.5rem;
         }
         .info-title {
-            font-size: 1.08rem;
+            font-size: 1.5rem;
             font-weight: 700;
             color: #800000;
-            margin-bottom: 0.3rem;
+            margin-bottom: 0.5rem;
         }
         .info-content {
             font-size: 1rem;
@@ -138,10 +137,18 @@
         }
         .social-link {
             transition: all 0.3s ease;
+            opacity: 0.8;
         }
         .social-link:hover {
             transform: translateY(-3px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            opacity: 1;
+        }
+        .social-link.not-provided {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .social-link.not-provided:hover {
+            transform: none;
         }
         .connect-button {
             transition: all 0.3s ease;
@@ -165,19 +172,19 @@
     <main class="container mx-auto px-4 py-8 mt-16 w-[90vw]">
         <!-- Profile Header Card -->
         <div class="bg-white rounded-3xl shadow-lg p-8 md:p-12 mb-8 flex flex-col md:flex-row items-center gap-8 profile-card w-full">
-            <div class="w-32 h-32 md:w-40 md:h-40 rounded-2xl flex items-center justify-center text-white text-5xl shadow-lg" id="profile-avatar">
+            <div class="w-32 h-32 md:w-40 md:h-40 rounded-2xl flex items-center justify-center text-white text-5xl shadow-lg bg-black">
                 <i class="fas fa-user"></i>
             </div>
             <div class="flex-1 text-center md:text-left">
-                <h1 class="text-3xl md:text-4xl lg:text-5xl font-extrabold gradient-text mb-2"><%= JSON.parse(user).name %></h1>
-                <p class="text-xl md:text-2xl text-[#602234] font-semibold mb-2">@<%= JSON.parse(user).username %></p>
-                <p class="text-lg md:text-xl text-gray-600 font-medium">
+                <h1 class="text-[#602234] text-3xl md:text-4xl lg:text-5xl font-extrabold gradient-text mb-2"><%= JSON.parse(user).name %></h1>
+                <p class="text-[#602234] text-xl md:text-2xl font-semibold mb-2">@<%= JSON.parse(user).username %></p>
+                <p class="text-black text-lg md:text-xl font-medium">
                     <i class="fas fa-briefcase mr-2"></i>
                     <%= JSON.parse(user).position.charAt(0).toUpperCase() + JSON.parse(user).position.slice(1) %>
                 </p>
             </div>
             <form action="/user/<%= JSON.parse(user).username %>/connect" method="POST" class="flex items-center">
-                <button type="submit" class="connect-button bg-[#602234] hover:bg-[#4a1a28] text-white font-semibold py-3 px-8 rounded-xl transition-all duration-300 flex items-center space-x-2">
+                <button type="submit" class="connect-button bg-[#602234] hover:bg-[#4a1a28] text-white text-2xl font-semibold py-3 px-8 rounded-xl transition-all duration-300 flex items-center space-x-2">
                     <i class="fas fa-user-plus"></i>
                     <span>Connect</span>
                 </button>
@@ -196,17 +203,17 @@
                     <div class="flex items-center">
                         <i class="fas fa-university text-gray-600 w-8"></i>
                         <span class="font-semibold">School:</span>
-                        <span class="ml-2"><%= JSON.parse(user).school %></span>
+                        <span class="ml-2"><%= JSON.parse(user).school || 'Not Provided' %></span>
                     </div>
                     <div class="flex items-center">
                         <i class="fas fa-book text-gray-600 w-8"></i>
                         <span class="font-semibold">Major:</span>
-                        <span class="ml-2"><%= JSON.parse(user).major %></span>
+                        <span class="ml-2"><%= JSON.parse(user).major || 'Not Provided' %></span>
                     </div>
                     <div class="flex items-center">
                         <i class="fas fa-calendar-alt text-gray-600 w-8"></i>
                         <span class="font-semibold">Graduation:</span>
-                        <span class="ml-2">Class of <%= JSON.parse(user).graduationYear %></span>
+                        <span class="ml-2"><%= JSON.parse(user).graduationYear ? `Class of ${JSON.parse(user).graduationYear}` : 'Not Provided' %></span>
                     </div>
                 </div>
             </div>
@@ -222,13 +229,13 @@
                         <i class="fas fa-envelope text-gray-600 w-8"></i>
                         <span class="font-semibold">Email:</span>
                         <a href="mailto:<%= JSON.parse(user).email %>" class="ml-2 text-[#602234] hover:underline">
-                            <%= JSON.parse(user).email %>
+                            <%= JSON.parse(user).email || 'Not Provided' %>
                         </a>
                     </div>
                     <div class="flex items-center">
                         <i class="fas fa-map-marker-alt text-gray-600 w-8"></i>
                         <span class="font-semibold">Location:</span>
-                        <span class="ml-2"><%= JSON.parse(user).location %></span>
+                        <span class="ml-2"><%= JSON.parse(user).location || 'Not Provided' %></span>
                     </div>
                 </div>
             </div>
@@ -240,7 +247,7 @@
                     <h2 class="text-2xl font-bold text-[#602234]">About</h2>
                 </div>
                 <div class="text-lg leading-relaxed">
-                    <%= JSON.parse(user).bio %>
+                    <%= JSON.parse(user).bio || 'No bio provided' %>
                 </div>
             </div>
 
@@ -251,55 +258,36 @@
                     <h2 class="text-2xl font-bold text-[#602234]">Social Links</h2>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <% if (JSON.parse(user).linkedin) { %>
-                        <a href="<%= JSON.parse(user).linkedin %>" target="_blank" 
-                           class="social-link flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
-                            <i class="fab fa-linkedin text-2xl text-[#0077B5] mr-3"></i>
-                            <span class="text-lg font-medium">LinkedIn</span>
-                        </a>
-                    <% } %>
-                    <% if (JSON.parse(user).github) { %>
-                        <a href="<%= JSON.parse(user).github %>" target="_blank"
-                           class="social-link flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
-                            <i class="fab fa-github text-2xl text-gray-800 mr-3"></i>
-                            <span class="text-lg font-medium">GitHub</span>
-                        </a>
-                    <% } %>
-                    <% if (JSON.parse(user).discord) { %>
-                        <a href="<%= JSON.parse(user).discord %>" target="_blank"
-                           class="social-link flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
-                            <i class="fab fa-discord text-2xl text-[#7289DA] mr-3"></i>
-                            <span class="text-lg font-medium">Discord</span>
-                        </a>
-                    <% } %>
-                    <% if (JSON.parse(user).instagram) { %>
-                        <a href="<%= JSON.parse(user).instagram %>" target="_blank"
-                           class="social-link flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
-                            <i class="fab fa-instagram text-2xl text-[#E1306C] mr-3"></i>
-                            <span class="text-lg font-medium">Instagram</span>
-                        </a>
-                    <% } %>
-                    <% if (JSON.parse(user).reddit) { %>
-                        <a href="<%= JSON.parse(user).reddit %>" target="_blank"
-                           class="social-link flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
-                            <i class="fab fa-reddit text-2xl text-[#FF4500] mr-3"></i>
-                            <span class="text-lg font-medium">Reddit</span>
-                        </a>
-                    <% } %>
-                    <% if (JSON.parse(user).twitter) { %>
-                        <a href="<%= JSON.parse(user).twitter %>" target="_blank"
-                           class="social-link flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
-                            <i class="fab fa-twitter text-2xl text-[#1DA1F2] mr-3"></i>
-                            <span class="text-lg font-medium">Twitter</span>
-                        </a>
-                    <% } %>
-                    <% if (JSON.parse(user).website) { %>
-                        <a href="<%= JSON.parse(user).website %>" target="_blank"
-                           class="social-link flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
-                            <i class="fas fa-globe text-2xl text-[#602234] mr-3"></i>
-                            <span class="text-lg font-medium">Website</span>
-                        </a>
-                    <% } %>
+                    <a href="<%= JSON.parse(user).linkedin || '#' %>" target="_blank" 
+                       class="social-link <%= !JSON.parse(user).linkedin ? 'not-provided' : '' %> flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
+                        <i class="fab fa-linkedin text-2xl text-[#0077B5] mr-3"></i>
+                        <span class="text-lg font-medium"><%= JSON.parse(user).linkedin ? 'LinkedIn' : 'Not Provided' %></span>
+                    </a>
+                    <a href="<%= JSON.parse(user).discord || '#' %>" target="_blank"
+                       class="social-link <%= !JSON.parse(user).discord ? 'not-provided' : '' %> flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
+                        <i class="fab fa-discord text-2xl text-[#7289DA] mr-3"></i>
+                        <span class="text-lg font-medium"><%= JSON.parse(user).discord ? 'Discord' : 'Not Provided' %></span>
+                    </a>
+                    <a href="<%= JSON.parse(user).instagram || '#' %>" target="_blank"
+                       class="social-link <%= !JSON.parse(user).instagram ? 'not-provided' : '' %> flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
+                        <i class="fab fa-instagram text-2xl text-[#E1306C] mr-3"></i>
+                        <span class="text-lg font-medium"><%= JSON.parse(user).instagram ? 'Instagram' : 'Not Provided' %></span>
+                    </a>
+                    <a href="<%= JSON.parse(user).reddit || '#' %>" target="_blank"
+                       class="social-link <%= !JSON.parse(user).reddit ? 'not-provided' : '' %> flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
+                        <i class="fab fa-reddit text-2xl text-[#FF4500] mr-3"></i>
+                        <span class="text-lg font-medium"><%= JSON.parse(user).reddit ? 'Reddit' : 'Not Provided' %></span>
+                    </a>
+                    <a href="<%= JSON.parse(user).twitter || '#' %>" target="_blank"
+                       class="social-link <%= !JSON.parse(user).twitter ? 'not-provided' : '' %> flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
+                        <i class="fab fa-twitter text-2xl text-[#1DA1F2] mr-3"></i>
+                        <span class="text-lg font-medium"><%= JSON.parse(user).twitter ? 'Twitter' : 'Not Provided' %></span>
+                    </a>
+                    <a href="<%= JSON.parse(user).website || '#' %>" target="_blank"
+                       class="social-link <%= !JSON.parse(user).website ? 'not-provided' : '' %> flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
+                        <i class="fas fa-globe text-2xl text-[#602234] mr-3"></i>
+                        <span class="text-lg font-medium"><%= JSON.parse(user).website ? 'Website' : 'Not Provided' %></span>
+                    </a>
                 </div>
             </div>
         </div>
@@ -323,9 +311,11 @@
                 }
             );
             //change color of icon
+            /*
             const colors = ['#602234', '#191919', '#707070'];
             const bg = colors[Math.floor(Math.random() * colors.length)];
             $("#profile-avatar").addClass(`bg-[${bg}]`);
+            */
         });
     </script>
 </body>

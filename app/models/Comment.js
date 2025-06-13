@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 
 const commentSchema = new mongoose.Schema({
     author: {
-        type: String,
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
         required: true
     },
     content: {
@@ -10,12 +11,14 @@ const commentSchema = new mongoose.Schema({
         required: [true, "Comment must have content, please fill in the content field."]
     },
     upvotes: {
-        type: [String],
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'User',
         required: true,
         default: []
     },
     downvotes: {
-        type: [String],
+        type: [mongoose.Schema.Types.ObjectId],
+        ref: 'User',
         required: true,
         default: []
     },
@@ -25,4 +28,4 @@ const commentSchema = new mongoose.Schema({
     }
 });
 
-module.exports = commentSchema;
+module.exports = mongoose.model('Comment', commentSchema);

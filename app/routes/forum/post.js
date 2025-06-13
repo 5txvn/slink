@@ -3,7 +3,11 @@ const express = require('express');
 const router = express.Router();
 const path = require('path');
 const Post = require('../../models/Post');
+const User = require('../../models/User');
+const Comment = require('../../models/Comment');
 const sanitizeHtml = require('sanitize-html');
+const { removeComment } = require('../../services/users/removeComment');
+const { deletePost } = require('../../services/users/deletePost');
 
 //load post page
 router.get('/:id', async (req, res) => {
@@ -13,9 +17,15 @@ router.get('/:id', async (req, res) => {
     } else {
         try {
             //fetch post from db and load error or post page
-            const post = await Post.findById(req.params.id).populate('comments').exec();
+            const post = await Post.findById(req.params.id).populate({
+                path: 'comments',
+                populate: {
+                    path: 'author',
+                    model: 'User'
+                }
+            }).populate('author').exec();
             if (!post) {
-                return res.status(404).render(path.join(__dirname, '../../views', 'status.ejs'), {
+                return res.status(404).render(path.join(__dirname, '../../views/utils/status.ejs'), {
                     status: 'error',
                     title: "Post Not Found",
                     message: "The post you're looking for doesn't exist.",
@@ -28,10 +38,10 @@ router.get('/:id', async (req, res) => {
             });
         } catch (error) {
             //handle internal server error
-            return res.status(500).render(path.join(__dirname, '../../views', 'status.ejs'), {
+            return res.status(500).render(path.join(__dirname, '../../views/utils/status.ejs'), {
                 status: 'error',
-                title: "Server Error",
-                message: `Error message: ${error.message}`,
+                title: "Internal Server Error",
+                message: `An error occurred while loading the post, please try again later.`,
                 redirectUrl: "/forum"
             });
         }
@@ -41,21 +51,21 @@ router.get('/:id', async (req, res) => {
 //add comment to post
 router.post('/:id/comment', async (req, res) => {
     try {
-        //check if post exists
         const post = await Post.findById(req.params.id);
         if (!post) return res.status(404).json({ message: 'Post not found' });
+        const user = await User.findOne({ username: req.session.username });
+        if(!user) return res.status(404).json({ message: 'User not found' });
 
-        //push comment to post and save it to db
-        const comment = {
-            author: req.session.username,
-            content: sanitizeHtml(req.body.content),
-            createdAt: new Date()
-        };
-        post.comments.push(comment);
+        const newComment = await Comment.create({
+            author: user._id,
+            content: sanitizeHtml(req.body.content)
+        });
+        post.comments.push(newComment._id);
+
         await post.save();
         res.status(201).json({ message: 'Comment added successfully' });
     } catch (error) {
-        //handle internal server error
+        console.error(`Error occurred while adding comment: ${error}`);
         res.status(500).json({ message: 'Error adding comment' });
     }
 });
@@ -63,16 +73,15 @@ router.post('/:id/comment', async (req, res) => {
 //upvote post
 router.post('/:id/upvote', async (req, res) => {
     try {
-        //check if post exists
         const post = await Post.findById(req.params.id);
         if (!post) return res.status(404).json({ message: 'Post not found' });
+        const user = await User.findOne({ username: req.session.username });
+        if(!user) return res.status(404).json({ message: 'User not found' });
 
-        //load upvotes and downvotes and add upvote
-        const username = req.session.username;
-        const upvoteIndex = post.upvotes.indexOf(username);
-        const downvoteIndex = post.downvotes.indexOf(username);
+        const upvoteIndex = post.upvotes.indexOf(user._id);
+        const downvoteIndex = post.downvotes.indexOf(user._id);
         if (upvoteIndex === -1) {
-            post.upvotes.push(username);
+            post.upvotes.push(user._id);
             if (downvoteIndex !== -1) {
                 post.downvotes.splice(downvoteIndex, 1);
             }
@@ -80,13 +89,13 @@ router.post('/:id/upvote', async (req, res) => {
             post.upvotes.splice(upvoteIndex, 1);
         }
 
-        //save post and return upvotes and downvotes
         await post.save();
         res.json({ 
             upvotes: post.upvotes.length,
             downvotes: post.downvotes.length
         });
     } catch (error) {
+        console.error(`Error occurred while upvoting post: ${error}`);
         res.status(500).json({ message: 'Error upvoting post' });
     }
 });
@@ -96,13 +105,13 @@ router.post('/:id/downvote', async (req, res) => {
     try {
         const post = await Post.findById(req.params.id);
         if (!post) return res.status(404).json({ message: 'Post not found' });
+        const user = await User.findOne({ username: req.session.username });
+        if(!user) return res.status(404).json({ message: 'User not found' });
 
-        //load upvotes and downvotes and add downvote
-        const username = req.session.username;
-        const upvoteIndex = post.upvotes.indexOf(username);
-        const downvoteIndex = post.downvotes.indexOf(username);
+        const upvoteIndex = post.upvotes.indexOf(user._id);
+        const downvoteIndex = post.downvotes.indexOf(user._id);
         if (downvoteIndex === -1) {
-            post.downvotes.push(username);
+            post.downvotes.push(user._id);
             if (upvoteIndex !== -1) {
                 post.upvotes.splice(upvoteIndex, 1);
             }
@@ -110,16 +119,18 @@ router.post('/:id/downvote', async (req, res) => {
             post.downvotes.splice(downvoteIndex, 1);
         }
 
-        //save post and return upvotes and downvotes
         await post.save();
         res.json({ 
             upvotes: post.upvotes.length,
             downvotes: post.downvotes.length
         });
     } catch (error) {
-        //handle internal server error
+        console.error(`Error occurred while downvoting post: ${error}`);
         res.status(500).json({ message: 'Error downvoting post' });
     }
 });
+
+router.post('/:postId/:commentId/remove', removeComment);
+router.post('/:id/delete', deletePost);
 
 module.exports = router; 

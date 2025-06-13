@@ -3,7 +3,7 @@ const path = require('path');
 
 exports.rejectConnection = async (req, res) => {
     if(!req.session.username) {
-        req.session.redirect = '/';
+        req.session.redirectUrl = '/';
         res.redirect('/authenticate');
     }
     try {

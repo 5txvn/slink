@@ -56,7 +56,7 @@
         }
         .tag-card:hover {
             transform: scale(1.05);
-            background-color: #800000;
+            background-color: #4a1a28;
         }
         .post-card {
             transition: all 0.3s ease;
@@ -101,12 +101,12 @@
             color: white;
         }
         .custom-dropdown-search {
-            padding: 0.75rem 1rem;
+            padding: 0.5rem;
             border-bottom: 1px solid #e5e7eb;
         }
         .custom-dropdown-search input {
             width: 100%;
-            padding: 0.5rem;
+            padding: 0.25rem 0.5rem;
             border: 1px solid #e5e7eb;
             border-radius: 0.375rem;
             outline: none;
@@ -130,7 +130,7 @@
                     <i class="fas fa-comments text-3xl text-[#602234] mr-3"></i>
                     <h1 class="text-2xl sm:text-3xl font-bold gradient-text">Forum</h1>
                 </div>
-                <a href="/create-post" class="bg-[#602234] text-white px-6 py-2 rounded-lg font-semibold transition-all duration-300 transform hover:scale-[1.02] shadow-[inset_6px_6px_12px_rgba(0,0,0,0.3)]">
+                <a href="/create-post" class="bg-[#602234] text-white text-xl px-6 py-2 rounded-lg font-semibold transition-all duration-300 transform hover:scale-[1.02] shadow-[inset_-3px_-3px_6px_rgba(0,0,0,0.3)]">
                     <i class="fas fa-plus mr-2"></i>New Post
                 </a>
             </div>
@@ -188,16 +188,16 @@
                                     <i class="fas fa-user text-white text-sm"></i>
                                 </div>
                                 <div>
-                                    <h3 class="font-semibold text-gray-800"><%= post.author %></h3>
+                                    <h3 class="font-semibold text-gray-800"><%= post.author.username %></h3>
                                     <p class="text-sm text-gray-500 post-date" data-date="<%= post.createdAt %>"></p>
                                 </div>
                             </div>
                             <div class="flex items-center space-x-2">
-                                <button class="text-[#10B981] hover:text-green-400 transition-colors duration-300">
+                                <button class="text-green-500 hover:text-green-600 transition-colors duration-300">
                                     <i class="fas fa-arrow-up"></i>
                                     <span class="text-sm"><%= post.upvotes.length %></span>
                                 </button>
-                                <button class="text-[#EF4444] hover:text-red-400 transition-colors duration-300">
+                                <button class="text-red-500 hover:text-red-600 transition-colors duration-300">
                                     <i class="fas fa-arrow-down"></i>
                                     <span class="text-sm"><%= post.downvotes.length %></span>
                                 </button>
@@ -223,10 +223,10 @@
 
             <!-- No Posts Message -->
             <% if (posts.length === 0) { %>
-                <div class="text-center py-12">
-                    <i class="fas fa-comments text-6xl text-gray-300 mb-4"></i>
-                    <h3 class="text-xl font-semibold text-gray-600 mb-2">No Posts Yet</h3>
-                    <p class="text-gray-500">Be the first to start a discussion!</p>
+                <div class="text-center py-12 bg-white rounded-xl border-2 border-dashed border-[#602234] transition-all duration-300 hover:scale-[1.02] hover:shadow-lg">
+                    <i class="fas fa-comments text-6xl text-[#602234] mb-4"></i>
+                    <h3 class="text-xl font-semibold text-gray-800 mb-2">No Posts Yet</h3>
+                    <p class="text-gray-600">Be the first to start a discussion!</p>
                 </div>
             <% } %>
         </div>
@@ -268,6 +268,11 @@
                 $('.custom-dropdown-content').not(dropdown).removeClass('show');
                 dropdown.toggleClass('show');
                 $(this).find('i').toggleClass('fa-chevron-down fa-chevron-up');
+                
+                // Focus on search input if it's the tags dropdown
+                if (dropdown.find('.tag-search').length) {
+                    dropdown.find('.tag-search').focus();
+                }
             });
 
             // Close dropdowns when clicking outside
@@ -281,19 +286,31 @@
             // Tag search functionality
             $('.tag-search').on('input', function() {
                 const searchTerm = $(this).val().toLowerCase();
-                $('.tag-list .custom-dropdown-item').each(function() {
+                const tagList = $(this).closest('.custom-dropdown-content').find('.tag-list');
+                const allTagsOption = tagList.find('.custom-dropdown-item[data-tag=""]');
+                
+                tagList.find('.custom-dropdown-item').not(allTagsOption).each(function() {
                     const tag = $(this).text().toLowerCase();
                     $(this).toggle(tag.includes(searchTerm));
                 });
+                
+                // Always show "All Tags" option
+                allTagsOption.show();
             });
 
             // Tag selection
             $('.tag-list .custom-dropdown-item').on('click', function() {
                 const selectedTag = $(this).data('tag');
-                $('.tag-list .custom-dropdown-item').removeClass('active');
+                const dropdown = $(this).closest('.custom-dropdown');
+                
+                // Update only the clicked dropdown's toggle text
+                dropdown.find('.custom-dropdown-toggle span').text($(this).text());
+                
+                // Update active state only within this dropdown
+                dropdown.find('.custom-dropdown-item').removeClass('active');
                 $(this).addClass('active');
-                $('.custom-dropdown-toggle').first().find('span').text($(this).text());
-                $('.custom-dropdown-content').first().removeClass('show');
+                
+                dropdown.find('.custom-dropdown-content').removeClass('show');
                 
                 // Filter posts
                 $('.post-card').each(function() {
@@ -311,10 +328,16 @@
             // Sort selection
             $('.custom-dropdown-content:last-child .custom-dropdown-item').on('click', function() {
                 const sortBy = $(this).data('sort');
-                $('.custom-dropdown-content:last-child .custom-dropdown-item').removeClass('active');
+                const dropdown = $(this).closest('.custom-dropdown');
+                
+                // Update only the clicked dropdown's toggle text
+                dropdown.find('.custom-dropdown-toggle span').text($(this).text());
+                
+                // Update active state only within this dropdown
+                dropdown.find('.custom-dropdown-item').removeClass('active');
                 $(this).addClass('active');
-                $('.custom-dropdown-toggle').last().find('span').text($(this).text());
-                $('.custom-dropdown-content').last().removeClass('show');
+                
+                dropdown.find('.custom-dropdown-content').removeClass('show');
                 
                 // Sort posts
                 const posts = $('.post-card').toArray();

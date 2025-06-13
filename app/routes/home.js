@@ -5,6 +5,7 @@ const path = require('path');
 const User = require('../models/User');
 const { connectUsers } = require('../services/users/connectUsers');
 const { rejectConnection } = require('../services/users/rejectConnection');
+const { removeConnection } = require('../services/users/removeConnection');
 
 function formatTimeAgo(date) {
     const seconds = Math.floor((new Date() - new Date(date)) / 1000);
@@ -46,9 +47,9 @@ router.get("/", async (req, res) => {
             if(!user) res.redirect('/authenticate');
             //fetch all most recently viewed users and sort them from most recently viewed to least recently viewed
             const recentlyViewedUsers = user.recentlyViewedUsers.sort((a, b) => b.viewedAt - a.viewedAt);
-            console.log(recentlyViewedUsers);
             //fetch all connections and sort them from most recently connected to least recently connected
             const connections = user.connections.sort((a, b) => b.viewedAt - a.viewedAt);
+            console.log(connections);
             //fetch all inbound connections (requests to connect from other users) and sort them from most recently connected to least recently connected
             const connectionRequests = user.inBoundConnections.sort((a, b) => b.viewedAt - a.viewedAt);
             res.render(path.join(__dirname, '../views', 'home.ejs'), {
@@ -72,5 +73,6 @@ router.get("/", async (req, res) => {
 
 router.post('/accept-connection/:username', connectUsers);
 router.post('/reject-connection/:username', rejectConnection);
+router.post('/remove-connection/:username', removeConnection);
 
 module.exports = router;

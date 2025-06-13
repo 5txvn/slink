@@ -32,6 +32,7 @@
             line-height: 1.2;
         }
         .dot-pattern {
+            background-attachment: fixed;
             background-image: radial-gradient(rgba(96, 34, 52, 0.5) 1px, transparent 1px);
             background-size: 20px 20px;
             background-color: #ffffff;
@@ -155,7 +156,7 @@
             <!-- Welcome Section -->
             <div class="bg-white rounded-xl p-8 shadow-lg mb-12">
                 <div class="flex items-center mb-8">
-                    <h1 class="text-4xl sm:text-5xl xl:text-6xl 2xl:text-7xl leading-normal font-bold gradient-text bg-clip-text pb-2">Welcome, <%= name %></h1>
+                    <h1 class="text-4xl sm:text-5xl xl:text-6xl 2xl:text-7xl leading-tight font-bold gradient-text pb-4">Welcome, <%= name %></h1>
                 </div>
                 <p class="text-gray-600 text-lg xl:text-xl 2xl:text-2xl mb-6">
                     Connect with fellow alumni, share your experiences, and stay updated with the latest news and opportunities.
@@ -224,7 +225,7 @@
                 </div>
                 <div class="connection-requests-content space-y-6">
                     <% connectionRequests.forEach(request => { %>
-                        <div class="connection-card bg-white rounded-xl p-6 shadow-lg">
+                        <div class="connection-card bg-white rounded-xl p-6 shadow-lg cursor-pointer" onclick="window.location.href='/user/<%= request.user.username %>'">
                             <div class="flex items-center justify-between">
                                 <div class="flex items-center">
                                     <div class="w-16 h-16 rounded-full bg-[#602234] flex items-center justify-center text-white text-2xl mr-6">
@@ -235,14 +236,14 @@
                                         <p class="text-gray-600 text-lg"><%= request.user.school %></p>
                                     </div>
                                 </div>
-                                <div class="flex items-center space-x-4">
+                                <div class="flex items-center space-x-4" onclick="event.stopPropagation();">
                                     <form action="/accept-connection/<%= request.user.username %>" method="POST" class="inline">
-                                        <button type="submit" class="bg-[#602234] hover:bg-[#4a1a28] text-white font-semibold py-2 px-4 rounded-lg transition-colors">
+                                        <button type="submit" class="bg-[#602234] hover:bg-[#4a1a28] text-white font-semibold py-3 px-6 rounded-lg transition-colors text-lg">
                                             Accept
                                         </button>
                                     </form>
                                     <form action="/reject-connection/<%= request.user.username %>" method="POST" class="inline">
-                                        <button type="submit" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded-lg transition-colors">
+                                        <button type="submit" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-3 px-6 rounded-lg transition-colors text-lg">
                                             Reject
                                         </button>
                                     </form>
@@ -314,18 +315,21 @@
                                 <div class="flex items-center justify-between">
                                     <div class="flex items-center">
                                         <div class="w-16 h-16 rounded-full bg-[#602234] flex items-center justify-center text-white text-2xl mr-6">
-                                            <%= connection.name.split(' ').map(n => n[0]).join('') %>
+                                            <%= connection.user.name.split(' ').map(n => n[0]).join('') %>
                                         </div>
                                         <div>
-                                            <h3 class="text-xl font-semibold text-gray-800"><%= connection.name %></h3>
-                                            <p class="text-gray-600 text-lg"><%= connection.school %></p>
+                                            <h3 class="text-xl font-semibold text-gray-800"><%= connection.user.name %></h3>
+                                            <p class="text-gray-600 text-lg"><%= connection.user.school %></p>
                                         </div>
                                     </div>
                                     <div class="flex items-center space-x-6">
-                                        <span class="text-sm text-gray-500">Connected: <%= formatTimeAgo(connection.connectedAt) %></span>
-                                        <a href="/messages/<%= connection.username %>" class="text-[#602234] hover:text-[#4a1a28] transition-colors">
-                                            <i class="fas fa-comment text-xl"></i>
+                                        <span class="text-sm text-gray-500">Connected: <%= formatTimeAgo(connection.createdAt) %></span>
+                                        <a href="/user/<%= connection.username %>" class="text-[#602234] hover:text-[#4a1a28] transition-colors">
+                                            <i class="fas fa-eye text-xl"></i>
                                         </a>
+                                        <button onclick="showRemoveConnectionModal('<%= connection.username %>')" class="text-black hover:text-gray-700 transition-colors">
+                                            <i class="fas fa-trash text-xl"></i>
+                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -415,6 +419,27 @@
         </div>
     </div>
 
+    <!-- Remove Connection Modal -->
+    <div id="removeConnectionModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-12 max-w-2xl w-full mx-4 relative">
+            <button onclick="hideRemoveConnectionModal()" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 transition-colors">
+                <i class="fas fa-times text-2xl"></i>
+            </button>
+            <h3 class="text-3xl font-bold text-gray-800 mb-6">Remove Connection</h3>
+            <p class="text-xl text-gray-600 mb-8">Are you sure you want to remove this connection?</p>
+            <div class="flex justify-end space-x-6">
+                <button onclick="hideRemoveConnectionModal()" class="px-6 py-3 text-gray-600 hover:text-gray-800 transition-colors bg-gray-100 rounded-lg">
+                    Cancel
+                </button>
+                <form id="removeConnectionForm" method="POST">
+                    <button type="submit" class="bg-[#602234] text-white px-6 py-3 rounded-lg hover:bg-[#4a1a28] transition-colors">
+                        Remove
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <script type="module">
         import Navbar from '../../components/navbar.js';
         
@@ -441,6 +466,29 @@
                 });
             });
         });
+    </script>
+
+    <script>
+    function showRemoveConnectionModal(username) {
+        const modal = document.getElementById('removeConnectionModal');
+        const form = document.getElementById('removeConnectionForm');
+        form.action = `/remove-connection/${username}`;
+        modal.classList.remove('hidden');
+        modal.classList.add('flex');
+    }
+
+    function hideRemoveConnectionModal() {
+        const modal = document.getElementById('removeConnectionModal');
+        modal.classList.add('hidden');
+        modal.classList.remove('flex');
+    }
+
+    // Close modal when clicking outside
+    document.getElementById('removeConnectionModal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            hideRemoveConnectionModal();
+        }
+    });
     </script>
 </body>
 </html> 

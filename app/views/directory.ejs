@@ -416,6 +416,104 @@
         .modal-content.nice-modal::-webkit-scrollbar, .modal-content.neumorphic::-webkit-scrollbar {
             display: none;
         }
+        .column-toggle {
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 0.375rem;
+            border: 2px solid #602234;
+            appearance: none;
+            -webkit-appearance: none;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.2s ease;
+        }
+        .column-toggle:checked {
+            background-color: #602234;
+        }
+        .column-toggle:checked::after {
+            content: '✓';
+            position: absolute;
+            color: white;
+            font-size: 1rem;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        .column-toggle:nth-child(odd) {
+            border-color: #000;
+        }
+        .column-toggle:nth-child(odd):checked {
+            background-color: #000;
+        }
+        .column-label {
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: #333;
+            margin-left: 0.75rem;
+        }
+        .filter-card {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.5rem 1rem;
+            border-radius: 9999px;
+            margin: 0.5rem;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: white;
+        }
+        .filter-card:nth-child(odd) {
+            background-color: #602234;
+        }
+        .filter-card:nth-child(even) {
+            background-color: #000;
+        }
+        .filter-card .close {
+            margin-left: 0.75rem;
+            cursor: pointer;
+            font-size: 1.1rem;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+        .filter-card .close:hover {
+            opacity: 1;
+        }
+        .custom-dropdown-options {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #e5e7eb;
+            border-radius: 0.5rem;
+            margin-top: 0.25rem;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 50;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+        .custom-dropdown-option {
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .custom-dropdown-option:hover {
+            background-color: #602234;
+            color: white;
+        }
+        .modal-close-btn {
+            position: absolute;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            padding: 0.75rem 1.5rem;
+            background-color: #602234;
+            color: white;
+            border-radius: 0.5rem;
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+        .modal-close-btn:hover {
+            background-color: #4a1a28;
+        }
     </style>
 </head>
 <body class="min-h-screen flex flex-col dot-pattern">
@@ -441,6 +539,8 @@
                         </button>
                     </div>
                 </div>
+                <!-- Active Filters -->
+                <div id="activeFilters" class="flex flex-wrap mt-4"></div>
             </div>
 
             <!-- Directory Table -->
@@ -459,6 +559,12 @@
                                     <div class="flex items-center">
                                         <i class="fas fa-graduation-cap text-black mr-2"></i>
                                         School
+                                    </div>
+                                </th>
+                                <th class="text-left py-4 px-6">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-calendar text-[#602234] mr-2"></i>
+                                        Graduation Year
                                     </div>
                                 </th>
                                 <th class="text-left py-4 px-6">
@@ -502,16 +608,17 @@
                                                 <%= alum.name.split(' ').map(n => n[0]).join('') %>
                                             </div>
                                             <div>
-                                                <div class="font-semibold text-gray-800"><%= alum.name %></div>
+                                                <a href="/user/<%= alum.username %>" class="font-semibold text-gray-800 hover:text-[#602234] transition-colors"><%= alum.name %></a>
                                                 <div class="text-sm text-gray-500">@<%= alum.username %></div>
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="py-4 px-6 text-gray-600"><%= alum.school %></td>
-                                    <td class="py-4 px-6 text-gray-600"><%= alum.major %></td>
-                                    <td class="py-4 px-6 text-gray-600"><%= alum.currentPosition %></td>
-                                    <td class="py-4 px-6 text-gray-600"><%= alum.company %></td>
-                                    <td class="py-4 px-6 text-gray-600"><%= alum.location %></td>
+                                    <td class="py-4 px-6 text-gray-600 clickable" data-filter="school"><%= alum.school || 'n/a' %></td>
+                                    <td class="py-4 px-6 text-gray-600 clickable" data-filter="graduationYear"><%= alum.graduationYear || 'n/a' %></td>
+                                    <td class="py-4 px-6 text-gray-600 clickable" data-filter="major"><%= alum.major || 'n/a' %></td>
+                                    <td class="py-4 px-6 text-gray-600 clickable" data-filter="currentPosition"><%= alum.currentPosition || 'n/a' %></td>
+                                    <td class="py-4 px-6 text-gray-600 clickable" data-filter="company"><%= alum.company || 'n/a' %></td>
+                                    <td class="py-4 px-6 text-gray-600 clickable" data-filter="location"><%= alum.location || 'n/a' %></td>
                                     <td class="py-4 px-6">
                                         <div class="flex items-center space-x-4">
                                             <a href="/user/<%= alum.username %>" class="text-[#602234] hover:text-[#4a1a28] transition-colors">
@@ -530,31 +637,112 @@
 
     <!-- Filter Modal -->
     <div id="filterModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white rounded-xl p-8 w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2 max-h-[90vh] overflow-y-auto flex flex-col items-center justify-center">
-            <div class="flex justify-between items-center mb-6 w-full">
+        <div class="bg-white rounded-xl p-8 w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2 max-h-[90vh] overflow-y-auto relative">
+            <div class="flex justify-between items-center mb-6">
                 <h2 class="text-2xl font-bold text-[#602234]">Filter Alumni</h2>
                 <button id="closeFilterModal" class="text-gray-500 hover:text-gray-700">
                     <i class="fas fa-times text-xl"></i>
                 </button>
             </div>
-            <div class="space-y-6 w-full">
-                <!-- Filter options here -->
+            <div class="space-y-6">
+                <!-- School Filter -->
+                <div class="filter-group relative">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">School</label>
+                    <div class="custom-dropdown">
+                        <input type="text" class="filter-search w-full px-3 py-2 border border-gray-300 rounded-lg" placeholder="Search schools...">
+                        <div class="custom-dropdown-options hidden"></div>
+                    </div>
+                </div>
+
+                <!-- Graduation Year Filter -->
+                <div class="filter-group relative">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Graduation Year</label>
+                    <div class="custom-dropdown">
+                        <input type="text" class="filter-search w-full px-3 py-2 border border-gray-300 rounded-lg" placeholder="Search years...">
+                        <div class="custom-dropdown-options hidden"></div>
+                    </div>
+                </div>
+
+                <!-- Major Filter -->
+                <div class="filter-group relative">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Major</label>
+                    <div class="custom-dropdown">
+                        <input type="text" class="filter-search w-full px-3 py-2 border border-gray-300 rounded-lg" placeholder="Search majors...">
+                        <div class="custom-dropdown-options hidden"></div>
+                    </div>
+                </div>
+
+                <!-- Position Filter -->
+                <div class="filter-group relative">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Position</label>
+                    <div class="custom-dropdown">
+                        <input type="text" class="filter-search w-full px-3 py-2 border border-gray-300 rounded-lg" placeholder="Search positions...">
+                        <div class="custom-dropdown-options hidden"></div>
+                    </div>
+                </div>
+
+                <!-- Company Filter -->
+                <div class="filter-group relative">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Company</label>
+                    <div class="custom-dropdown">
+                        <input type="text" class="filter-search w-full px-3 py-2 border border-gray-300 rounded-lg" placeholder="Search companies...">
+                        <div class="custom-dropdown-options hidden"></div>
+                    </div>
+                </div>
+
+                <!-- Location Filter -->
+                <div class="filter-group relative">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Location</label>
+                    <div class="custom-dropdown">
+                        <input type="text" class="filter-search w-full px-3 py-2 border border-gray-300 rounded-lg" placeholder="Search locations...">
+                        <div class="custom-dropdown-options hidden"></div>
+                    </div>
+                </div>
             </div>
+            <button class="modal-close-btn">Close</button>
         </div>
     </div>
 
     <!-- Columns Modal -->
     <div id="columnsModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
-        <div class="bg-white rounded-xl p-8 w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2 max-h-[90vh] overflow-y-auto flex flex-col items-center justify-center">
-            <div class="flex justify-between items-center mb-6 w-full">
+        <div class="bg-white rounded-xl p-8 w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2 max-h-[90vh] overflow-y-auto relative">
+            <div class="flex justify-between items-center mb-6">
                 <h2 class="text-2xl font-bold text-[#602234]">Customize Columns</h2>
                 <button id="closeColumnsModal" class="text-gray-500 hover:text-gray-700">
                     <i class="fas fa-times text-xl"></i>
                 </button>
             </div>
-            <div class="space-y-6 w-full">
-                <!-- Column options here -->
+            <div class="space-y-4">
+                <div class="flex items-center">
+                    <input type="checkbox" id="colName" class="column-toggle" checked>
+                    <label for="colName" class="column-label">Name</label>
+                </div>
+                <div class="flex items-center">
+                    <input type="checkbox" id="colSchool" class="column-toggle" checked>
+                    <label for="colSchool" class="column-label">School</label>
+                </div>
+                <div class="flex items-center">
+                    <input type="checkbox" id="colGradYear" class="column-toggle" checked>
+                    <label for="colGradYear" class="column-label">Graduation Year</label>
+                </div>
+                <div class="flex items-center">
+                    <input type="checkbox" id="colMajor" class="column-toggle" checked>
+                    <label for="colMajor" class="column-label">Major</label>
+                </div>
+                <div class="flex items-center">
+                    <input type="checkbox" id="colPosition" class="column-toggle" checked>
+                    <label for="colPosition" class="column-label">Position</label>
+                </div>
+                <div class="flex items-center">
+                    <input type="checkbox" id="colCompany" class="column-toggle" checked>
+                    <label for="colCompany" class="column-label">Company</label>
+                </div>
+                <div class="flex items-center">
+                    <input type="checkbox" id="colLocation" class="column-toggle" checked>
+                    <label for="colLocation" class="column-label">Location</label>
+                </div>
             </div>
+            <button class="modal-close-btn">Close</button>
         </div>
     </div>
 
@@ -566,43 +754,188 @@
         document.getElementById('navbar-container').innerHTML = navbar.render();
         navbar.init();
 
-        // Modal functionality (jQuery version for better compatibility)
-        $(function() {
-            $('#filterBtn').on('click', function() {
-                $('#filterModal').removeClass('hidden').addClass('flex');
-            });
-            $('#columnsBtn').on('click', function() {
-                $('#columnsModal').removeClass('hidden').addClass('flex');
-            });
-            $('#closeFilterModal').on('click', function() {
-                $('#filterModal').addClass('hidden').removeClass('flex');
-            });
-            $('#closeColumnsModal').on('click', function() {
-                $('#columnsModal').addClass('hidden').removeClass('flex');
-            });
-            // Close modals when clicking outside
-            $('#filterModal').on('click', function(e) {
-                if (e.target === this) {
-                    $(this).addClass('hidden').removeClass('flex');
-                }
-            });
-            $('#columnsModal').on('click', function(e) {
-                if (e.target === this) {
-                    $(this).addClass('hidden').removeClass('flex');
-                }
-            });
-        });
+        $(document).ready(function() {
+            // Load column preferences from localStorage
+            function loadColumnPreferences() {
+                const columns = ['Name', 'School', 'GradYear', 'Major', 'Position', 'Company', 'Location'];
+                columns.forEach(column => {
+                    const isVisible = localStorage.getItem(`col${column}`) !== 'false';
+                    $(`#col${column}`).prop('checked', isVisible);
+                    const columnIndex = $(`th:contains('${column}')`).index();
+                    $(`td:nth-child(${columnIndex + 1}), th:nth-child(${columnIndex + 1})`).toggle(isVisible);
+                });
+            }
 
-        // Search functionality
-        const searchInput = document.getElementById('searchInput');
-        searchInput.addEventListener('input', (e) => {
-            const searchTerm = e.target.value.toLowerCase();
-            const rows = document.querySelectorAll('tbody tr');
-            
-            rows.forEach(row => {
-                const text = row.textContent.toLowerCase();
-                row.style.display = text.includes(searchTerm) ? '' : 'none';
+            // Save column preferences to localStorage
+            function saveColumnPreferences() {
+                $('.column-toggle').each(function() {
+                    localStorage.setItem($(this).attr('id'), $(this).prop('checked'));
+                });
+            }
+
+            // Initialize column preferences
+            loadColumnPreferences();
+
+            // Column toggle functionality
+            $('.column-toggle').on('change', function() {
+                const columnId = $(this).attr('id');
+                const columnIndex = columnId.replace('col', '').toLowerCase();
+                const column = $(`th:contains('${columnIndex.charAt(0).toUpperCase() + columnIndex.slice(1)}')`).index();
+                
+                $('td:nth-child(' + (column + 1) + ')').toggle(this.checked);
+                $('th:nth-child(' + (column + 1) + ')').toggle(this.checked);
+                
+                saveColumnPreferences();
             });
+
+            // Initialize filter options
+            function initializeFilterOptions() {
+                const columns = ['school', 'graduationYear', 'major', 'currentPosition', 'company', 'location'];
+                columns.forEach(column => {
+                    const uniqueValues = new Set();
+                    $(`td[data-filter="${column}"]`).each(function() {
+                        const value = $(this).text().trim();
+                        if (value !== 'n/a') {
+                            uniqueValues.add(value);
+                        }
+                    });
+                    
+                    const options = Array.from(uniqueValues).sort();
+                    const filterGroup = $(`.filter-group:has(label:contains('${column.charAt(0).toUpperCase() + column.slice(1)}'))`);
+                    const optionsContainer = filterGroup.find('.custom-dropdown-options');
+                    
+                    optionsContainer.empty();
+                    options.forEach(option => {
+                        optionsContainer.append(`
+                            <div class="custom-dropdown-option" data-value="${option}">
+                                ${option}
+                            </div>
+                        `);
+                    });
+                });
+            }
+
+            // Initialize filter options on page load
+            initializeFilterOptions();
+
+            // Filter search functionality
+            $('.filter-search').on('input', function() {
+                const searchTerm = $(this).val().toLowerCase();
+                const options = $(this).siblings('.custom-dropdown-options');
+                const optionsList = options.find('.custom-dropdown-option');
+                
+                optionsList.each(function() {
+                    const text = $(this).text().toLowerCase();
+                    $(this).toggle(text.includes(searchTerm));
+                });
+                
+                options.toggleClass('hidden', !searchTerm);
+            });
+
+            // Close dropdowns when clicking outside
+            $(document).on('click', function(e) {
+                if (!$(e.target).closest('.custom-dropdown').length) {
+                    $('.custom-dropdown-options').addClass('hidden');
+                }
+            });
+
+            // Apply filter when clicking on option
+            $('.custom-dropdown-option').on('click', function() {
+                const value = $(this).data('value');
+                const column = $(this).closest('.filter-group').find('label').text().toLowerCase();
+                const filterId = `${column}-${value}`;
+                
+                if (!$(`#filter-${filterId}`).length) {
+                    $('#activeFilters').append(`
+                        <div id="filter-${filterId}" class="filter-card">
+                            ${column}: ${value}
+                            <span class="close" data-column="${column}" data-value="${value}">×</span>
+                        </div>
+                    `);
+                }
+                
+                $(this).closest('.custom-dropdown-options').addClass('hidden');
+                $(this).closest('.filter-group').find('input').val('');
+                
+                applyFilters();
+            });
+
+            // Remove filter when clicking close button
+            $('#activeFilters').on('click', '.close', function() {
+                $(this).parent().remove();
+                applyFilters();
+            });
+
+            // Apply all active filters
+            function applyFilters() {
+                const filters = {};
+                $('.filter-card').each(function() {
+                    const column = $(this).find('.close').data('column');
+                    const value = $(this).find('.close').data('value');
+                    if (!filters[column]) {
+                        filters[column] = new Set();
+                    }
+                    filters[column].add(value);
+                });
+
+                $('tbody tr').each(function() {
+                    let show = true;
+                    for (const [column, values] of Object.entries(filters)) {
+                        const cellValue = $(this).find(`td[data-filter="${column}"]`).text().trim();
+                        if (!values.has(cellValue)) {
+                            show = false;
+                            break;
+                        }
+                    }
+                    $(this).toggle(show);
+                });
+            }
+
+            // Modal close buttons
+            $('.modal-close-btn').on('click', function() {
+                $(this).closest('.fixed').addClass('hidden').removeClass('flex');
+            });
+
+            // Clickable cell filter functionality
+            $('td[data-filter]').on('click', function() {
+                const column = $(this).data('filter');
+                const value = $(this).text().trim();
+                
+                if (value !== 'n/a') {
+                    const filterId = `${column}-${value}`;
+                    if (!$(`#filter-${filterId}`).length) {
+                        $('#activeFilters').append(`
+                            <div id="filter-${filterId}" class="filter-card">
+                                ${column}: ${value}
+                                <span class="close" data-column="${column}" data-value="${value}">×</span>
+                            </div>
+                        `);
+                        applyFilters();
+                    }
+                }
+            });
+
+            // Sort users with missing school or graduation year to bottom
+            function sortUsers() {
+                const rows = $('tbody tr').toArray();
+                rows.sort((a, b) => {
+                    const aSchool = $(a).find('td[data-filter="school"]').text().trim();
+                    const bSchool = $(b).find('td[data-filter="school"]').text().trim();
+                    const aYear = $(a).find('td[data-filter="graduationYear"]').text().trim();
+                    const bYear = $(b).find('td[data-filter="graduationYear"]').text().trim();
+                    
+                    if (aSchool === 'n/a' && bSchool !== 'n/a') return 1;
+                    if (aSchool !== 'n/a' && bSchool === 'n/a') return -1;
+                    if (aYear === 'n/a' && bYear !== 'n/a') return 1;
+                    if (aYear !== 'n/a' && bYear === 'n/a') return -1;
+                    return 0;
+                });
+                
+                $('tbody').append(rows);
+            }
+
+            // Sort users on page load
+            sortUsers();
         });
     </script>
 </body>

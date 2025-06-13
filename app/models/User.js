@@ -137,7 +137,7 @@ const userSchema = new mongoose.Schema({
                 ref: 'User',
                 required: true
             },
-            viewedAt: {
+            connectedAt: {
                 type: Date,
                 default: Date.now
             }
