@@ -31,14 +31,14 @@ exports.editUser = async (req, res) => {
                 runValidators: true
             }
         );
-        res.status(200).render(path.join(__dirname, '../../views/utils/status.ejs'), {
+        res.status(200).render(path.join(__dirname, '../views/utils/status.ejs'), {
             status: 'success',
             title: 'Profile Updated',
             message: 'Your profile has been updated successfully.',
             redirectUrl: '/profile'
         });
     } catch (error) {
-        res.status(500).render(path.join(__dirname, '../../views/utils/status.ejs'), {
+        res.status(500).render(path.join(__dirname, '../views/utils/status.ejs'), {
             status: 'error',
             title: 'Internal Server Error',
             message: 'An error occurred while updating your profile, please try again later.',
