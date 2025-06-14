@@ -6,6 +6,7 @@ const User = require('../models/User');
 const { connectUsers } = require('../services/users/connectUsers');
 const { rejectConnection } = require('../services/users/rejectConnection');
 const { removeConnection } = require('../services/users/removeConnection');
+const { cancelOutgoingConnection } = require('../services/users/cancelOutgoingConnection');
 
 function formatTimeAgo(date) {
     const seconds = Math.floor((new Date() - new Date(date)) / 1000);
@@ -43,20 +44,18 @@ router.get("/", async (req, res) => {
         });
     } else {
         try {
-            const user = await User.findOne({ username: req.session.username }).populate('recentlyViewedUsers.user').populate('connections.user').populate('inBoundConnections.user');
+            const user = await User.findOne({ username: req.session.username }).populate('recentlyViewedUsers.user').populate('connections.user').populate('inBoundConnections.user').populate('outBoundConnections.user');
             if(!user) res.redirect('/authenticate');
             //fetch all most recently viewed users and sort them from most recently viewed to least recently viewed
             const recentlyViewedUsers = user.recentlyViewedUsers.sort((a, b) => b.viewedAt - a.viewedAt);
             //fetch all connections and sort them from most recently connected to least recently connected
             const connections = user.connections.sort((a, b) => b.viewedAt - a.viewedAt);
-            console.log(connections);
-            //fetch all inbound connections (requests to connect from other users) and sort them from most recently connected to least recently connected
-            const connectionRequests = user.inBoundConnections.sort((a, b) => b.viewedAt - a.viewedAt);
             res.render(path.join(__dirname, '../views', 'home.ejs'), {
                 name: user.name,
                 recentlyViewedUsers,
                 connections,
-                connectionRequests,
+                connectionRequests: user.inBoundConnections,
+                outgoingConnections: user.outBoundConnections,
                 formatTimeAgo
             });
         } catch(error) {
@@ -74,5 +73,6 @@ router.get("/", async (req, res) => {
 router.post('/accept-connection/:username', connectUsers);
 router.post('/reject-connection/:username', rejectConnection);
 router.post('/remove-connection/:username', removeConnection);
+router.post('/cancel-connection/:username', cancelOutgoingConnection);
 
 module.exports = router;

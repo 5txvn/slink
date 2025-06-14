@@ -17,6 +17,12 @@
         body::-webkit-scrollbar {
             display: none;
         }
+        .dot-pattern {
+            background-attachment: fixed;
+            background-image: radial-gradient(rgba(96, 34, 52, 0.5) 1px, transparent 1px);
+            background-size: 20px 20px;
+            background-color: #ffffff;
+        }
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(-20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -33,7 +39,7 @@
         }
     </style>
 </head>
-<body class="bg-gradient-to-br from-gray-50 to-gray-100 min-h-screen flex items-center justify-center p-4">
+<body class="dot-pattern min-h-screen flex items-center justify-center p-4">
     <div class="max-w-md w-full">
         <!-- Status Card -->
         <div class="bg-white rounded-2xl shadow-xl p-8 animate-fade-in">

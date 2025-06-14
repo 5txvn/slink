@@ -1,9 +1,8 @@
-//import modules
 const User = require('../models/User');
 const path = require('path');
 
 exports.editUser = async (req, res) => {
-    const { name, bio, school, major, graduationYear, currentPosition, company, location } = req.body;
+    const { name, bio, school, major, graduationYear, currentPosition, company, location, linkedin, twitter, instagram, reddit, discord, website } = req.body;
     try {
         const user = await User.findOneAndUpdate(
             { username: req.session.username },
@@ -16,7 +15,15 @@ exports.editUser = async (req, res) => {
                     graduationYear: parseInt(graduationYear),
                     currentPosition,
                     company,
-                    location
+                    location,
+                    socialLinks: {
+                        linkedin,
+                        twitter,
+                        instagram,
+                        reddit,
+                        discord,
+                        website
+                    }
                 }
             },
             {
@@ -24,12 +31,18 @@ exports.editUser = async (req, res) => {
                 runValidators: true
             }
         );
-        res.redirect('/profile');
+        res.status(200).render(path.join(__dirname, '../../views/utils/status.ejs'), {
+            status: 'success',
+            title: 'Profile Updated',
+            message: 'Your profile has been updated successfully.',
+            redirectUrl: '/profile'
+        });
     } catch (error) {
-        return res.status(500).render(path.join(__dirname, '../views', 'error.ejs'), {
-            title: "Server error occured",
-            message: `Error message: ${error.message}`,
-            redirectUrl: "/profile"
+        res.status(500).render(path.join(__dirname, '../../views/utils/status.ejs'), {
+            status: 'error',
+            title: 'Internal Server Error',
+            message: 'An error occurred while updating your profile, please try again later.',
+            redirectUrl: '/profile'
         });
     }
 };

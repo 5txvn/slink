@@ -25,9 +25,9 @@ class Navbar {
                                 <i class="fas fa-comments"></i>
                                 <span>Forum</span>
                             </a>
-                            <a href="/site-directory" class="nav-link flex items-center space-x-2 font-semibold text-lg text-white hover:text-gray-200">
-                                <i class="fas fa-sitemap"></i>
-                                <span>Site Directory</span>
+                            <a href="/profile" class="nav-link flex items-center space-x-2 font-semibold text-lg text-white hover:text-gray-200">
+                                <i class="fas fa-user"></i>
+                                <span>Profile</span>
                             </a>
                             <a href="/logout" class="nav-link flex items-center space-x-2 font-semibold text-lg text-white hover:text-gray-200">
                                 <i class="fas fa-sign-out-alt"></i>
@@ -52,12 +52,13 @@ class Navbar {
                             <i class="fas fa-comments"></i>
                             <span>Forum</span>
                         </a>
-                        <a href="/site-directory" class="nav-link flex items-center space-x-2 font-semibold text-lg text-white hover:text-gray-200 p-2">
-                            <i class="fas fa-sitemap"></i>
-                            <span>Site Directory</span>
+                        <a href="/profile" class="nav-link flex items-center space-x-2 font-semibold text-lg text-white hover:text-gray-200 p-2">
+                            <i class="fas fa-user"></i>
+                            <span>Profile</span>
                         </a>
                         <a href="/logout" class="nav-link flex items-center space-x-2 font-semibold text-lg text-white hover:text-gray-200 p-2">
                             <i class="fas fa-sign-out-alt"></i>
+                            <span>Log Out</span>
                         </a>
                     </div>
                 </div>

@@ -20,6 +20,7 @@
             display: none;
         }
         .dot-pattern {
+            background-attachment: fixed;
             background-image: radial-gradient(rgba(96, 34, 52, 0.5) 1px, transparent 1px);
             background-size: 20px 20px;
             background-color: #ffffff;
@@ -77,48 +78,51 @@
             <!-- Post Content -->
             <div class="bg-white rounded-xl p-6 shadow-lg mb-6">
                 <div class="flex items-start justify-between mb-4">
-                    <div class="flex items-center">
-                        <div class="w-10 h-10 rounded-full bg-[#602234] mr-3 flex items-center justify-center">
-                            <i class="fas fa-user text-white text-xl"></i>
+                    <div class="flex-1">
+                        <h1 class="text-3xl font-bold text-[#602234] mb-6"><%= post.title %></h1>
+                        <div class="flex items-center mb-6">
+                            <div class="w-10 h-10 rounded-full bg-[#602234] mr-3 flex items-center justify-center">
+                                <i class="fas fa-user text-white text-xl"></i>
+                            </div>
+                            <div>
+                                <a href="/user/<%= post.author.username %>" class="font-semibold text-gray-800 hover:text-[#602234] transition-colors"><%= post.author.username %></a>
+                                <p class="text-sm text-gray-500"><%= new Date(post.createdAt).toLocaleString() %></p>
+                            </div>
                         </div>
-                        <div>
-                            <a href="/user/<%= post.author.username %>" class="font-semibold text-gray-800 hover:text-[#602234] transition-colors"><%= post.author.username %></a>
-                            <p class="text-sm text-gray-500"><%= new Date(post.createdAt).toLocaleString() %></p>
-                        </div>
+                        <% if (post.tags && post.tags.length > 0) { %>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                <% post.tags.forEach(tag => { %>
+                                    <span class="tag-card text-base px-4 py-2"><%= tag.trim() %></span>
+                                <% }); %>
+                            </div>
+                        <% } %>
                     </div>
-                    <div class="flex flex-col items-end space-y-2">
-                        <% if (post.author.username === currentUser) { %>
-                            <a href="/edit-post/<%= post._id %>" class="text-[#602234] hover:text-[#4a1a28] transition-colors">
-                                <i class="fas fa-pencil-alt text-xl"></i>
-                            </a>
-                            <button onclick="showDeletePostModal()" class="text-gray-500 hover:text-red-600 transition-colors">
-                                <i class="fas fa-trash text-xl"></i>
+                    <div class="flex flex-col items-end space-y-6">
+                        <div class="flex items-center space-x-4">
+                            <button id="upvoteBtn" class="text-green-500 hover:text-green-600 transition-colors duration-300">
+                                <i class="fas fa-arrow-up text-2xl font-semibold"></i>
+                                <span class="text-lg font-bold" id="upvoteCount"><%= post.upvotes.length %></span>
                             </button>
+                            <button id="downvoteBtn" class="text-red-500 hover:text-red-600 transition-colors duration-300">
+                                <i class="fas fa-arrow-down text-2xl font-semibold"></i>
+                                <span class="text-lg font-bold" id="downvoteCount"><%= post.downvotes.length %></span>
+                            </button>
+                        </div>
+                        <% if (post.author.username === currentUser) { %>
+                            <div class="flex space-x-4">
+                                <a href="/edit-post/<%= post._id %>" class="bg-[#602234] rounded-full hover:bg-[#4a1a28] text-white transition-colors mr-1 w-[30px] h-[30px] flex justify-center items-center">
+                                    <i class="fas fa-pencil-alt text-white"></i>
+                                </a>
+                                <button onclick="showDeletePostModal()" class="bg-gray-800 hover:bg-black rounded-full text-white transition-colors w-[30px] h-[30px] flex justify-center items-center">
+                                    <i class="fas fa-trash text-white"></i>
+                                </button>
+                            </div>
                         <% } %>
                     </div>
                 </div>
-                <div class="flex items-center space-x-4">
-                    <button id="upvoteBtn" class="text-green-500 hover:text-green-600 transition-colors duration-300">
-                        <i class="fas fa-arrow-up text-2xl font-semibold"></i>
-                        <span class="text-lg font-bold" id="upvoteCount"><%= post.upvotes.length %></span>
-                    </button>
-                    <button id="downvoteBtn" class="text-red-500 hover:text-red-600 transition-colors duration-300">
-                        <i class="fas fa-arrow-down text-2xl font-semibold"></i>
-                        <span class="text-lg font-bold" id="downvoteCount"><%= post.downvotes.length %></span>
-                    </button>
-                </div>
                 
-                <div class="prose max-w-none mb-6 mt-8">
+                <div class="prose max-w-none mb-6">
                     <%- post.content %>
-                </div>
-
-                <div class="border-t border-gray-200 pt-4 mb-6">
-                    <h3 class="text-lg font-semibold text-[#602234] mb-4">Tags</h3>
-                    <div class="flex flex-wrap gap-2">
-                        <% post.tags.forEach(tag => { %>
-                            <span class="tag-card text-base px-4 py-2"><%= tag.trim() %></span>
-                        <% }); %>
-                    </div>
                 </div>
 
                 <div class="border-t border-gray-200 pt-4">
@@ -137,9 +141,8 @@
                                     <i class="fas fa-underline"></i>
                                 </button>
                             </div>
-                            <textarea name="content" id="commentContent" rows="2" required
-                                class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-[#602234] focus:ring-2 focus:ring-[#602234]/20 focus:bg-gray-50 transition-all duration-300 resize-none"
-                                placeholder="Write a comment..."></textarea>
+                            <div id="commentEditor" contenteditable="true" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:border-[#602234] focus:ring-2 focus:ring-[#602234]/20 focus:bg-gray-50 transition-all duration-300 min-h-[100px]"></div>
+                            <input type="hidden" name="content" id="commentContent">
                             <button type="submit"
                                 class="w-full bg-[#602234] text-white px-8 py-3 rounded-lg font-semibold text-lg transition-all duration-300 transform hover:scale-[1.02] hover:bg-[#4a1a28]">
                                 <i class="fas fa-upload mr-2"></i>
@@ -239,27 +242,29 @@
             // Rich text editor functionality
             $('.wysiwyg-btn').on('click', function() {
                 const format = $(this).data('format');
-                const textarea = $('#commentContent');
-                const start = textarea[0].selectionStart;
-                const end = textarea[0].selectionEnd;
-                const text = textarea.val();
-                const selectedText = text.substring(start, end);
+                const editor = document.getElementById('commentEditor');
+                const selection = window.getSelection();
+                const range = selection.getRangeAt(0);
+                const selectedText = range.toString();
                 
                 let newText;
                 switch(format) {
                     case 'bold':
-                        newText = `**${selectedText}**`;
+                        newText = `<strong>${selectedText}</strong>`;
                         break;
                     case 'italic':
-                        newText = `*${selectedText}*`;
+                        newText = `<em>${selectedText}</em>`;
                         break;
                     case 'underline':
-                        newText = `__${selectedText}__`;
+                        newText = `<u>${selectedText}</u>`;
                         break;
                 }
                 
-                textarea.val(text.substring(0, start) + newText + text.substring(end));
-                textarea.focus();
+                const span = document.createElement('span');
+                span.innerHTML = newText;
+                range.deleteContents();
+                range.insertNode(span);
+                editor.focus();
             });
 
             // Toggle comments section
@@ -308,11 +313,13 @@
             // Comment form submission
             $('#commentForm').on('submit', function(e) {
                 e.preventDefault();
-                const content = $(this).find('textarea').val().trim();
+                const content = $('#commentEditor').html();
                 
-                if (!content) {
+                if (!content.trim()) {
                     return;
                 }
+
+                $('#commentContent').val(content);
 
                 $.ajax({
                     url: $(this).attr('action'),

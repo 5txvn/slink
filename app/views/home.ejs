@@ -234,6 +234,7 @@
                                     <div>
                                         <h3 class="text-xl font-semibold text-gray-800"><%= request.user.name %></h3>
                                         <p class="text-gray-600 text-lg"><%= request.user.school %></p>
+                                        <p class="text-sm text-gray-500">Received: <%= formatTimeAgo(request.receivedAt) %></p>
                                     </div>
                                 </div>
                                 <div class="flex items-center space-x-4" onclick="event.stopPropagation();">
@@ -245,6 +246,43 @@
                                     <form action="/reject-connection/<%= request.user.username %>" method="POST" class="inline">
                                         <button type="submit" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-3 px-6 rounded-lg transition-colors text-lg">
                                             Reject
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    <% }); %>
+                </div>
+            </div>
+            <% } %>
+
+            <!-- Outgoing Connections Section -->
+            <% if (outgoingConnections && outgoingConnections.length > 0) { %>
+            <div class="mb-16">
+                <div class="flex justify-between items-center mb-8">
+                    <h2 class="text-2xl xl:text-3xl 2xl:text-4xl font-bold text-[#602234]">Outgoing Connections</h2>
+                    <button class="toggle-section text-[#602234] hover:text-[#4a1a28] transition-colors">
+                        <i class="fas fa-chevron-up text-xl"></i>
+                    </button>
+                </div>
+                <div class="outgoing-connections-content space-y-6">
+                    <% outgoingConnections.forEach(connection => { %>
+                        <div class="connection-card bg-white rounded-xl p-6 shadow-lg cursor-pointer" onclick="window.location.href='/user/<%= connection.user.username %>'">
+                            <div class="flex items-center justify-between">
+                                <div class="flex items-center">
+                                    <div class="w-16 h-16 rounded-full bg-[#602234] flex items-center justify-center text-white text-2xl mr-6">
+                                        <%= connection.user.name.split(' ').map(n => n[0]).join('') %>
+                                    </div>
+                                    <div>
+                                        <h3 class="text-xl font-semibold text-gray-800"><%= connection.user.name %></h3>
+                                        <p class="text-gray-600 text-lg"><%= connection.user.school %></p>
+                                        <p class="text-sm text-gray-500">Sent: <%= formatTimeAgo(connection.sentAt) %></p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center space-x-4" onclick="event.stopPropagation();">
+                                    <form action="/cancel-connection/<%= connection.user.username %>" method="POST" class="inline">
+                                        <button type="submit" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-semibold py-3 px-6 rounded-lg transition-colors text-lg">
+                                            Cancel
                                         </button>
                                     </form>
                                 </div>
@@ -323,11 +361,11 @@
                                         </div>
                                     </div>
                                     <div class="flex items-center space-x-6">
-                                        <span class="text-sm text-gray-500">Connected: <%= formatTimeAgo(connection.createdAt) %></span>
-                                        <a href="/user/<%= connection.username %>" class="text-[#602234] hover:text-[#4a1a28] transition-colors">
+                                        <span class="text-sm text-gray-500">Connected: <%= formatTimeAgo(connection.connectedAt) %></span>
+                                        <a href="/user/<%= connection.user.username %>" class="text-[#602234] hover:text-[#4a1a28] transition-colors">
                                             <i class="fas fa-eye text-xl"></i>
                                         </a>
-                                        <button onclick="showRemoveConnectionModal('<%= connection.username %>')" class="text-black hover:text-gray-700 transition-colors">
+                                        <button onclick="showRemoveConnectionModal('<%= connection.user.username %>')" class="text-black hover:text-gray-700 transition-colors">
                                             <i class="fas fa-trash text-xl"></i>
                                         </button>
                                     </div>

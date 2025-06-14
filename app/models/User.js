@@ -150,6 +150,10 @@ const userSchema = new mongoose.Schema({
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'User',
                 required: true
+            },
+            sentAt: {
+                type: Date,
+                default: Date.now
             }
         }],
         default: []
@@ -160,6 +164,10 @@ const userSchema = new mongoose.Schema({
                 type: mongoose.Schema.Types.ObjectId,
                 ref: 'User',
                 required: true
+            },
+            receivedAt: {
+                type: Date,
+                default: Date.now
             }
         }],
         default: []
