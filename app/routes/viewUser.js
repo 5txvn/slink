@@ -6,6 +6,14 @@ const User = require('../models/User');
 const { addRecentlyViewedUser } = require('../services/users/addRecentlyViewedUser');
 const { sendConnectionRequest } = require('../services/users/sendConnenctionRequest');
 
+router.get('/', (req, res) => {
+    if(!req.session.username) {
+        req.session.redirectUrl = "/user";
+        res.redirect('/authenticate');
+    }
+    res.redirect(`/user/${req.session.username}`);
+})
+
 router.get("/:username", async (req, res) => {
     if(!req.session.username) {
         req.session.redirectUrl = `/user/${req.params.username}`;

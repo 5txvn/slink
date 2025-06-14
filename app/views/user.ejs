@@ -259,35 +259,35 @@
                     <h2 class="text-2xl font-bold text-[#602234]">Social Links</h2>
                 </div>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    <a href="<%= JSON.parse(user).linkedin || '#' %>" target="_blank" 
-                       class="social-link <%= !JSON.parse(user).linkedin ? 'not-provided' : '' %> flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
+                    <a href="<%= JSON.parse(user).socialLinks.linkedin || '#' %>" target="_blank" 
+                       class="social-link <%= !JSON.parse(user).socialLinks.linkedin ? 'not-provided' : '' %> flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
                         <i class="fab fa-linkedin text-2xl text-[#0077B5] mr-3"></i>
-                        <span class="text-lg font-medium"><%= JSON.parse(user).linkedin ? 'LinkedIn' : 'Not Provided' %></span>
+                        <span class="text-lg font-medium"><%= JSON.parse(user).socialLinks.linkedin ? 'LinkedIn' : 'Not Provided' %></span>
                     </a>
-                    <a href="<%= JSON.parse(user).discord || '#' %>" target="_blank"
-                       class="social-link <%= !JSON.parse(user).discord ? 'not-provided' : '' %> flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
+                    <a href="<%= JSON.parse(user).socialLinks.discord || '#' %>" target="_blank"
+                       class="social-link <%= !JSON.parse(user).socialLinks.discord ? 'not-provided' : '' %> flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
                         <i class="fab fa-discord text-2xl text-[#7289DA] mr-3"></i>
-                        <span class="text-lg font-medium"><%= JSON.parse(user).discord ? 'Discord' : 'Not Provided' %></span>
+                        <span class="text-lg font-medium"><%= JSON.parse(user).socialLinks.discord ? 'Discord' : 'Not Provided' %></span>
                     </a>
-                    <a href="<%= JSON.parse(user).instagram || '#' %>" target="_blank"
-                       class="social-link <%= !JSON.parse(user).instagram ? 'not-provided' : '' %> flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
+                    <a href="<%= JSON.parse(user).socialLinks.instagram || '#' %>" target="_blank"
+                       class="social-link <%= !JSON.parse(user).socialLinks.instagram ? 'not-provided' : '' %> flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
                         <i class="fab fa-instagram text-2xl text-[#E1306C] mr-3"></i>
-                        <span class="text-lg font-medium"><%= JSON.parse(user).instagram ? 'Instagram' : 'Not Provided' %></span>
+                        <span class="text-lg font-medium"><%= JSON.parse(user).socialLinks.instagram ? 'Instagram' : 'Not Provided' %></span>
                     </a>
-                    <a href="<%= JSON.parse(user).reddit || '#' %>" target="_blank"
-                       class="social-link <%= !JSON.parse(user).reddit ? 'not-provided' : '' %> flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
+                    <a href="<%= JSON.parse(user).socialLinks.reddit || '#' %>" target="_blank"
+                       class="social-link <%= !JSON.parse(user).socialLinks.reddit ? 'not-provided' : '' %> flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
                         <i class="fab fa-reddit text-2xl text-[#FF4500] mr-3"></i>
-                        <span class="text-lg font-medium"><%= JSON.parse(user).reddit ? 'Reddit' : 'Not Provided' %></span>
+                        <span class="text-lg font-medium"><%= JSON.parse(user).socialLinks.reddit ? 'Reddit' : 'Not Provided' %></span>
                     </a>
-                    <a href="<%= JSON.parse(user).twitter || '#' %>" target="_blank"
-                       class="social-link <%= !JSON.parse(user).twitter ? 'not-provided' : '' %> flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
+                    <a href="<%= JSON.parse(user).socialLinks.twitter || '#' %>" target="_blank"
+                       class="social-link <%= !JSON.parse(user).socialLinks.twitter ? 'not-provided' : '' %> flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
                         <i class="fab fa-twitter text-2xl text-[#1DA1F2] mr-3"></i>
-                        <span class="text-lg font-medium"><%= JSON.parse(user).twitter ? 'Twitter' : 'Not Provided' %></span>
+                        <span class="text-lg font-medium"><%= JSON.parse(user).socialLinks.twitter ? 'Twitter' : 'Not Provided' %></span>
                     </a>
-                    <a href="<%= JSON.parse(user).website || '#' %>" target="_blank"
-                       class="social-link <%= !JSON.parse(user).website ? 'not-provided' : '' %> flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
+                    <a href="<%= JSON.parse(user).socialLinks.website || '#' %>" target="_blank"
+                       class="social-link <%= !JSON.parse(user).socialLinks.website ? 'not-provided' : '' %> flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
                         <i class="fas fa-globe text-2xl text-[#602234] mr-3"></i>
-                        <span class="text-lg font-medium"><%= JSON.parse(user).website ? 'Website' : 'Not Provided' %></span>
+                        <span class="text-lg font-medium"><%= JSON.parse(user).socialLinks.website ? 'Website' : 'Not Provided' %></span>
                     </a>
                 </div>
             </div>
