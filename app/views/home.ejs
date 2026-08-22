@@ -406,9 +406,9 @@
             </button>
             <h3 class="text-3xl font-bold text-gray-800 mb-4">Delete Account</h3>
             <p class="text-lg text-gray-600 mb-6">Are you sure you want to delete your account? Type in your username just to verify.</p>
-            <form action="/delete-account" method="POST" id="deleteAccountForm">
+            <form action="/delete-account" method="POST" id="deleteAccountForm" data-username="<%= typeof username !== 'undefined' ? username : '' %>">
                 <input type="text" name="username" id="deleteAccountUsername" autocomplete="off"
-                    placeholder="<%= username %>"
+                    placeholder="<%= typeof username !== 'undefined' ? username : '' %>"
                     class="w-full px-4 py-3 rounded-lg border border-black focus:border-red-600 focus:ring-2 focus:ring-red-600/20 mb-6">
                 <div class="flex justify-end space-x-4">
                     <button type="button" onclick="hideDeleteAccountModal()" class="px-6 py-3 text-gray-600 bg-gray-100 rounded-lg">
@@ -490,7 +490,7 @@
     }
 
     function updateDeleteAccountButton() {
-        const expected = '<%= username %>'.toLowerCase();
+        const expected = (document.getElementById('deleteAccountForm').dataset.username || '').toLowerCase();
         const typed = document.getElementById('deleteAccountUsername').value.trim().toLowerCase();
         const button = document.getElementById('confirmDeleteAccount');
         const matches = typed === expected && typed.length > 0;

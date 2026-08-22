@@ -47,14 +47,14 @@ router.get("/", async (req, res) => {
     } else {
         try {
             const user = await User.findOne({ username: req.session.username }).populate('recentlyViewedUsers.user').populate('connections.user').populate('inBoundConnections.user').populate('outBoundConnections.user');
-            if(!user) res.redirect('/authenticate');
+            if(!user) return res.redirect('/authenticate');
             //fetch all most recently viewed users and sort them from most recently viewed to least recently viewed
             const recentlyViewedUsers = user.recentlyViewedUsers.sort((a, b) => b.viewedAt - a.viewedAt);
             //fetch all connections and sort them from most recently connected to least recently connected
             const connections = user.connections.sort((a, b) => b.viewedAt - a.viewedAt);
             res.render(path.join(__dirname, '../views', 'home.ejs'), {
                 name: user.name,
-                username: user.username,
+                username: user.username || req.session.username,
                 recentlyViewedUsers,
                 connections,
                 connectionRequests: user.inBoundConnections,
