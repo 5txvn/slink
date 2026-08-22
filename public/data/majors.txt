@@ -1,4 +1,5 @@
 Accounting
+Accounting Information Systems
 Actuarial Science
 Advertising
 Aeronautical Engineering
@@ -14,20 +15,25 @@ Agriculture
 Agronomy
 American Studies
 Animal Husbandry
+Animal Nutrition
 Animal Science
 Animation
 Anthropology
 Applied Mathematics
+Applied Physics
 Archaeology
 Architectural Engineering
 Architecture
 Art Education
 Art History
+Art Therapy
 Artificial Intelligence
+Astrobiology
 Astronomy
 Astrophysics
 Athletic Training
 Atmospheric Science
+Automotive Engineering
 Banking
 Biochemistry
 Bioengineering
@@ -44,6 +50,7 @@ Business Administration
 Business Analytics
 Business Economics
 Business Law
+Business Management
 Ceramic Engineering
 Ceramics
 Chemical Engineering
@@ -51,17 +58,16 @@ Chemistry
 Child Development
 Chinese
 Civil Engineering
-Classical Studies
 Classics
 Cloud Computing
 Cognitive Science
-Communication
 Communications
 Comparative Literature
 Computer Engineering
 Computer Forensics
 Computer Graphics
 Computer Networking
+Computer Programming
 Computer Science
 Construction Management
 Counseling
@@ -70,8 +76,10 @@ Criminal Justice
 Criminology
 Cultural Studies
 Curriculum & Instruction
+Cyber Operations
 Cybersecurity
 Dance
+Data Analytics
 Data Science
 Dental Assisting
 Dental Hygiene
@@ -99,8 +107,8 @@ Engineering Physics
 English
 Entomology
 Entrepreneurship
-Entrepreneurship & Innovation
 Environmental Biology
+Environmental Chemistry
 Environmental Engineering
 Environmental Science
 Environmental Studies
@@ -111,19 +119,22 @@ Family Studies
 Fashion Design
 Fashion Illustration
 Fashion Merchandising
-Film
 Film Studies
 Finance
+Financial Management
 Fine Arts
+Fire Protection Engineering
+Fisheries Management
 Fisheries Science
 Folklore
 Food Science
 Forensic Science
 Forestry
+Forestry Management
 French
 Game Design
+Game Development
 Game Programming
-Gender & Sexuality Studies
 Gender Studies
 Genetics
 Geography
@@ -136,10 +147,10 @@ Graphic Design
 Health Administration
 Health Education
 Health Informatics
+Health Information Management
 Health Science
 History
 Horticulture
-Hospitality / Tourism / Event Management
 Hospitality Management
 Human Biology
 Human Development
@@ -154,19 +165,24 @@ Indigenous Studies
 Industrial Arts
 Industrial Design
 Industrial Engineering
+Industrial Technology
 Industrial-Organizational Psychology
 Information Assurance
 Information Science
 Information Security
 Information Systems
 Information Technology
+Information Technology Management
 Instructional Design
 Interaction Design
+Interior Architecture
 Interior Design
 International Business
 International Development
 International Finance
+International Marketing
 International Relations
+International Studies
 Investment Management
 Italian
 Japanese
@@ -174,6 +190,7 @@ Jewish Studies
 Journalism
 Kinesiology
 Landscape Architecture
+Landscape Horticulture
 Latin American Studies
 Law
 Liberal Arts
@@ -185,6 +202,7 @@ Management
 Management Information Systems
 Manufacturing Engineering
 Marine Biology
+Marine Engineering
 Marine Science
 Marketing
 Mass Communication
@@ -195,6 +213,8 @@ Mechanical Engineering
 Mechatronics Engineering
 Media Production
 Media Studies
+Medical Assisting
+Medical Biology
 Medical Imaging/Radiologic Technology
 Medical Laboratory Science
 Medicine
@@ -208,18 +228,25 @@ Mining Engineering
 Molecular Biology
 Multimedia Design
 Music
+Music Composition
 Music Education
 Music Performance
+Music Technology
 Musical Theatre
 Natural Resource Management
+Network Administration
 Neuroscience
 Nuclear Engineering
+Nuclear Medicine Technology
 Nursing
 Nutrition
+Occupational Health
 Occupational Therapy
 Ocean Engineering
 Oceanography
 Operations Management
+Operations Research
+Optical Engineering
 Organizational Leadership
 Paleontology
 Peace Studies
@@ -233,9 +260,11 @@ Physical Therapy
 Physician Assistant Studies
 Physics
 Physiology
+Planetary Science
 Plant Pathology
 Plant Science
 Political Economy
+Political Philosophy
 Political Science
 Portuguese
 Pre-Dentistry
@@ -251,12 +280,14 @@ Public Relations
 Public Speaking
 Radio
 Real Estate
+Real Estate Development
 Religious Studies
 Respiratory Therapy
 Rhetoric
 Risk Management and Insurance
 Robotics
 Russian
+Sales
 Screenwriting
 Secondary Education
 Social Psychology
@@ -267,26 +298,34 @@ Software Engineering
 Soil Science
 Spanish
 Special Education
-Speech Pathology
 Speech-Language Pathology
 Sports Journalism
 Sports Management
+Sports Marketing
 Statistics
+Structural Engineering
 Supply Chain Management
+Surgical Technology
 Sustainability
 Systems Engineering
 Taxation
 Technology Education
+Telecommunications Engineering
 Television Production
 Textile Design
 Theatre
+Theatre Design
+Theatre Production
 Theology
 Transportation Engineering
 Urban Planning
+Urban Studies
 Veterinary Science
 Visual Arts
 Viticulture & Enology
+Web Design
 Web Development
+Wildlife Biology
 Wildlife Management
 Women's Studies
 Zoology
