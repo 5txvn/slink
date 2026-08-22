@@ -184,12 +184,14 @@
                     <%= JSON.parse(user).position.charAt(0).toUpperCase() + JSON.parse(user).position.slice(1) %>
                 </p>
             </div>
+            <% if (!isOwnProfile) { %>
             <form action="/user/<%= JSON.parse(user).username %>/connect" method="POST" class="flex items-center">
                 <button type="submit" class="connect-button bg-[#602234] hover:bg-[#4a1a28] text-white text-2xl font-semibold py-3 px-8 rounded-xl transition-all duration-300 flex items-center space-x-2">
                     <i class="fas fa-user-plus"></i>
                     <span>Connect</span>
                 </button>
             </form>
+            <% } %>
         </div>
 
         <!-- Info Cards Section -->
@@ -204,12 +206,22 @@
                     <div class="flex items-center">
                         <i class="fas fa-university text-gray-600 w-8"></i>
                         <span class="font-semibold">School:</span>
-                        <span class="ml-2"><%= JSON.parse(user).school || 'Not Provided' %></span>
+                        <span class="ml-2"><%= (JSON.parse(user).school || []).join(', ') || 'Not Provided' %></span>
                     </div>
                     <div class="flex items-center">
                         <i class="fas fa-book text-gray-600 w-8"></i>
                         <span class="font-semibold">Major:</span>
-                        <span class="ml-2"><%= JSON.parse(user).major || 'Not Provided' %></span>
+                        <span class="ml-2"><%= (JSON.parse(user).major || []).join(', ') || 'Not Provided' %></span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-briefcase text-gray-600 w-8"></i>
+                        <span class="font-semibold">Current Position:</span>
+                        <span class="ml-2"><%= (JSON.parse(user).currentPosition || []).join(', ') || 'Not Provided' %></span>
+                    </div>
+                    <div class="flex items-center">
+                        <i class="fas fa-building text-gray-600 w-8"></i>
+                        <span class="font-semibold">Company:</span>
+                        <span class="ml-2"><%= (JSON.parse(user).company || []).join(', ') || 'Not Provided' %></span>
                     </div>
                     <div class="flex items-center">
                         <i class="fas fa-calendar-alt text-gray-600 w-8"></i>
@@ -236,7 +248,7 @@
                     <div class="flex items-center">
                         <i class="fas fa-map-marker-alt text-gray-600 w-8"></i>
                         <span class="font-semibold">Location:</span>
-                        <span class="ml-2"><%= JSON.parse(user).location || 'Not Provided' %></span>
+                        <span class="ml-2"><%= (JSON.parse(user).location || []).join(', ') || 'Not Provided' %></span>
                     </div>
                 </div>
             </div>
@@ -273,16 +285,6 @@
                        class="social-link <%= !JSON.parse(user).socialLinks.instagram ? 'not-provided' : '' %> flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
                         <i class="fab fa-instagram text-2xl text-[#E1306C] mr-3"></i>
                         <span class="text-lg font-medium"><%= JSON.parse(user).socialLinks.instagram ? 'Instagram' : 'Not Provided' %></span>
-                    </a>
-                    <a href="<%= JSON.parse(user).socialLinks.reddit || '#' %>" target="_blank"
-                       class="social-link <%= !JSON.parse(user).socialLinks.reddit ? 'not-provided' : '' %> flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
-                        <i class="fab fa-reddit text-2xl text-[#FF4500] mr-3"></i>
-                        <span class="text-lg font-medium"><%= JSON.parse(user).socialLinks.reddit ? 'Reddit' : 'Not Provided' %></span>
-                    </a>
-                    <a href="<%= JSON.parse(user).socialLinks.twitter || '#' %>" target="_blank"
-                       class="social-link <%= !JSON.parse(user).socialLinks.twitter ? 'not-provided' : '' %> flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
-                        <i class="fab fa-twitter text-2xl text-[#1DA1F2] mr-3"></i>
-                        <span class="text-lg font-medium"><%= JSON.parse(user).socialLinks.twitter ? 'Twitter' : 'Not Provided' %></span>
                     </a>
                     <a href="<%= JSON.parse(user).socialLinks.website || '#' %>" target="_blank"
                        class="social-link <%= !JSON.parse(user).socialLinks.website ? 'not-provided' : '' %> flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">

@@ -32,9 +32,15 @@ router.get('/:id', async (req, res) => {
                     redirectUrl: "/forum"
                 });
             }
+            const viewingUser = await User.findOne({ username: req.session.username });
+            const userId = viewingUser ? viewingUser._id.toString() : '';
+            const userVote = userId && post.upvotes.some(id => id.toString() === userId)
+                ? 'up'
+                : (userId && post.downvotes.some(id => id.toString() === userId) ? 'down' : null);
             res.render(path.join(__dirname, '../../views/forum', 'post.ejs'), {
                 post: post,
-                currentUser: req.session.username
+                currentUser: req.session.username,
+                userVote
             });
         } catch (error) {
             //handle internal server error
@@ -78,8 +84,8 @@ router.post('/:id/upvote', async (req, res) => {
         const user = await User.findOne({ username: req.session.username });
         if(!user) return res.status(404).json({ message: 'User not found' });
 
-        const upvoteIndex = post.upvotes.indexOf(user._id);
-        const downvoteIndex = post.downvotes.indexOf(user._id);
+        const upvoteIndex = post.upvotes.findIndex(id => id.toString() === user._id.toString());
+        const downvoteIndex = post.downvotes.findIndex(id => id.toString() === user._id.toString());
         if (upvoteIndex === -1) {
             post.upvotes.push(user._id);
             if (downvoteIndex !== -1) {
@@ -92,7 +98,8 @@ router.post('/:id/upvote', async (req, res) => {
         await post.save();
         res.json({ 
             upvotes: post.upvotes.length,
-            downvotes: post.downvotes.length
+            downvotes: post.downvotes.length,
+            userVote: post.upvotes.some(id => id.toString() === user._id.toString()) ? 'up' : null
         });
     } catch (error) {
         console.error(`Error occurred while upvoting post: ${error}`);
@@ -108,8 +115,8 @@ router.post('/:id/downvote', async (req, res) => {
         const user = await User.findOne({ username: req.session.username });
         if(!user) return res.status(404).json({ message: 'User not found' });
 
-        const upvoteIndex = post.upvotes.indexOf(user._id);
-        const downvoteIndex = post.downvotes.indexOf(user._id);
+        const upvoteIndex = post.upvotes.findIndex(id => id.toString() === user._id.toString());
+        const downvoteIndex = post.downvotes.findIndex(id => id.toString() === user._id.toString());
         if (downvoteIndex === -1) {
             post.downvotes.push(user._id);
             if (upvoteIndex !== -1) {
@@ -122,7 +129,8 @@ router.post('/:id/downvote', async (req, res) => {
         await post.save();
         res.json({ 
             upvotes: post.upvotes.length,
-            downvotes: post.downvotes.length
+            downvotes: post.downvotes.length,
+            userVote: post.downvotes.some(id => id.toString() === user._id.toString()) ? 'down' : null
         });
     } catch (error) {
         console.error(`Error occurred while downvoting post: ${error}`);

@@ -101,7 +101,7 @@
                                     </div>
                                     <div>
                                         <h3 class="font-semibold text-gray-800"><%= post.author %></h3>
-                                        <p class="text-sm text-gray-500"><%= new Date(post.createdAt).toISOString().split('T')[0] %></p>
+                                        <p class="text-sm text-gray-500"><%= new Date(post.createdAt).toLocaleString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: 'numeric', minute: '2-digit', hour12: true }).replace(' AM', ' am').replace(' PM', ' pm') %></p>
                                     </div>
                                 </div>
                                 <div class="flex items-center space-x-2">
@@ -116,13 +116,17 @@
                                 </div>
                             </div>
 
-                            <h2 class="text-xl font-bold text-gray-800 mb-6"><%= post.title %></h2>
+                            <h2 class="text-xl font-bold text-gray-800 mb-2"><%= post.title %></h2>
                             <div class="flex-grow"></div>
-                            <div class="flex flex-wrap justify-center gap-2 mb-6">
-                                <% post.tags.forEach(tag => { %>
+                            <% const visibleTags = (post.tags || []).filter(tag => tag && String(tag).trim()); %>
+                            <% if (visibleTags.length) { %>
+                            <div class="flex flex-wrap items-center justify-start gap-2 mb-4">
+                                <span class="text-sm font-medium text-gray-600">Tags:</span>
+                                <% visibleTags.forEach(tag => { %>
                                     <span class="tag-card"><%= tag %></span>
                                 <% }); %>
                             </div>
+                            <% } %>
 
                             <div class="flex items-center justify-between text-sm text-gray-500">
                                 <div class="flex items-center">

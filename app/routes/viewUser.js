@@ -5,6 +5,7 @@ const path = require('path');
 const User = require('../models/User');
 const { addRecentlyViewedUser } = require('../services/users/addRecentlyViewedUser');
 const { sendConnectionRequest } = require('../services/users/sendConnenctionRequest');
+const { normalizeList } = require('../utils/listFields');
 
 router.get('/', (req, res) => {
     if(!req.session.username) {
@@ -29,7 +30,14 @@ router.get("/:username", async (req, res) => {
             redirectUrl: '/'
         });
         await addRecentlyViewedUser(user._id, viewingUser._id);
-        res.render(path.join(__dirname, '../views', 'user.ejs'), {user: JSON.stringify(user)});
+        const userData = user.toObject();
+        ['school', 'major', 'currentPosition', 'company', 'location'].forEach(field => {
+            userData[field] = normalizeList(userData[field]);
+        });
+        res.render(path.join(__dirname, '../views', 'user.ejs'), {
+            user: JSON.stringify(userData),
+            isOwnProfile: viewingUser._id.toString() === user._id.toString()
+        });
     } catch(error) {
         console.error(`Error occurred while loading user page: ${error}`);
         res.status(500).render(path.join(__dirname, '../views/utils/status.ejs'), {

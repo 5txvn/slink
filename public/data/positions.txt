@@ -1,0 +1,207 @@
+Academic Advisor
+Academic Researcher
+Accountant
+Actuary
+Aerospace Engineer
+AI Researcher
+Algorithmic Trader
+Android Engineer
+Anesthesiologist
+Applied Scientist
+Architect
+ASIC Engineer
+Assistant Professor
+Astronomer
+Auditor
+Automation Engineer
+Automotive Engineer
+Autonomous Vehicle Engineer
+Avionics Engineer
+Backend Engineer
+Battery Engineer
+Bioinformatician
+Bioinformatics Scientist
+Biomedical Engineer
+Biostatistician
+Blockchain Engineer
+Business Analyst
+Cardiologist
+CEO
+CFO
+Chemical Engineer
+Chemist
+Chip Designer
+Civil Engineer
+Clinical Laboratory Scientist
+Clinical Research Coordinator
+Cloud Architect
+Cloud Engineer
+College Admissions Counselor
+Computational Biologist
+Computer Engineer
+Computer Vision Engineer
+Consultant
+Controls Engineer
+COO
+Corporate Counsel
+Credit Analyst
+CTO
+Curriculum Developer
+Customer Success Engineer
+Cybersecurity Analyst
+Data Analyst
+Data Engineer
+Data Scientist
+Database Administrator
+Dentist
+DevOps Engineer
+Dietitian
+Digital Marketer
+Economist
+Editor
+Electrical Engineer
+Embedded Systems Engineer
+Energy Analyst
+Engineering Intern
+Engineering Manager
+Environmental Engineer
+Environmental Scientist
+Epidemiologist
+Equity Research Analyst
+Field Application Engineer
+Firmware Engineer
+Founder
+FPGA Engineer
+Frontend Engineer
+Full Stack Engineer
+Game Designer
+Game Developer
+Genetic Counselor
+Geologist
+GIS Analyst
+Graduate Student
+Growth Engineer
+Hardware Engineer
+Hedge Fund Analyst
+High School Teacher
+Hydrologist
+Industrial Engineer
+Information Security Analyst
+Instructional Designer
+Intelligence Analyst
+Intern
+Internal Medicine Physician
+Investment Banker
+Investment Banking Analyst
+iOS Engineer
+IT Support Specialist
+Journalist
+Lab Technician
+Lawyer
+Lecturer
+Machine Learning Engineer
+Management Consultant
+Manufacturing Engineer
+Master's Student
+Materials Engineer
+Mathematician
+Mechanical Engineer
+Mechatronics Engineer
+Medical Student
+Meteorologist
+Military Officer
+Mobile Engineer
+NASA Engineer
+Network Engineer
+Neurologist
+NLP Engineer
+Nuclear Engineer
+Nurse
+Nurse Practitioner
+Occupational Therapist
+Oceanographer
+Oncologist
+Operations Research Analyst
+Optical Engineer
+Optometrist
+Patent Attorney
+Pediatrician
+Penetration Tester
+Petroleum Engineer
+Petroleum Geologist
+Pharmacist
+PhD Candidate
+Physical Therapist
+Physician
+Physician Assistant
+Physicist
+Pilot
+Policy Analyst
+Portfolio Manager
+Postdoctoral Researcher
+Power Systems Engineer
+Principal Engineer
+Private Equity Analyst
+Process Engineer
+Product Designer
+Product Manager
+Professor
+Program Manager
+Project Engineer
+Psychiatrist
+QA Engineer
+Quantitative Analyst
+Quantitative Developer
+Quantitative Researcher
+Quantitative Trader
+Radiologist
+Reliability Engineer
+Renewable Energy Engineer
+Research Assistant
+Research Engineer
+Research Scientist
+Researcher
+Resident Physician
+RF Engineer
+Risk Analyst
+Robotics Engineer
+Sales Engineer
+School Counselor
+Science Writer
+Scrum Master
+Security Engineer
+Semiconductor Engineer
+Site Reliability Engineer
+Software Developer
+Software Engineer
+Software Engineering Intern
+Solutions Architect
+Space Systems Engineer
+Speech-Language Pathologist
+Staff Engineer
+Startup Founder
+Statistician
+STEM Teacher
+Strategy Consultant
+Structural Engineer
+Student
+Supply Chain Analyst
+Surgeon
+Sustainability Analyst
+Systems Administrator
+Systems Engineer
+Tax Analyst
+Technical Lead
+Technical Product Manager
+Technical Recruiter
+Technical Writer
+Test Engineer
+Tutor
+UI Designer
+UX Designer
+UX Researcher
+Venture Capital Associate
+Verification Engineer
+Veterinarian
+Water Resources Engineer
+Web Developer

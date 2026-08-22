@@ -148,25 +148,6 @@
             opacity: 1;
             transform: scale(1);
         }
-        .text-reveal {
-            position: relative;
-            overflow: hidden;
-        }
-        .text-reveal::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: #f0ece2;
-            animation: revealText 1.5s forwards;
-        }
-        @keyframes revealText {
-            to {
-                transform: translateX(100%);
-            }
-        }
         .input-icon {
             position: absolute;
             left: 12px;
@@ -184,49 +165,106 @@
             text-align: right;
             margin-top: 0.25rem;
         }
+        .float-bubbles {
+            display: none;
+        }
+        @media (max-width: 767px) {
+            .float-bubbles {
+                display: block;
+                position: fixed;
+                inset: 0;
+                overflow: hidden;
+                pointer-events: none;
+                z-index: 0;
+            }
+            .float-bubble {
+                position: absolute;
+                left: var(--x);
+                bottom: -20%;
+                background: rgba(255, 255, 255, 0.88);
+                border: 1.5px solid #602234;
+                color: #602234;
+                border-radius: 1.15rem 1.15rem 1.15rem 0.3rem;
+                padding: 0.7rem 0.95rem;
+                font-size: 0.92rem;
+                font-weight: 600;
+                max-width: 70vw;
+                box-shadow: 0 8px 18px rgba(96, 34, 52, 0.08);
+                animation: floatUp var(--dur) linear infinite;
+                animation-delay: var(--delay);
+                white-space: nowrap;
+            }
+            .float-bubble.alt {
+                border-radius: 1.15rem 1.15rem 0.3rem 1.15rem;
+                background: #602234;
+                color: #fff;
+            }
+            @keyframes floatUp {
+                0% { transform: translateY(0); opacity: 0; }
+                8% { opacity: 0.9; }
+                85% { opacity: 0.9; }
+                100% { transform: translateY(-120vh); opacity: 0; }
+            }
+        }
     </style>
 </head>
-<body class="min-h-screen flex flex-col dot-pattern">
+<body class="min-h-screen flex flex-col dot-pattern relative">
+    <div class="float-bubbles" aria-hidden="true">
+        <div class="float-bubble" style="--x: 6%; --dur: 16s; --delay: 0s;">Need college advice?</div>
+        <div class="float-bubble alt" style="--x: 48%; --dur: 18s; --delay: 2s;">Connect with SEM alumni</div>
+        <div class="float-bubble" style="--x: 18%; --dur: 15s; --delay: 5s;">What's your major?</div>
+        <div class="float-bubble alt" style="--x: 58%; --dur: 17s; --delay: 8s;">Let's grab coffee!</div>
+        <div class="float-bubble" style="--x: 10%; --dur: 19s; --delay: 11s;">How was the application process?</div>
+        <div class="float-bubble alt" style="--x: 42%; --dur: 16s; --delay: 13s;">I'm in finance</div>
+    </div>
     <!-- Navbar -->
-    <nav class="w-full z-50 flex items-center justify-between px-6 py-4 mt-8">
-        <div class="flex items-center gap-3 mx-auto md:mx-0 md:ml-12">
+    <nav class="hidden md:flex w-full z-50 items-center justify-between px-6 py-4 mt-8">
+        <div class="flex items-center gap-3 md:ml-12">
             <i class="fas fa-atom text-3xl md:text-4xl text-[#602234] animate-spin-slow"></i>
             <span class="text-3xl md:text-4xl font-bold text-[#602234]">Slink</span>
         </div>
-        <div class="hidden md:flex gap-8 mr-12">
+        <div class="flex gap-8 mr-12">
             <a href="/about" class="nav-link text-[#602234] text-xl font-semibold flex items-center gap-2">
                 <i class="fas fa-info-circle"></i> About
             </a>
-            <a href="/authenticate" class="nav-link text-[#602234] text-xl font-semibold flex items-center gap-2">
+            <a href="/google-auth" class="nav-link text-[#602234] text-xl font-semibold flex items-center gap-2">
                 <i class="fas fa-sign-in-alt"></i> Log In
             </a>
-            <a href="/authenticate" class="nav-link text-[#602234] text-xl font-semibold flex items-center gap-2">
+            <a href="/google-auth" class="nav-link text-[#602234] text-xl font-semibold flex items-center gap-2">
                 <i class="fas fa-user-plus"></i> Sign Up
             </a>
+            <!-- Contact form is currently unused; no /contact route exists.
             <a href="#contact" class="nav-link text-[#602234] text-xl font-semibold flex items-center gap-2">
                 <i class="fas fa-envelope"></i> Contact
             </a>
+            -->
         </div>
     </nav>
 
+    <div class="flex md:hidden items-center justify-center gap-3 pt-10 pb-2">
+        <i class="fas fa-atom text-4xl text-[#602234] animate-spin-slow"></i>
+        <span class="text-4xl font-bold text-[#602234]">Slink</span>
+    </div>
+
     <!-- Main Content -->
-    <main class="flex-1 flex flex-col items-center px-4 relative z-10 mt-0 md:mt-8">
+    <main class="flex-1 flex flex-col items-center relative z-10">
         <!-- Hero Section -->
-        <div class="w-full max-w-[92vw] flex flex-row items-center justify-between gap-12 mb-16">
+        <div class="w-full flex-1 flex items-stretch md:items-center justify-center px-5 py-6 md:flex-none md:px-4 md:mt-8 md:mb-16">
+        <div class="w-full max-w-[92vw] flex flex-row items-center justify-between gap-12">
             <!-- Left Side Content -->
-            <div class="flex flex-col items-center xl:items-start flex-1 text-center md:text-left">
-                <h1 class="text-center xl:text-left text-6xl md:text-7xl lg:text-8xl font-extrabold mb-12 xl:mb-8">
+            <div class="flex flex-col items-center xl:items-start flex-1 text-center xl:text-left justify-evenly md:justify-start min-h-[68vh] md:min-h-0 py-4 md:py-0">
+                <h1 class="text-6xl sm:text-7xl md:text-7xl lg:text-8xl font-extrabold mb-8 md:mb-12 xl:mb-8 leading-tight">
                     Connect with <br class="block xl:hidden"><span class="gradient-text">Alumni</span>
                 </h1>
-                <p class="text-center xl:text-left text-2xl md:text-3xl text-gray-700 mb-12 xl:mb-8">
+                <p class="text-2xl md:text-3xl text-gray-700 mb-10 md:mb-12 xl:mb-8 leading-snug">
                     Join the Slink community and build meaningful connections with other SEM students and alumni today.
                 </p>
-                <div class="flex flex-col md:flex-row gap-4 justify-center md:justify-start">
-                    <a href="/authenticate" class="inline-block px-8 py-4 rounded-xl bg-[#602234] text-white text-2xl font-bold button-shadow hover:bg-[#4a1a28] transition-all">
-                        Get Started <i class="fas fa-arrow-right ml-2"></i>
+                <div class="flex flex-row gap-3 md:gap-4 justify-center xl:justify-start w-full max-w-none md:max-w-none mt-2 md:mt-0">
+                    <a href="/google-auth" class="flex-1 md:flex-none text-center whitespace-nowrap px-5 py-5 md:px-8 md:py-4 rounded-xl bg-[#602234] text-white text-xl md:text-2xl font-bold button-shadow hover:bg-[#4a1a28] transition-all">
+                        Get Started <i class="fas fa-arrow-right ml-1 md:ml-2"></i>
                     </a>
-                    <a href="/about" class="inline-block px-8 py-4 rounded-xl bg-white text-[#602234] text-2xl font-bold button-shadow hover:bg-gray-50 transition-all border border-[#602234]">
-                        More Info <i class="fas fa-info-circle ml-2"></i>
+                    <a href="/about" class="flex-1 md:flex-none text-center whitespace-nowrap px-5 py-5 md:px-8 md:py-4 rounded-xl bg-white text-[#602234] text-xl md:text-2xl font-bold button-shadow hover:bg-gray-50 transition-all border border-[#602234]">
+                        More Info <i class="fas fa-info-circle ml-1 md:ml-2"></i>
                     </a>
                 </div>
             </div>
@@ -278,9 +316,10 @@
                 </div>
             </div>
         </div>
+        </div>
 
         <!-- Features Section -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-[92vw] mb-16">
+        <div class="hidden md:grid grid-cols-2 gap-8 w-full max-w-[92vw] mb-16">
             <!-- Alumni Network Card -->
             <div class="bg-white rounded-2xl shadow-xl p-8 card-hover">
                 <h3 class="text-3xl font-bold text-[#602234] mb-4">Alumni Network</h3>
@@ -288,22 +327,18 @@
                     <li class="flex items-center gap-3">
                         <i class="fas fa-users text-[#602234] text-xl"></i>
                         <span class="text-lg">Connect with graduates from all graduating classes</span>
-                        <i class="fas fa-check-circle text-[#602234] ml-2"></i>
                     </li>
                     <li class="flex items-center gap-3">
-                        <i class="fas fa-calendar-check text-[#602234] text-xl"></i>
-                        <span class="text-lg">Access exclusive networking events</span>
-                        <i class="fas fa-check-circle text-[#602234] ml-2"></i>
+                        <i class="fas fa-list text-[#602234] text-xl"></i>
+                        <span class="text-lg">Get advice on how to build your college list</span>
                     </li>
                     <li class="flex items-center gap-3">
-                        <i class="fas fa-road text-[#602234] text-xl"></i>
-                        <span class="text-lg">Share your professional journey</span>
-                        <i class="fas fa-check-circle text-[#602234] ml-2"></i>
+                        <i class="fas fa-hands-helping text-[#602234] text-xl"></i>
+                        <span class="text-lg">Receive advice on the college mentorship process</span>
                     </li>
                     <li class="flex items-center gap-3">
-                        <i class="fas fa-handshake text-[#602234] text-xl"></i>
-                        <span class="text-lg">Find mentors in your industry</span>
-                        <i class="fas fa-check-circle text-[#602234] ml-2"></i>
+                        <i class="fas fa-briefcase text-[#602234] text-xl"></i>
+                        <span class="text-lg">Learn more about majors and industries</span>
                     </li>
                 </ul>
             </div>
@@ -313,57 +348,53 @@
                 <h3 class="text-3xl font-bold text-[#602234] mb-4">Community Forum</h3>
                 <ul class="space-y-4">
                     <li class="flex items-center gap-3">
+                        <i class="fas fa-book-open text-[#602234] text-xl"></i>
+                        <span class="text-lg">Get advice about college from detailed guides</span>
+                    </li>
+                    <li class="flex items-center gap-3">
+                        <i class="fas fa-question-circle text-[#602234] text-xl"></i>
+                        <span class="text-lg">Ask questions about college or industry and get responses</span>
+                    </li>
+                    <li class="flex items-center gap-3">
                         <i class="fas fa-comments text-[#602234] text-xl"></i>
-                        <span class="text-lg">Engage in meaningful discussions</span>
-                        <i class="fas fa-check-circle text-[#602234] ml-2"></i>
+                        <span class="text-lg">Share experiences and learn from the SEM community</span>
                     </li>
                     <li class="flex items-center gap-3">
                         <i class="fas fa-lightbulb text-[#602234] text-xl"></i>
-                        <span class="text-lg">Share industry insights and opportunities</span>
-                        <i class="fas fa-check-circle text-[#602234] ml-2"></i>
-                    </li>
-                    <li class="flex items-center gap-3">
-                        <i class="fas fa-user-graduate text-[#602234] text-xl"></i>
-                        <span class="text-lg">Get advice from experienced professionals</span>
-                        <i class="fas fa-check-circle text-[#602234] ml-2"></i>
-                    </li>
-                    <li class="flex items-center gap-3">
-                        <i class="fas fa-newspaper text-[#602234] text-xl"></i>
-                        <span class="text-lg">Stay updated with community news</span>
-                        <i class="fas fa-check-circle text-[#602234] ml-2"></i>
+                        <span class="text-lg">Explore majors, careers, and opportunities together</span>
                     </li>
                 </ul>
             </div>
         </div>
 
         <!-- Stats Section -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-[92vw]">
+        <div class="hidden md:grid grid-cols-3 gap-16 md:gap-20 w-full max-w-[92vw] mt-8 mb-16">
             <div class="stats-card bg-white rounded-2xl shadow-xl p-8 text-center">
-                <div class="text-5xl font-bold text-[#602234] mb-2"><%= numAlumni %></div>
-                <p class="text-gray-600 text-xl text-reveal">Active Alumni</p>
+                <div class="stat-number text-5xl font-bold text-[#602234] mb-2" data-target="<%= numAlumni %>">0</div>
+                <p class="text-gray-600 text-xl">Active Alumni</p>
                 <div class="mt-4 text-[#602234]">
                     <i class="fas fa-users text-3xl"></i>
                 </div>
             </div>
 
             <div class="stats-card bg-white rounded-2xl shadow-xl p-8 text-center">
-                <div class="text-5xl font-bold text-[#602234] mb-2"><%= numStudents %></div>
-                <p class="text-gray-600 text-xl text-reveal">Active Students</p>
+                <div class="stat-number text-5xl font-bold text-[#602234] mb-2" data-target="<%= numStudents %>">0</div>
+                <p class="text-gray-600 text-xl">Active Students</p>
                 <div class="mt-4 text-[#602234]">
                     <i class="fas fa-graduation-cap text-3xl"></i>
                 </div>
             </div>
 
             <div class="stats-card bg-white rounded-2xl shadow-xl p-8 text-center">
-                <div class="text-5xl font-bold text-[#602234] mb-2"><%= numStaffParents %></div>
-                <p class="text-gray-600 text-xl text-reveal">Active Staff & Parents</p>
+                <div class="stat-number text-5xl font-bold text-[#602234] mb-2" data-target="<%= numStaffParents %>">0</div>
+                <p class="text-gray-600 text-xl">Active Staff & Parents</p>
                 <div class="mt-4 text-[#602234]">
                     <i class="fas fa-chalkboard-teacher text-3xl"></i>
                 </div>
             </div>
         </div>
 
-        <!-- Contact Section -->
+        <!-- Contact form posts to /contact, but that route is not implemented.
         <div id="contact" class="w-full max-w-[92vw] mt-16">
             <h2 class="text-4xl font-bold text-[#602234] mb-8 text-center">Contact Us</h2>
             <div class="w-full max-w-[92vw] mx-auto">
@@ -406,39 +437,10 @@
                 </div>
             </div>
         </div>
+        -->
     </main>
 
     <script>
-        // Checkmark Animation
-        function animateCheckmarks() {
-            const checkmarks = document.querySelectorAll('.checkmark');
-            const totalCheckmarks = checkmarks.length;
-            const halfCheckmarks = totalCheckmarks / 2;
-            let currentIndex = 0;
-            let reverseIndex = halfCheckmarks - 1;
-
-            function showNextCheckmark() {
-                // Hide previous checkmarks
-                checkmarks.forEach(checkmark => checkmark.classList.remove('visible'));
-
-                // Show current checkmark in forward order for first card
-                checkmarks[currentIndex].classList.add('visible');
-                currentIndex = (currentIndex + 1) % halfCheckmarks;
-
-                // Show current checkmark in reverse order for second card
-                checkmarks[reverseIndex + halfCheckmarks].classList.add('visible');
-                reverseIndex = (reverseIndex - 1 + halfCheckmarks) % halfCheckmarks;
-            }
-
-            // Initial animation
-            showNextCheckmark();
-            // Continue animation
-            setInterval(showNextCheckmark, 500);
-        }
-
-        // Start checkmark animation
-        animateCheckmarks();
-
         // Message Animation
         const messages = document.querySelectorAll('.message-bubble');
         const typingIndicators = document.querySelectorAll('.typing-indicator');
@@ -459,7 +461,28 @@
             }
         });
 
-        // Character Counter (jQuery version, works for all inputs and textarea in contact form)
+        function animateCount(el, target, duration) {
+            const start = performance.now();
+            function tick(now) {
+                const progress = Math.min((now - start) / duration, 1);
+                el.textContent = Math.round(target * progress);
+                if (progress < 1) requestAnimationFrame(tick);
+            }
+            requestAnimationFrame(tick);
+        }
+
+        const statsObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !entry.target.dataset.counted) {
+                    entry.target.dataset.counted = '1';
+                    animateCount(entry.target, parseInt(entry.target.dataset.target, 10) || 0, 3000);
+                }
+            });
+        }, { threshold: 0.4 });
+
+        document.querySelectorAll('.stat-number').forEach(el => statsObserver.observe(el));
+
+        /*
         $('#contactForm').find('input, textarea').each(function() {
             var $input = $(this);
             var $counter = $input.closest('div').find('.char-counter');
@@ -468,9 +491,9 @@
                 var currentLength = $input.val().length;
                 $counter.text(currentLength + '/' + maxLength);
             });
-            // Initialize counter
             $input.trigger('input');
         });
+        */
     </script>
 </body>
 </html> 

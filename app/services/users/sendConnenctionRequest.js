@@ -9,10 +9,16 @@ exports.sendConnectionRequest = async (req, res) => {
     try {
         const outgoingUser = await User.findOne({ username: req.session.username });
         const incomingUser = await User.findOne({ username: req.params.username });
-        if(!outgoingUser || !incomingUser) res.status(404).render(path.join(__dirname, '../../views/utils/status.ejs'), {
+        if(!outgoingUser || !incomingUser) return res.status(404).render(path.join(__dirname, '../../views/utils/status.ejs'), {
             status: 'error',
             title: 'User Not Found',
             message: 'The user you are trying to connect with does not exist.',
+            redirectUrl: '/'
+        });
+        if(outgoingUser._id.toString() === incomingUser._id.toString()) return res.status(400).render(path.join(__dirname, '../../views/utils/status.ejs'), {
+            status: 'error',
+            title: 'Invalid Request',
+            message: 'You cannot send a connection request to yourself.',
             redirectUrl: '/'
         });
         if(outgoingUser.outBoundConnections.findIndex(connection => connection.user.toString() === incomingUser._id.toString()) !== -1 && incomingUser.inBoundConnections.findIndex(connection => connection.user.toString() === outgoingUser._id.toString()) !== -1) res.status(400).render(path.join(__dirname, '../../views/utils/status.ejs'), {

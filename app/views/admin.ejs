@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slink | Admin</title>
+    <link rel="icon" href="/images/slink-logo.png" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        html, body {
+            overflow: scroll;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        html::-webkit-scrollbar,
+        body::-webkit-scrollbar {
+            display: none;
+        }
+        .dot-pattern {
+            background-attachment: fixed;
+            background-image: radial-gradient(rgba(96, 34, 52, 0.5) 1px, transparent 1px);
+            background-size: 20px 20px;
+            background-color: #ffffff;
+        }
+        .gradient-text {
+            background: linear-gradient(45deg, #602234, #602234);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .navbar-gradient {
+            background: linear-gradient(45deg, #8a3242, #602234);
+            background-size: 200% 200%;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col dot-pattern">
+    <div id="navbar-container"></div>
+
+    <main class="container w-[90vw] mx-auto py-8 mt-20">
+        <div class="max-w-6xl mx-auto">
+            <div class="bg-white rounded-xl p-6 md:p-8 shadow-lg border-2 border-[#602234]">
+                <h1 class="text-3xl md:text-5xl font-extrabold gradient-text mb-2">Admin Panel</h1>
+                <p class="text-gray-600 mb-8">Look up an account by name, username, email, or Object ID, then delete it.</p>
+
+                <form method="GET" action="/admin" class="flex flex-col md:flex-row gap-4 mb-8">
+                    <div class="relative flex-1">
+                        <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-400"></i>
+                        <input type="text" name="q" value="<%= query %>" placeholder="Search by username, name, email, or Object ID"
+                            class="w-full pl-10 pr-4 py-3 rounded-lg border border-black focus:border-[#602234] focus:ring-2 focus:ring-[#602234]/20">
+                    </div>
+                    <button type="submit" class="bg-[#602234] hover:bg-[#4a1a28] text-white font-semibold py-3 px-6 rounded-lg">
+                        Search
+                    </button>
+                </form>
+
+                <% if (!query) { %>
+                    <div class="text-gray-500 text-center py-10 border-2 border-dashed border-gray-200 rounded-xl">
+                        Enter a lookup above to find an account.
+                    </div>
+                <% } else if (!users.length) { %>
+                    <div class="text-gray-500 text-center py-10 border-2 border-dashed border-gray-200 rounded-xl">
+                        No accounts matched "<%= query %>".
+                    </div>
+                <% } else { %>
+                    <div class="overflow-x-auto">
+                        <table class="w-full">
+                            <thead>
+                                <tr class="border-b-2 border-gray-200 text-left">
+                                    <th class="py-3 px-3">Name</th>
+                                    <th class="py-3 px-3">Username</th>
+                                    <th class="py-3 px-3">Email</th>
+                                    <th class="py-3 px-3">Object ID</th>
+                                    <th class="py-3 px-3">Role</th>
+                                    <th class="py-3 px-3"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% users.forEach(found => { %>
+                                    <tr class="border-b border-gray-200">
+                                        <td class="py-4 px-3 font-semibold text-gray-800">
+                                            <%= found.name %>
+                                            <% if (found.admin) { %>
+                                                <span class="ml-2 text-xs font-bold text-[#602234]">ADMIN</span>
+                                            <% } %>
+                                        </td>
+                                        <td class="py-4 px-3 text-gray-600">@<%= found.username %></td>
+                                        <td class="py-4 px-3 text-gray-600"><%= found.email %></td>
+                                        <td class="py-4 px-3 text-gray-500 text-sm break-all"><%= found._id %></td>
+                                        <td class="py-4 px-3 text-gray-600 capitalize"><%= found.position %></td>
+                                        <td class="py-4 px-3 text-right">
+                                            <button type="button"
+                                                class="delete-user-btn bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg"
+                                                data-id="<%= found._id %>"
+                                                data-username="<%= found.username %>">
+                                                Delete
+                                            </button>
+                                        </td>
+                                    </tr>
+                                <% }); %>
+                            </tbody>
+                        </table>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </main>
+
+    <div id="deleteUserModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-xl p-8 md:p-12 max-w-2xl w-full mx-4 relative">
+            <button type="button" id="closeDeleteUserModal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times text-2xl"></i>
+            </button>
+            <h3 class="text-3xl font-bold text-gray-800 mb-4">Delete Account</h3>
+            <p class="text-lg text-gray-600 mb-8">Are you sure you want to delete <span id="deleteUsernameLabel" class="font-semibold text-[#602234]"></span>? This cannot be undone.</p>
+            <div class="flex justify-end space-x-4">
+                <button type="button" id="cancelDeleteUser" class="px-6 py-3 text-gray-600 bg-gray-100 rounded-lg">Cancel</button>
+                <form id="adminDeleteForm" action="/admin/delete" method="POST">
+                    <input type="hidden" name="userId" id="deleteUserId">
+                    <button type="submit" class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-lg font-semibold">
+                        Delete Account
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import Navbar from '../../components/navbar.js';
+        const navbar = new Navbar();
+        document.getElementById('navbar-container').innerHTML = navbar.render();
+        navbar.init();
+    </script>
+    <script>
+        const modal = document.getElementById('deleteUserModal');
+
+        document.querySelectorAll('.delete-user-btn').forEach(button => {
+            button.addEventListener('click', function() {
+                document.getElementById('deleteUserId').value = this.dataset.id;
+                document.getElementById('deleteUsernameLabel').textContent = '@' + this.dataset.username;
+                modal.classList.remove('hidden');
+                modal.classList.add('flex');
+            });
+        });
+
+        function hideModal() {
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+        }
+
+        document.getElementById('closeDeleteUserModal').addEventListener('click', hideModal);
+        document.getElementById('cancelDeleteUser').addEventListener('click', hideModal);
+        modal.addEventListener('click', function(e) {
+            if (e.target === this) hideModal();
+        });
+    </script>
+</body>
+</html>

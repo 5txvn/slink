@@ -17,6 +17,13 @@ exports.validateUser = async (req, res) => {
             redirectUrl: "/authenticate"
         });
 
+        if(!user.password) return res.status(401).render(path.join(__dirname, '../views/utils/status.ejs'), {
+            status: 'error',
+            title: "Authentication error",
+            message: "This account uses Google sign-in. Please continue with Google.",
+            redirectUrl: "/authenticate"
+        });
+
         //handle incorrect password
         const match = await bcrypt.compare(password, user.password);
         if(!match) return res.status(401).render(path.join(__dirname, '../views/utils/status.ejs'), {

@@ -10,106 +10,115 @@
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @keyframes gradient-flow {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-        .gradient-text {
-            background: linear-gradient(45deg, #602234, #000000);
-            background-size: 200% 200%;
-            animation: gradient-flow 3s ease-in-out infinite;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
         .welcome-card {
             backdrop-filter: blur(10px);
             background: rgba(255, 255, 255, 0.9);
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            width: 70vw;
-            height: 70vw;
+            width: min(94vw, 78rem);
+            height: auto;
+            border-radius: 1rem;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-        }
-        @media (max-width: 768px) {
-            .welcome-card {
-                width: 90vw;
-                height: auto;
-                min-height: 70vh;
-            }
+            padding: 3.5rem 4rem;
         }
         .nav-button {
-            transition: all 0.3s ease;
-            padding: 1rem;
+            transition: background-color 0.2s ease, opacity 0.2s ease;
+            padding: 1.75rem 1.5rem;
+            border-radius: 0.75rem;
         }
         .nav-button:hover {
-            transform: scale(1.02);
+            opacity: 0.9;
         }
-        @keyframes spin-slow {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        @media (max-width: 767px) {
+            body {
+                padding: 0 !important;
+                align-items: stretch !important;
+            }
+            .welcome-card {
+                width: 100%;
+                min-height: 100vh;
+                border-radius: 0;
+                padding: 3.25rem 1.25rem 2.25rem;
+                box-shadow: none;
+            }
+            .welcome-title-wrap {
+                margin-top: 1.5rem;
+                margin-bottom: 2.75rem;
+            }
+            .welcome-buttons {
+                gap: 1rem;
+                width: 100%;
+            }
+            .nav-button {
+                width: 100%;
+                padding: 1.35rem 1.15rem;
+            }
         }
-        .animate-spin-slow {
-            animation: spin-slow 8s linear infinite;
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
         }
-        .floating {
-            animation: floating 3s ease-in-out infinite;
+        .typing-cursor::after {
+            content: '|';
+            color: #000;
+            animation: blink 0.8s step-end infinite;
+            margin-left: 2px;
         }
-        @keyframes floating {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-10px); }
-            100% { transform: translateY(0px); }
-        }
-
         body {
             overflow: auto;
-            scrollbar-width: none; /* Firefox */
-            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;
+            -ms-overflow-style: none;
         }
-
         ::-webkit-scrollbar {
-            display: none; /* Chrome, Safari, and Opera */
+            display: none;
         }
     </style>
 </head>
 <body class="bg-gradient-to-br from-gray-100 to-gray-200 min-h-screen flex items-center justify-center p-4">
-    <div class="w-full max-w-4xl lg:max-w-6xl xl:max-w-7xl relative z-10">
-        <div class="welcome-card rounded-xl p-8 md:p-12 lg:p-16">
-            <div class="flex items-center justify-center mb-8 md:mb-12">
-                <i class="fas fa-atom text-4xl md:text-5xl lg:text-6xl mr-3 text-[#800000] animate-spin-slow self-center translate-y-2"></i>
-                <h1 class="text-4xl md:text-5xl lg:text-6xl font-bold gradient-text">Welcome to Slink!</h1>
-            </div>
+    <div class="welcome-card relative z-10">
+        <div class="welcome-title-wrap flex items-center justify-center mb-10">
+            <h1 id="welcomeTitle" class="text-5xl md:text-6xl lg:text-7xl font-bold text-black typing-cursor">Welcome to Slink!</h1>
+        </div>
 
-            <div class="text-center mb-12 md:mb-16">
-                <p class="text-xl md:text-2xl text-gray-600 mb-4">We're excited to have you join our community! <i class="fas fa-rocket text-[#602234]"></i></p>
-                <p class="text-lg md:text-xl text-gray-500">To get started, you can either explore the alumni directory or complete your profile <i class="fas fa-sparkles text-[#602234]"></i></p>
-            </div>
+        <div class="hidden md:block text-center mb-12">
+            <p class="text-xl md:text-2xl text-gray-600">To get started, you can either explore the alumni directory or complete your profile <i class="fas fa-sparkles text-[#602234]"></i></p>
+        </div>
 
-            <div class="grid md:grid-cols-2 gap-6 md:gap-8 lg:gap-12 max-w-4xl mx-auto">
-                <a href="/directory" class="nav-button bg-[#602234] text-white rounded-xl text-center hover:bg-[#4a1a28] group">
-                    <div class="transform transition-transform duration-300 group-hover:scale-105">
-                        <i class="fas fa-users text-3xl md:text-4xl mb-3 floating"></i>
-                        <h3 class="text-xl md:text-2xl font-bold mb-2">Explore Directory</h3>
-                        <p class="text-gray-200">Browse through SEM alumni and connect with them</p>
-                    </div>
-                </a>
+        <div class="welcome-buttons grid md:grid-cols-2 gap-8 w-full">
+            <a href="/directory" class="nav-button bg-[#602234] text-white text-center hover:bg-[#531e2e] group">
+                <i class="fas fa-users text-3xl md:text-4xl mb-3"></i>
+                <h3 class="text-xl md:text-2xl font-bold mb-2">Explore Directory</h3>
+                <p class="text-gray-200">Browse through SEM alumni and connect with them</p>
+            </a>
 
-                <a href="/profile" class="nav-button bg-black text-white rounded-xl text-center hover:bg-gray-800 group">
-                    <div class="transform transition-transform duration-300 group-hover:scale-105">
-                        <i class="fas fa-user-edit text-3xl md:text-4xl mb-3 floating"></i>
-                        <h3 class="text-xl md:text-2xl font-bold mb-2">Complete Profile</h3>
-                        <p class="text-gray-200">Add more details to your profile to help others find you</p>
-                    </div>
-                </a>
-            </div>
+            <a href="/profile" class="nav-button bg-black text-white text-center hover:bg-gray-900 group">
+                <i class="fas fa-user-edit text-3xl md:text-4xl mb-3"></i>
+                <h3 class="text-xl md:text-2xl font-bold mb-2">Complete Profile</h3>
+                <p class="text-gray-200">Add more details to your profile to help others find you</p>
+            </a>
         </div>
     </div>
 
     <script>
         $(document).ready(function() {
-            // Confetti animation
+            const text = 'Welcome to Slink!';
+            const title = $('#welcomeTitle');
+            let i = 0;
+            title.text('');
+
+            function typeNext() {
+                if (i < text.length) {
+                    title.text(text.slice(0, ++i));
+                    setTimeout(typeNext, 70);
+                } else {
+                    title.removeClass('typing-cursor');
+                }
+            }
+
+            typeNext();
+
             function shootConfetti() {
                 const colors = ['#602234', '#000000', '#ffffff'];
                 
@@ -141,9 +150,8 @@
                 }, 100);
             }
 
-            // Initial confetti burst
             shootConfetti();
         });
     </script>
 </body>
-</html> 
+</html>

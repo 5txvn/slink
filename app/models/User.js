@@ -21,6 +21,11 @@ const userSchema = new mongoose.Schema({
             message: "Email address is not valid."
         }
     },
+    googleId: {
+        type: String,
+        unique: true,
+        sparse: true
+    },
     username: {
         type: String,
         required: true,
@@ -34,9 +39,14 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: true,
+        required: function() {
+            return !this.googleId;
+        },
         validate: {
-            validator: p => /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/.test(p),
+            validator: function(p) {
+                if (this.googleId && !p) return true;
+                return /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/.test(p);
+            },
             message: "Password must be at least 8 characters long and include at least one uppercase letter, one number, and one special character."
         }
     },
@@ -49,16 +59,12 @@ const userSchema = new mongoose.Schema({
         }
     },
     school: {
-        type: String,
-        required: true,
-        trim: true,
-        default: "n/a"
+        type: [String],
+        default: []
     },
     major: {
-        type: String,
-        required: true,
-        trim: true,
-        default: "n/a"
+        type: [String],
+        default: []
     },
     graduationYear: {
         type: Number,
@@ -67,27 +73,22 @@ const userSchema = new mongoose.Schema({
         default: 1900
     },
     currentPosition: {
-        type: String,
-        required: true,
-        trim: true,
-        default: "n/a"
+        type: [String],
+        default: []
     },
     company: {
-        type: String,
-        required: true,
-        trim: true,
-        default: "n/a"
+        type: [String],
+        default: []
     },
     location: {
-        type: String,
-        required: true,
-        trim: true,
-        default: "n/a"
+        type: [String],
+        default: []
     },
     bio: {
         type: String,
         required: true,
         trim: true,
+        maxlength: 1000,
         default: "n/a"
     },
     socialLinks: {
@@ -175,6 +176,10 @@ const userSchema = new mongoose.Schema({
     createdAt: {
         type: Date,
         default: Date.now
+    },
+    admin: {
+        type: Boolean,
+        default: false
     }
 });
 

@@ -18,7 +18,7 @@ exports.createPost = async (req, res) => {
             author: user._id,
             title: sanitizeHtml(title),
             content: sanitizeHtml(content),
-            tags: tags.split(',').map(tag => sanitizeHtml(tag.trim()))
+            tags: (tags || '').split(',').map(tag => sanitizeHtml(tag.trim())).filter(tag => tag)
         });
         await post.save();
         res.redirect(`/post/${post._id}`);

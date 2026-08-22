@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Slink | Complete Google Sign-Up</title>
+    <link rel="icon" href="/images/slink-logo.png" type="image/x-icon">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body, html {
+            overflow: auto;
+            scrollbar-width: none;
+            -ms-overflow-style: none;
+        }
+        body::-webkit-scrollbar,
+        html::-webkit-scrollbar {
+            display: none;
+        }
+        .custom-select-options {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #000;
+            border-radius: 0.5rem;
+            margin-top: 0.5rem;
+            z-index: 10;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .custom-select-option {
+            padding: 0.75rem 1rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #718096;
+        }
+        .custom-select-option:hover {
+            background: #602234;
+            color: white;
+        }
+        .custom-select-option.selected {
+            color: #000000;
+        }
+        .error-toast {
+            position: fixed;
+            top: 1rem;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 1rem;
+            border-radius: 0.5rem;
+            background: #602234;
+            color: white;
+            display: none;
+            z-index: 50;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex items-center justify-center p-4">
+    <div class="w-full max-w-2xl relative z-10 border-black border-2">
+        <div class="bg-white rounded-xl px-8 py-8 shadow-lg">
+            <h1 class="text-3xl font-bold text-center mb-2">Finish signing up</h1>
+            <p class="text-center text-gray-600 mb-8">Choose a username and role for your Slink account.</p>
+
+            <form id="googleCompleteForm" action="/google-auth/complete" method="POST" class="space-y-6">
+                <div class="flex flex-row relative">
+                    <div class="rounded-l-lg bg-gray-100 flex items-center justify-center px-4 border border-r-0 border-black">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <input type="text" value="<%= name %>" disabled
+                           class="w-full px-4 py-3 rounded-r-lg border border-black bg-gray-50 text-gray-700">
+                </div>
+                <div class="flex flex-row relative">
+                    <div class="rounded-l-lg bg-gray-100 flex items-center justify-center px-4 border border-r-0 border-black">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <input type="text" value="<%= email %>" disabled
+                           class="w-full px-4 py-3 rounded-r-lg border border-black bg-gray-50 text-gray-700">
+                </div>
+                <div class="relative custom-select">
+                    <div class="flex flex-row">
+                        <div class="rounded-l-lg bg-gray-100 flex items-center justify-center px-4 border border-r-0 border-black">
+                            <i class="fas fa-user-tag"></i>
+                        </div>
+                        <div class="w-full px-4 py-3 rounded-r-lg border border-black cursor-pointer text-gray-500 bg-white" id="roleSelect">
+                            Select your role
+                        </div>
+                    </div>
+                    <div class="custom-select-options">
+                        <div class="custom-select-option" data-value="alumni">Alumni</div>
+                        <div class="custom-select-option" data-value="student">Student</div>
+                        <div class="custom-select-option" data-value="staff">Staff</div>
+                        <div class="custom-select-option" data-value="parent">Parent</div>
+                    </div>
+                    <input type="hidden" name="position" required>
+                </div>
+                <div class="flex flex-row relative">
+                    <div class="rounded-l-lg bg-gray-100 flex items-center justify-center px-4 border border-r-0 border-black">
+                        <i class="fas fa-at"></i>
+                    </div>
+                    <input type="text" name="username" required autocomplete="off" value="<%= suggestedUsername %>"
+                           class="w-full px-4 py-3 rounded-r-lg border border-black focus:border-[#602234] focus:ring-2 focus:ring-[#602234]/20 focus:bg-gray-50 transition-all duration-300"
+                           placeholder="Choose a username">
+                </div>
+                <button type="submit"
+                        class="w-full bg-[#602234] text-white py-4 rounded-lg text-lg font-bold transition-all duration-300">
+                    Continue
+                    <i class="fas fa-arrow-right ml-2"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div id="errorToast" class="error-toast w-11/12 sm:w-3/4 md:w-2/3 lg:w-1/2">
+        <div class="flex items-center justify-center">
+            <i class="fas fa-exclamation-circle mr-2 text-xl"></i>
+            <span id="errorMessage" class="text-lg font-semibold"></span>
+        </div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#roleSelect').click(function() {
+                $('.custom-select-options').slideToggle();
+            });
+
+            $('.custom-select-option').click(function() {
+                const value = $(this).data('value');
+                const text = $(this).text();
+                $('#roleSelect').text(text).removeClass('text-gray-500').addClass('text-black');
+                $('input[name="position"]').val(value);
+                $('.custom-select-options').slideUp();
+                $('.custom-select-option').removeClass('selected');
+                $(this).addClass('selected');
+            });
+
+            $(document).on('click', function(e) {
+                if (!$(e.target).closest('.custom-select').length) {
+                    $('.custom-select-options').slideUp();
+                }
+            });
+
+            $('#googleCompleteForm').on('submit', function(e) {
+                const username = $('input[name="username"]').val();
+                const position = $('input[name="position"]').val();
+                if (!position) {
+                    e.preventDefault();
+                    $('#errorMessage').text('Please select a position');
+                    $('#errorToast').fadeIn().delay(3000).fadeOut();
+                    return;
+                }
+                if (!/^[a-zA-Z0-9._]{5,15}$/.test(username)) {
+                    e.preventDefault();
+                    $('#errorMessage').text('Username must be 5-15 characters and contain only letters, numbers, dots, and underscores');
+                    $('#errorToast').fadeIn().delay(3000).fadeOut();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

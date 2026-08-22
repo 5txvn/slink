@@ -8,7 +8,7 @@ const createUser = require('../controllers/createUser');
 const validateUser = require('../controllers/validateUser');
 
 router.get('/', (req, res) => {
-    res.render(path.join(__dirname, '../views', 'authenticate.ejs'));
+    res.redirect('/google-auth');
 });
 
 router.post('/signup', createUser.createUser);

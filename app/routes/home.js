@@ -7,6 +7,8 @@ const { connectUsers } = require('../services/users/connectUsers');
 const { rejectConnection } = require('../services/users/rejectConnection');
 const { removeConnection } = require('../services/users/removeConnection');
 const { cancelOutgoingConnection } = require('../services/users/cancelOutgoingConnection');
+const { formatList } = require('../utils/listFields');
+const { deleteOwnAccount } = require('../controllers/deleteUser');
 
 function formatTimeAgo(date) {
     const seconds = Math.floor((new Date() - new Date(date)) / 1000);
@@ -52,11 +54,13 @@ router.get("/", async (req, res) => {
             const connections = user.connections.sort((a, b) => b.viewedAt - a.viewedAt);
             res.render(path.join(__dirname, '../views', 'home.ejs'), {
                 name: user.name,
+                username: user.username,
                 recentlyViewedUsers,
                 connections,
                 connectionRequests: user.inBoundConnections,
                 outgoingConnections: user.outBoundConnections,
-                formatTimeAgo
+                formatTimeAgo,
+                formatList
             });
         } catch(error) {
             console.error(`Error occurred while loading home page: ${error}`);
@@ -70,6 +74,7 @@ router.get("/", async (req, res) => {
     }
 })
 
+router.post('/delete-account', deleteOwnAccount);
 router.post('/accept-connection/:username', connectUsers);
 router.post('/reject-connection/:username', rejectConnection);
 router.post('/remove-connection/:username', removeConnection);

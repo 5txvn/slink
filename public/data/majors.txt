@@ -1,0 +1,292 @@
+Accounting
+Actuarial Science
+Advertising
+Aeronautical Engineering
+Aerospace Engineering
+African American Studies
+Agricultural Business
+Agricultural Communications
+Agricultural Economics
+Agricultural Education
+Agricultural Engineering
+Agricultural/Biosystems Engineering
+Agriculture
+Agronomy
+American Studies
+Animal Husbandry
+Animal Science
+Animation
+Anthropology
+Applied Mathematics
+Archaeology
+Architectural Engineering
+Architecture
+Art Education
+Art History
+Artificial Intelligence
+Astronomy
+Astrophysics
+Athletic Training
+Atmospheric Science
+Banking
+Biochemistry
+Bioengineering
+Biology
+Biomedical Engineering
+Biophysics
+Biostatistics
+Biotechnology
+Botany
+Broadcast Journalism
+Broadcasting
+Business
+Business Administration
+Business Analytics
+Business Economics
+Business Law
+Ceramic Engineering
+Ceramics
+Chemical Engineering
+Chemistry
+Child Development
+Chinese
+Civil Engineering
+Classical Studies
+Classics
+Cloud Computing
+Cognitive Science
+Communication
+Communications
+Comparative Literature
+Computer Engineering
+Computer Forensics
+Computer Graphics
+Computer Networking
+Computer Science
+Construction Management
+Counseling
+Creative Writing
+Criminal Justice
+Criminology
+Cultural Studies
+Curriculum & Instruction
+Cybersecurity
+Dance
+Data Science
+Dental Assisting
+Dental Hygiene
+Dental Science
+Design
+Diagnostic Medical Sonography
+Digital Journalism
+Digital Media
+Drama
+E-Commerce / E-Business
+Early Childhood Education
+Early Childhood Special Education
+Earth Science
+East Asian Studies
+Ecology
+Economics
+Education
+Educational Leadership
+Educational Psychology
+Electrical Engineering
+Elementary Education
+Energy Engineering
+Engineering
+Engineering Physics
+English
+Entomology
+Entrepreneurship
+Entrepreneurship & Innovation
+Environmental Biology
+Environmental Engineering
+Environmental Science
+Environmental Studies
+Epidemiology
+Ethnic Studies
+Exercise Science
+Family Studies
+Fashion Design
+Fashion Illustration
+Fashion Merchandising
+Film
+Film Studies
+Finance
+Fine Arts
+Fisheries Science
+Folklore
+Food Science
+Forensic Science
+Forestry
+French
+Game Design
+Game Programming
+Gender & Sexuality Studies
+Gender Studies
+Genetics
+Geography
+Geological Engineering
+Geology
+German
+Gerontology
+Global Studies
+Graphic Design
+Health Administration
+Health Education
+Health Informatics
+Health Science
+History
+Horticulture
+Hospitality / Tourism / Event Management
+Hospitality Management
+Human Biology
+Human Development
+Human Geography
+Human Resources
+Human Services
+Human-Computer Interaction
+Humanities
+Illustration
+Immunology
+Indigenous Studies
+Industrial Arts
+Industrial Design
+Industrial Engineering
+Industrial-Organizational Psychology
+Information Assurance
+Information Science
+Information Security
+Information Systems
+Information Technology
+Instructional Design
+Interaction Design
+Interior Design
+International Business
+International Development
+International Finance
+International Relations
+Investment Management
+Italian
+Japanese
+Jewish Studies
+Journalism
+Kinesiology
+Landscape Architecture
+Latin American Studies
+Law
+Liberal Arts
+Library Science
+Linguistics
+Literature
+Machine Learning
+Management
+Management Information Systems
+Manufacturing Engineering
+Marine Biology
+Marine Science
+Marketing
+Mass Communication
+Materials Chemistry
+Materials Science
+Mathematics
+Mechanical Engineering
+Mechatronics Engineering
+Media Production
+Media Studies
+Medical Imaging/Radiologic Technology
+Medical Laboratory Science
+Medicine
+Medieval Studies
+Metallurgical Engineering
+Meteorology
+Microbiology
+Middle Eastern Studies
+Middle School Education
+Mining Engineering
+Molecular Biology
+Multimedia Design
+Music
+Music Education
+Music Performance
+Musical Theatre
+Natural Resource Management
+Neuroscience
+Nuclear Engineering
+Nursing
+Nutrition
+Occupational Therapy
+Ocean Engineering
+Oceanography
+Operations Management
+Organizational Leadership
+Paleontology
+Peace Studies
+Petroleum Engineering
+Pharmacy
+Philosophy
+Philosophy & Religion
+Photography
+Physical Education
+Physical Therapy
+Physician Assistant Studies
+Physics
+Physiology
+Plant Pathology
+Plant Science
+Political Economy
+Political Science
+Portuguese
+Pre-Dentistry
+Pre-Law
+Pre-Medicine
+Pre-Pharmacy
+Pre-Veterinary
+Psychology
+Public Administration
+Public Health
+Public Policy
+Public Relations
+Public Speaking
+Radio
+Real Estate
+Religious Studies
+Respiratory Therapy
+Rhetoric
+Risk Management and Insurance
+Robotics
+Russian
+Screenwriting
+Secondary Education
+Social Psychology
+Social Work
+Sociology
+Software Development
+Software Engineering
+Soil Science
+Spanish
+Special Education
+Speech Pathology
+Speech-Language Pathology
+Sports Journalism
+Sports Management
+Statistics
+Supply Chain Management
+Sustainability
+Systems Engineering
+Taxation
+Technology Education
+Television Production
+Textile Design
+Theatre
+Theology
+Transportation Engineering
+Urban Planning
+Veterinary Science
+Visual Arts
+Viticulture & Enology
+Web Development
+Wildlife Management
+Women's Studies
+Zoology
