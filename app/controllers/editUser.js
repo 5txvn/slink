@@ -21,9 +21,51 @@ function parseArrayField(value) {
     return normalizeList(value);
 }
 
-function socialValue(value) {
+function emptySocial(value) {
     const text = value == null ? '' : String(value).trim();
-    return text || 'n/a';
+    return !text || text.toLowerCase() === 'n/a';
+}
+
+function withProtocol(value) {
+    const text = String(value).trim();
+    if (/^[a-zA-Z][a-zA-Z0-9+.-]*:/.test(text)) return text;
+    return `https://${text}`;
+}
+
+function isHttpUrl(value) {
+    try {
+        const parsed = new URL(value);
+        return parsed.protocol === 'http:' || parsed.protocol === 'https:';
+    } catch (error) {
+        return false;
+    }
+}
+
+function hostMatches(value, hosts) {
+    const host = new URL(value).hostname.replace(/^www\./, '').toLowerCase();
+    return hosts.some(allowed => host === allowed || host.endsWith(`.${allowed}`));
+}
+
+function validateSocialLink(label, value, hosts) {
+    if (emptySocial(value)) return { ok: true, stored: 'n/a' };
+    const url = withProtocol(value);
+    if (!isHttpUrl(url) || (hosts && hosts.length && !hostMatches(url, hosts))) {
+        return { ok: false, message: `Could not save details. The ${label} link is not valid.` };
+    }
+    return { ok: true, stored: url };
+}
+
+function validateDiscord(value) {
+    if (emptySocial(value)) return { ok: true, stored: 'n/a' };
+    const text = String(value).trim();
+    const looksLikeUrl = /https?:\/\//i.test(text) || /discord\.(gg|com|app)/i.test(text) || text.includes('/');
+    if (looksLikeUrl) {
+        return validateSocialLink('Discord', text, ['discord.com', 'discord.gg', 'discordapp.com']);
+    }
+    if (!/^[a-zA-Z0-9._]{2,32}(#\d{4})?$/.test(text)) {
+        return { ok: false, message: 'Could not save details. The Discord link is not valid.' };
+    }
+    return { ok: true, stored: text };
 }
 
 exports.editUser = async (req, res) => {
@@ -50,13 +92,28 @@ exports.editUser = async (req, res) => {
             position
         } = req.body;
 
+        const linkedinResult = validateSocialLink('LinkedIn', linkedin, ['linkedin.com']);
+        const instagramResult = validateSocialLink('Instagram', instagram, ['instagram.com']);
+        const websiteResult = validateSocialLink('website', website);
+        const discordResult = validateDiscord(discord);
+        const invalid = [linkedinResult, instagramResult, websiteResult, discordResult].find(result => !result.ok);
+        if (invalid) {
+            return res.status(400).render(path.join(__dirname, '../views/utils/status.ejs'), {
+                status: 'error',
+                title: 'Could Not Save Details',
+                message: invalid.message,
+                redirectUrl: '/profile'
+            });
+        }
+
         if (name != null && String(name).trim()) {
             user.name = String(name).trim();
         }
 
         if (bio != null) {
             const trimmedBio = String(bio).trim();
-            user.bio = trimmedBio || 'n/a';
+            const isEmpty = !trimmedBio || ['n/a', 'no bio yet...'].includes(trimmedBio.toLowerCase());
+            user.bio = isEmpty ? 'No bio yet...' : trimmedBio;
         }
 
         user.school = parseArrayField(school);
@@ -81,10 +138,10 @@ exports.editUser = async (req, res) => {
             user.position = position;
         }
 
-        user.socialLinks.linkedin = socialValue(linkedin);
-        user.socialLinks.instagram = socialValue(instagram);
-        user.socialLinks.discord = socialValue(discord);
-        user.socialLinks.website = socialValue(website);
+        user.socialLinks.linkedin = linkedinResult.stored;
+        user.socialLinks.instagram = instagramResult.stored;
+        user.socialLinks.discord = discordResult.stored;
+        user.socialLinks.website = websiteResult.stored;
 
         await user.save();
 
