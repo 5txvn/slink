@@ -1,10 +1,15 @@
 const User = require('../../models/User');
 const path = require('path');
 
+function includesUser(list, userId) {
+    const id = String(userId);
+    return (list || []).some(item => item.user && String(item.user) === id);
+}
+
 exports.sendConnectionRequest = async (req, res) => {
     if(!req.session.username) {
-        req.session.redirect = '/';
-        res.redirect('/authenticate');
+        req.session.redirectUrl = '/';
+        return res.redirect('/authenticate');
     }
     try {
         const outgoingUser = await User.findOne({ username: req.session.username });
@@ -21,12 +26,30 @@ exports.sendConnectionRequest = async (req, res) => {
             message: 'You cannot send a connection request to yourself.',
             redirectUrl: '/'
         });
-        if(outgoingUser.outBoundConnections.findIndex(connection => connection.user.toString() === incomingUser._id.toString()) !== -1 && incomingUser.inBoundConnections.findIndex(connection => connection.user.toString() === outgoingUser._id.toString()) !== -1) res.status(400).render(path.join(__dirname, '../../views/utils/status.ejs'), {
-            status: 'error',
-            title: 'Request Already Sent',
-            message: 'You have already sent a connection request to this user.',
-            redirectUrl: '/'
-        });
+        if (includesUser(outgoingUser.connections, incomingUser._id) || includesUser(incomingUser.connections, outgoingUser._id)) {
+            return res.status(400).render(path.join(__dirname, '../../views/utils/status.ejs'), {
+                status: 'error',
+                title: 'Already Connected',
+                message: 'You are already connected with this user.',
+                redirectUrl: `/user/${incomingUser.username}`
+            });
+        }
+        if (includesUser(outgoingUser.outBoundConnections, incomingUser._id) || includesUser(incomingUser.inBoundConnections, outgoingUser._id)) {
+            return res.status(400).render(path.join(__dirname, '../../views/utils/status.ejs'), {
+                status: 'error',
+                title: 'Request Already Sent',
+                message: 'You have already sent a connection request to this user.',
+                redirectUrl: `/user/${incomingUser.username}`
+            });
+        }
+        if (includesUser(outgoingUser.inBoundConnections, incomingUser._id) || includesUser(incomingUser.outBoundConnections, outgoingUser._id)) {
+            return res.status(400).render(path.join(__dirname, '../../views/utils/status.ejs'), {
+                status: 'error',
+                title: 'Request Already Received',
+                message: 'This user has already sent you a connection request. Accept it from your home page.',
+                redirectUrl: '/'
+            });
+        }
         outgoingUser.outBoundConnections.push({ user: incomingUser._id });
         incomingUser.inBoundConnections.push({ user: outgoingUser._id });
         await outgoingUser.save();
@@ -35,7 +58,7 @@ exports.sendConnectionRequest = async (req, res) => {
             status: 'success',
             title: 'Connection Request Sent',
             message: 'Your connection request has been sent to this user.',
-            redirectUrl: '/'
+            redirectUrl: `/user/${incomingUser.username}`
         });
     } catch(error) {
         console.error(`Error occurred while sending connection request: ${error}`);

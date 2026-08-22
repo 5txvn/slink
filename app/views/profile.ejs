@@ -250,8 +250,8 @@
                     </div>
 
                         <div class="grid grid-cols-1 lg:grid-cols-2 gap-x-10 gap-y-6 mt-2 items-stretch">
-                            <div class="multi-field flex flex-col h-full" data-field="school" data-suggest="schools" data-empty="No schools added yet...">
-                                <label class="block text-xl font-medium text-black mb-2">School</label>
+                            <div class="multi-field flex flex-col h-full" data-field="school" data-suggest="schools" data-empty="No colleges added yet...">
+                                <label class="block text-xl font-medium text-black mb-2">College(s)</label>
                                 <div class="chips flex flex-wrap gap-2 mb-2 content-start"></div>
                                 <div class="relative">
                                     <div class="flex flex-row">
@@ -265,7 +265,7 @@
                             </div>
 
                             <div class="multi-field flex flex-col h-full" data-field="currentPosition" data-suggest="positions" data-empty="No positions added yet...">
-                                <label class="block text-xl font-medium text-black mb-2">Current Position</label>
+                                <label class="block text-xl font-medium text-black mb-2">Position(s)</label>
                                 <div class="chips flex flex-wrap gap-2 mb-2 content-start"></div>
                                 <div class="relative">
                                     <div class="flex flex-row">
@@ -279,7 +279,7 @@
                             </div>
 
                             <div class="multi-field flex flex-col h-full" data-field="major" data-suggest="majors" data-empty="No majors added yet...">
-                                <label class="block text-xl font-medium text-black mb-2">Major</label>
+                                <label class="block text-xl font-medium text-black mb-2">Major(s)</label>
                                 <div class="chips flex flex-wrap gap-2 mb-2 content-start"></div>
                                 <div class="relative">
                                     <div class="flex flex-row">
@@ -293,7 +293,7 @@
                             </div>
 
                             <div class="multi-field flex flex-col h-full" data-field="company" data-empty="No companies added yet...">
-                                <label class="block text-xl font-medium text-black mb-2">Company</label>
+                                <label class="block text-xl font-medium text-black mb-2">Company(s)</label>
                                 <div class="chips flex flex-wrap gap-2 mb-2 content-start"></div>
                                 <div class="flex flex-row">
                                     <div class="rounded-l-lg bg-gray-100 flex items-center justify-center px-4 border border-r-0 border-black">
@@ -314,7 +314,7 @@
                             </div>
 
                             <div class="multi-field flex flex-col h-full" data-field="location" data-suggest="cities" data-empty="No locations added yet...">
-                                <label class="block text-xl font-medium text-black mb-2">Location</label>
+                                <label class="block text-xl font-medium text-black mb-2">Location(s)</label>
                                 <div class="chips flex flex-wrap gap-2 mb-2 content-start"></div>
                                 <div class="relative">
                                     <div class="flex flex-row">
@@ -499,7 +499,7 @@
                 } else {
                     const input = form.find(`[name="${key}"]`);
                     if (input.length) {
-                        const next = value === 'n/a' ? '' : (value || '');
+                        const next = (!value || ['n/a', 'no bio yet...'].includes(String(value).toLowerCase())) ? '' : (value || '');
                         input.val(next);
                     }
                 }

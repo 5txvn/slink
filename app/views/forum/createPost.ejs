@@ -207,8 +207,12 @@
             });
 
             // Load saved content from localStorage
+            const savedTitle = localStorage.getItem('postTitle');
             const savedContent = localStorage.getItem('postContent');
             const savedTags = localStorage.getItem('postTags');
+            if (savedTitle) {
+                $('#title').val(savedTitle);
+            }
             if (savedContent) {
                 $('#editorContent').html(savedContent);
             }
@@ -218,6 +222,10 @@
             }
 
             // Save content to localStorage on input
+            $('#title').on('input', function() {
+                localStorage.setItem('postTitle', $(this).val());
+            });
+
             $('#editorContent').on('input', function() {
                 localStorage.setItem('postContent', $(this).html());
             });
@@ -231,6 +239,7 @@
             $('#createPostForm').on('submit', function() {
                 const content = $('#editorContent').html();
                 $('#contentInput').val(content);
+                localStorage.removeItem('postTitle');
                 localStorage.removeItem('postContent');
                 localStorage.removeItem('postTags');
             });

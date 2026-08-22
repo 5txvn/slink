@@ -13,7 +13,8 @@ router.get('/', async (req, res) => {
         try {
             const posts = await Post.find().sort({ createdAt: -1 }).populate('comments').populate('author').exec();
             res.render(path.join(__dirname, '../../views/forum/forum.ejs'), {
-                posts: posts
+                posts: posts,
+                selectedTag: req.query.tag || ''
             });
         } catch (error) {
             console.error(`Error occurred while loading the forum: ${error}`);

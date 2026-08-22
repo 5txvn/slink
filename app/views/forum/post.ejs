@@ -48,9 +48,10 @@
         .tag-card {
             background-color: #602234;
             color: white;
-            padding: 0.25rem 0.75rem;
+            padding: 0.2rem 0.65rem;
             border-radius: 9999px;
-            font-size: 0.75rem;
+            font-size: 0.8rem;
+            line-height: 1.2;
             display: inline-flex;
             align-items: center;
             margin: 0.25rem;
@@ -92,7 +93,7 @@
                     <div class="flex-1">
                         <h1 class="text-3xl font-bold text-[#602234] mb-6"><%= post.title %></h1>
                         <div class="flex items-center mb-6">
-                            <div class="w-10 h-10 rounded-full bg-[#602234] mr-3 flex items-center justify-center">
+                            <div class="w-10 h-10 rounded-full bg-[#602234] mr-3 flex items-center justify-center flex-shrink-0 aspect-square overflow-hidden">
                                 <i class="fas fa-user text-white text-xl"></i>
                             </div>
                             <div>
@@ -103,9 +104,9 @@
                         <% const visibleTags = (post.tags || []).filter(tag => tag && String(tag).trim()); %>
                         <% if (visibleTags.length > 0) { %>
                             <div class="flex flex-wrap items-center justify-start gap-2 mb-4">
-                                <span class="text-sm font-medium text-gray-600">Tags:</span>
+                        <span class="text-sm font-medium text-gray-600">Tags:</span>
                                 <% visibleTags.forEach(tag => { %>
-                                    <span class="tag-card text-base px-4 py-2"><%= tag.trim() %></span>
+                                    <a href="/forum?tag=<%= encodeURIComponent(tag.trim()) %>" class="tag-card"><%= tag.trim() %></a>
                                 <% }); %>
                             </div>
                         <% } %>
@@ -178,7 +179,7 @@
                             <div class="comment-card bg-gray-50 rounded-lg p-4 border border-gray-300">
                                 <div class="flex items-center justify-between mb-2">
                                     <div class="flex items-center">
-                                        <div class="w-8 h-8 rounded-full bg-[#602234] mr-2 flex items-center justify-center">
+                                        <div class="w-8 h-8 rounded-full bg-[#602234] mr-2 flex items-center justify-center flex-shrink-0 aspect-square overflow-hidden">
                                             <i class="fas fa-user text-white text-sm"></i>
                                         </div>
                                         <div>

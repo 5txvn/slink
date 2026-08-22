@@ -89,7 +89,7 @@ const userSchema = new mongoose.Schema({
         required: true,
         trim: true,
         maxlength: 1000,
-        default: "n/a"
+        default: "No bio yet..."
     },
     socialLinks: {
         linkedin: {

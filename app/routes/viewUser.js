@@ -10,7 +10,7 @@ const { normalizeList } = require('../utils/listFields');
 router.get('/', (req, res) => {
     if(!req.session.username) {
         req.session.redirectUrl = "/user";
-        res.redirect('/authenticate');
+        return res.redirect('/authenticate');
     }
     res.redirect(`/user/${req.session.username}`);
 })
@@ -18,12 +18,12 @@ router.get('/', (req, res) => {
 router.get("/:username", async (req, res) => {
     if(!req.session.username) {
         req.session.redirectUrl = `/user/${req.params.username}`;
-        res.redirect('/authenticate');
+        return res.redirect('/authenticate');
     }
     try {
         const user = await User.findOne({ username: req.params.username });
         const viewingUser = await User.findOne({ username: req.session.username });
-        if(!user) res.status(404).render(path.join(__dirname, '../views/utils/status.ejs'), {
+        if(!user || !viewingUser) return res.status(404).render(path.join(__dirname, '../views/utils/status.ejs'), {
             status: 'error',
             title: 'User Not Found',
             message: 'The user you are trying to view does not exist.',
@@ -34,9 +34,19 @@ router.get("/:username", async (req, res) => {
         ['school', 'major', 'currentPosition', 'company', 'location'].forEach(field => {
             userData[field] = normalizeList(userData[field]);
         });
+        const targetId = user._id.toString();
+        let connectionStatus = 'none';
+        if (viewingUser.connections.some(connection => connection.user && connection.user.toString() === targetId)) {
+            connectionStatus = 'connected';
+        } else if (viewingUser.outBoundConnections.some(connection => connection.user && connection.user.toString() === targetId)) {
+            connectionStatus = 'pending';
+        } else if (viewingUser.inBoundConnections.some(connection => connection.user && connection.user.toString() === targetId)) {
+            connectionStatus = 'incoming';
+        }
         res.render(path.join(__dirname, '../views', 'user.ejs'), {
             user: JSON.stringify(userData),
-            isOwnProfile: viewingUser._id.toString() === user._id.toString()
+            isOwnProfile: viewingUser._id.toString() === user._id.toString(),
+            connectionStatus
         });
     } catch(error) {
         console.error(`Error occurred while loading user page: ${error}`);
