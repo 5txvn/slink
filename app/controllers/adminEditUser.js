@@ -2,16 +2,37 @@ const path = require('path');
 const User = require('../models/User');
 const { LIST_FIELDS, parseArrayField, validateSocialLink, validateDiscord } = require('../utils/profileFields');
 
-exports.editUser = async (req, res) => {
+exports.adminEditUser = async (req, res) => {
+    if (!req.session.username) {
+        req.session.redirectUrl = '/admin';
+        return res.redirect('/authenticate');
+    }
+
     try {
-        const user = await User.findOne({ username: req.session.username });
+        const admin = await User.findOne({ username: req.session.username });
+        if (!admin || !admin.admin) {
+            return res.status(403).render(path.join(__dirname, '../views/utils/status.ejs'), {
+                status: 'warning',
+                title: 'Access Denied',
+                message: 'You do not have permission to access this page.',
+                redirectUrl: '/'
+            });
+        }
+
+        const user = await User.findById(req.params.id);
         if (!user) {
-            req.session.redirectUrl = '/profile';
-            return res.redirect('/google-auth');
+            return res.status(404).render(path.join(__dirname, '../views/utils/status.ejs'), {
+                status: 'error',
+                title: 'User Not Found',
+                message: 'No account matched that lookup.',
+                redirectUrl: '/admin'
+            });
         }
 
         const {
             name,
+            username,
+            email,
             bio,
             school,
             major,
@@ -38,8 +59,35 @@ exports.editUser = async (req, res) => {
                 status: 'error',
                 title: 'Could Not Save Details',
                 message: invalid.message,
-                redirectUrl: '/profile'
+                redirectUrl: `/admin/edit/${user._id}`
             });
+        }
+
+        const nextUsername = String(username || '').trim().toLowerCase();
+        const nextEmail = String(email || '').trim().toLowerCase();
+        if (nextUsername && nextUsername !== user.username) {
+            const taken = await User.findOne({ username: nextUsername, _id: { $ne: user._id } });
+            if (taken) {
+                return res.status(409).render(path.join(__dirname, '../views/utils/status.ejs'), {
+                    status: 'error',
+                    title: 'Could Not Save Details',
+                    message: 'That username is already taken.',
+                    redirectUrl: `/admin/edit/${user._id}`
+                });
+            }
+            user.username = nextUsername;
+        }
+        if (nextEmail && nextEmail !== user.email) {
+            const taken = await User.findOne({ email: nextEmail, _id: { $ne: user._id } });
+            if (taken) {
+                return res.status(409).render(path.join(__dirname, '../views/utils/status.ejs'), {
+                    status: 'error',
+                    title: 'Could Not Save Details',
+                    message: 'That email is already taken.',
+                    redirectUrl: `/admin/edit/${user._id}`
+                });
+            }
+            user.email = nextEmail;
         }
 
         if (name != null && String(name).trim()) {
@@ -64,14 +112,13 @@ exports.editUser = async (req, res) => {
         const year = parseInt(graduationYear, 10);
         if (Number.isFinite(year) && year >= 1900 && year <= 2100) {
             user.graduationYear = year;
-        } else if (!user.graduationYear) {
-            user.graduationYear = 1900;
         }
 
         if (['alumni', 'student', 'staff', 'parent'].includes(position)) {
             user.position = position;
         }
 
+        user.admin = req.body.admin === 'true' || req.body.admin === 'on';
         user.socialLinks.linkedin = linkedinResult.stored;
         user.socialLinks.instagram = instagramResult.stored;
         user.socialLinks.discord = discordResult.stored;
@@ -79,22 +126,23 @@ exports.editUser = async (req, res) => {
 
         await user.save();
 
+        if (String(admin._id) === String(user._id)) {
+            req.session.username = user.username;
+            req.session.email = user.email;
+        }
+
         return res.status(200).render(path.join(__dirname, '../views/utils/status.ejs'), {
             status: 'success',
-            title: 'Profile Updated',
-            message: 'Your profile has been updated successfully.',
-            redirectUrl: '/profile'
+            title: 'Account Updated',
+            message: `@${user.username} has been updated successfully.`,
+            redirectUrl: `/admin/edit/${user._id}`
         });
     } catch (error) {
-        console.error('Error updating profile:', error);
-        const message = error && error.message
-            ? error.message
-            : 'An error occurred while updating your profile, please try again later.';
         return res.status(500).render(path.join(__dirname, '../views/utils/status.ejs'), {
             status: 'error',
-            title: 'Could Not Update Profile',
-            message,
-            redirectUrl: '/profile'
+            title: 'Internal Server Error',
+            message: 'An error occurred while updating the account, please try again later.',
+            redirectUrl: '/admin'
         });
     }
 };

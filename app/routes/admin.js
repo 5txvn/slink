@@ -3,6 +3,9 @@ const router = express.Router();
 const path = require('path');
 const User = require('../models/User');
 const { adminDeleteUser } = require('../controllers/deleteUser');
+const { adminEditUser } = require('../controllers/adminEditUser');
+const { normalizeList } = require('../utils/listFields');
+const { LIST_FIELDS } = require('../utils/profileFields');
 
 function escapeRegex(value) {
     return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -66,6 +69,41 @@ router.get('/', async (req, res) => {
     }
 });
 
+router.get('/edit/:id', async (req, res) => {
+    try {
+        const admin = await requireAdmin(req, res);
+        if (!admin) return;
+
+        const found = await User.findById(req.params.id).select('-password');
+        if (!found) {
+            return res.status(404).render(path.join(__dirname, '../views/utils/status.ejs'), {
+                status: 'error',
+                title: 'User Not Found',
+                message: 'No account matched that lookup.',
+                redirectUrl: '/admin'
+            });
+        }
+
+        const userData = found.toObject();
+        LIST_FIELDS.forEach(field => {
+            userData[field] = normalizeList(userData[field]);
+        });
+
+        res.render(path.join(__dirname, '../views', 'adminEdit.ejs'), {
+            user: JSON.stringify(userData).replace(/</g, '\\u003c'),
+            userId: found._id
+        });
+    } catch (error) {
+        res.status(500).render(path.join(__dirname, '../views/utils/status.ejs'), {
+            status: 'error',
+            title: 'Internal Server Error',
+            message: 'An error occurred while loading the account editor, please try again later.',
+            redirectUrl: '/admin'
+        });
+    }
+});
+
+router.post('/edit/:id', adminEditUser);
 router.post('/delete', adminDeleteUser);
 
 module.exports = router;
