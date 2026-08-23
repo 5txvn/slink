@@ -148,6 +148,12 @@
             word-break: normal;
             white-space: nowrap;
         }
+        table th.name-col,
+        table td.name-col {
+            white-space: normal;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+        }
         @media (min-width: 768px) {
             table {
                 min-width: 980px;
@@ -168,10 +174,10 @@
                 padding: 0.4rem 0.45rem;
             }
             table .name-col {
-                min-width: 72px;
-                max-width: 84px;
-                overflow: hidden;
-                text-overflow: ellipsis;
+                min-width: 148px;
+                max-width: none;
+                overflow: visible;
+                text-overflow: unset;
             }
         }
         .table-row:hover {
@@ -594,6 +600,8 @@
                                 <th class="text-left py-4 px-6">Position</th>
                                 <th class="text-left py-4 px-6">Company</th>
                                 <th class="text-left py-4 px-6">Location</th>
+                                <th class="text-left py-4 px-6">Interests</th>
+                                <th class="text-left py-4 px-6">Extracurriculars</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -603,6 +611,8 @@
                                 <% const currentPosition = Array.isArray(alum.currentPosition) ? alum.currentPosition : []; %>
                                 <% const company = Array.isArray(alum.company) ? alum.company : []; %>
                                 <% const location = Array.isArray(alum.location) ? alum.location : []; %>
+                                <% const interests = Array.isArray(alum.interests) ? alum.interests : []; %>
+                                <% const extracurriculars = Array.isArray(alum.extracurriculars) ? alum.extracurriculars : []; %>
                                 <tr class="border-b border-gray-200 hover:bg-gray-50">
                                     <td class="name-col py-4 px-6">
                                         <div>
@@ -653,6 +663,24 @@
                                         <% } else { %>
                                             <% location.forEach((item, index) => { %>
                                                 <% if (index > 0) { %>, <% } %><span class="filter-value" data-filter="location" data-value="<%= item %>"><%= item %></span>
+                                            <% }); %>
+                                        <% } %>
+                                    </td>
+                                    <td class="py-4 px-6 text-gray-600" data-filter="interests" data-values="<%= JSON.stringify(interests) %>">
+                                        <% if (!interests.length) { %>
+                                            n/a
+                                        <% } else { %>
+                                            <% interests.forEach((item, index) => { %>
+                                                <% if (index > 0) { %>, <% } %><span class="filter-value" data-filter="interests" data-value="<%= item %>"><%= item %></span>
+                                            <% }); %>
+                                        <% } %>
+                                    </td>
+                                    <td class="py-4 px-6 text-gray-600" data-filter="extracurriculars" data-values="<%= JSON.stringify(extracurriculars) %>">
+                                        <% if (!extracurriculars.length) { %>
+                                            n/a
+                                        <% } else { %>
+                                            <% extracurriculars.forEach((item, index) => { %>
+                                                <% if (index > 0) { %>, <% } %><span class="filter-value" data-filter="extracurriculars" data-value="<%= item %>"><%= item %></span>
                                             <% }); %>
                                         <% } %>
                                     </td>
@@ -728,6 +756,22 @@
                         <div class="custom-dropdown-options hidden"></div>
                     </div>
                 </div>
+
+                <div class="filter-group relative">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Interests</label>
+                    <div class="custom-dropdown">
+                        <input type="text" class="filter-search w-full px-3 py-2 border border-gray-300 rounded-lg" placeholder="Search interests...">
+                        <div class="custom-dropdown-options hidden"></div>
+                    </div>
+                </div>
+
+                <div class="filter-group relative">
+                    <label class="block text-sm font-medium text-gray-700 mb-2">Extracurriculars</label>
+                    <div class="custom-dropdown">
+                        <input type="text" class="filter-search w-full px-3 py-2 border border-gray-300 rounded-lg" placeholder="Search extracurriculars...">
+                        <div class="custom-dropdown-options hidden"></div>
+                    </div>
+                </div>
             </div>
             <div class="mt-8 flex justify-end">
                 <button id="closeFilterModalBtn" class="bg-[#602234] text-white px-6 py-3 rounded-lg hover:bg-[#4a1a28] transition-colors">
@@ -794,7 +838,7 @@
 
             // Initialize filter options
             function initializeFilterOptions() {
-                const columns = ['school', 'graduationYear', 'major', 'currentPosition', 'company', 'location'];
+                const columns = ['school', 'graduationYear', 'major', 'currentPosition', 'company', 'location', 'interests', 'extracurriculars'];
                 columns.forEach(column => {
                     const uniqueValues = new Set();
                     $(`td[data-filter="${column}"]`).each(function() {
@@ -819,7 +863,9 @@
                         major: 'Major',
                         currentPosition: 'Position',
                         company: 'Company',
-                        location: 'Location'
+                        location: 'Location',
+                        interests: 'Interests',
+                        extracurriculars: 'Extracurriculars'
                     };
                     const filterGroup = $(`.filter-group:has(label:contains('${labelMap[column]}'))`);
                     const optionsContainer = filterGroup.find('.custom-dropdown-options');
@@ -869,7 +915,9 @@
                     'major': 'major',
                     'position': 'currentPosition',
                     'company': 'company',
-                    'location': 'location'
+                    'location': 'location',
+                    'interests': 'interests',
+                    'extracurriculars': 'extracurriculars'
                 };
                 addFilter(columnMap[label] || label, value);
                 $(this).closest('.custom-dropdown-options').addClass('hidden');
