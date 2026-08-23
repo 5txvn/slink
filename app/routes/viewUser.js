@@ -6,6 +6,7 @@ const User = require('../models/User');
 const { addRecentlyViewedUser } = require('../services/users/addRecentlyViewedUser');
 const { sendConnectionRequest } = require('../services/users/sendConnenctionRequest');
 const { normalizeList } = require('../utils/listFields');
+const { LIST_FIELDS } = require('../utils/profileFields');
 
 router.get('/', (req, res) => {
     if(!req.session.username) {
@@ -31,7 +32,7 @@ router.get("/:username", async (req, res) => {
         });
         await addRecentlyViewedUser(user._id, viewingUser._id);
         const userData = user.toObject();
-        ['school', 'major', 'currentPosition', 'company', 'location'].forEach(field => {
+        LIST_FIELDS.forEach(field => {
             userData[field] = normalizeList(userData[field]);
         });
         const targetId = user._id.toString();

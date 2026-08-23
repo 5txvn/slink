@@ -140,6 +140,11 @@
             transition: all 0.3s ease;
             opacity: 0.8;
         }
+        button.social-link {
+            border: none;
+            cursor: pointer;
+            font: inherit;
+        }
         .social-link:hover {
             transform: translateY(-3px);
             opacity: 1;
@@ -308,8 +313,26 @@
                     <i class="fas fa-user-circle text-2xl text-[#602234] mr-3"></i>
                     <h2 class="text-2xl font-bold text-[#602234]">About</h2>
                 </div>
+                <div class="text-lg leading-relaxed whitespace-pre-wrap"><%= bioText %></div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 info-card">
+                <div class="flex items-center mb-4">
+                    <i class="fas fa-heart text-2xl text-[#602234] mr-3"></i>
+                    <h2 class="text-2xl font-bold text-[#602234]">Interests</h2>
+                </div>
                 <div class="text-lg leading-relaxed">
-                    <%= bioText %>
+                    <%= (profile.interests || []).join(', ') || 'Not Provided' %>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-2xl shadow-lg p-6 md:p-8 info-card">
+                <div class="flex items-center mb-4">
+                    <i class="fas fa-trophy text-2xl text-[#602234] mr-3"></i>
+                    <h2 class="text-2xl font-bold text-[#602234]">Extracurriculars</h2>
+                </div>
+                <div class="text-lg leading-relaxed">
+                    <%= (profile.extracurriculars || []).join(', ') || 'Not Provided' %>
                 </div>
             </div>
 
@@ -330,7 +353,13 @@
                         <% const value = profile.socialLinks && profile.socialLinks[social.key]; %>
                         <% const provided = hasSocial(value); %>
                         <% const href = socialHref(value); %>
-                        <% if (provided && href) { %>
+                        <% if (social.key === 'discord' && provided) { %>
+                            <button type="button" data-username="<%= String(value).replace(/^https?:\/\//i, '').replace(/^www\./i, '') %>"
+                               class="discord-trigger social-link flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300 text-left w-full">
+                                <i class="<%= social.icon %> text-2xl <%= social.color %> mr-3"></i>
+                                <span class="text-lg font-medium"><%= social.label %></span>
+                            </button>
+                        <% } else if (provided && href) { %>
                             <a href="<%= href %>" target="_blank" rel="noopener noreferrer"
                                class="social-link flex items-center p-4 rounded-xl bg-gray-50 hover:bg-gray-100 transition-colors duration-300">
                                 <i class="<%= social.icon %> text-2xl <%= social.color %> mr-3"></i>
@@ -339,7 +368,7 @@
                         <% } else { %>
                             <span class="social-link not-provided flex items-center p-4 rounded-xl bg-gray-50">
                                 <i class="<%= social.icon %> text-2xl <%= social.color %> mr-3"></i>
-                                <span class="text-lg font-medium"><%= provided ? social.label : 'Not Provided' %></span>
+                                <span class="text-lg font-medium">Not Provided</span>
                             </span>
                         <% } %>
                     <% }); %>
@@ -347,6 +376,25 @@
             </div>
         </div>
     </main>
+
+    <div id="discordModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white rounded-2xl p-8 md:p-12 max-w-lg w-full mx-4 relative info-card">
+            <button type="button" id="closeDiscordModal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700">
+                <i class="fas fa-times text-2xl"></i>
+            </button>
+            <div class="flex flex-col items-center text-center">
+                <div class="w-20 h-20 rounded-full bg-[#7289DA] flex items-center justify-center mb-6">
+                    <i class="fab fa-discord text-white text-4xl"></i>
+                </div>
+                <h3 class="text-3xl font-bold text-[#602234] mb-3">Discord</h3>
+                <p class="text-lg text-gray-600 mb-2">This user's Discord username is</p>
+                <p id="discordUsernameLabel" class="text-2xl font-bold text-gray-800 mb-8 break-all"></p>
+                <button type="button" id="copyDiscordUsername" class="bg-[#602234] hover:bg-[#4a1a28] text-white font-semibold py-3 px-8 rounded-xl">
+                    <i class="fas fa-copy mr-2"></i><span>Copy Username</span>
+                </button>
+            </div>
+        </div>
+    </div>
 
     <script type="module">
         import Navbar from '../../components/navbar.js';
@@ -365,6 +413,37 @@
                     $(this).removeClass('shadow-xl');
                 }
             );
+
+            const discordModal = document.getElementById('discordModal');
+            let discordUsername = '';
+            $('.discord-trigger').on('click', function() {
+                discordUsername = $(this).data('username') || '';
+                $('#discordUsernameLabel').text(discordUsername);
+                $('#copyDiscordUsername span').text('Copy Username');
+                discordModal.classList.remove('hidden');
+                discordModal.classList.add('flex');
+            });
+            function hideDiscordModal() {
+                discordModal.classList.add('hidden');
+                discordModal.classList.remove('flex');
+            }
+            $('#closeDiscordModal').on('click', hideDiscordModal);
+            $(discordModal).on('click', function(e) {
+                if (e.target === this) hideDiscordModal();
+            });
+            $('#copyDiscordUsername').on('click', async function() {
+                try {
+                    await navigator.clipboard.writeText(discordUsername);
+                } catch (error) {
+                    const field = document.createElement('textarea');
+                    field.value = discordUsername;
+                    document.body.appendChild(field);
+                    field.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(field);
+                }
+                $('#copyDiscordUsername span').text('Copied');
+            });
             //change color of icon
             /*
             const colors = ['#602234', '#191919', '#707070'];

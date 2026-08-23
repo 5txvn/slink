@@ -305,6 +305,9 @@
 
                             <div class="flex flex-col h-full">
                                 <label class="block text-xl font-medium text-black mb-2">High School Graduation Year</label>
+                                <div class="chips flex flex-wrap gap-2 mb-2 content-start">
+                                    <span class="empty-chips">Enter high school graduation year below...</span>
+                                </div>
                                 <div class="flex flex-row relative">
                                     <div class="rounded-l-lg bg-gray-100 flex items-center justify-center px-4 border border-r-0 border-black">
                                         <i class="fas fa-calendar"></i>
@@ -322,6 +325,34 @@
                                             <i class="fas fa-map-marker-alt"></i>
                                         </div>
                                         <input type="text" maxlength="100" autocomplete="off" class="multi-input w-full px-4 py-3 rounded-r-lg border border-black focus:border-[#602234] focus:ring-2 focus:ring-[#602234]/20 focus:bg-gray-50 transition-all duration-300" placeholder="Type a city and press Enter">
+                                    </div>
+                                    <div class="autocomplete-dropdown"></div>
+                                </div>
+                            </div>
+
+                            <div class="multi-field flex flex-col h-full" data-field="interests" data-suggest="interests" data-empty="No interests added yet...">
+                                <label class="block text-xl font-medium text-black mb-2">Interest(s)</label>
+                                <div class="chips flex flex-wrap gap-2 mb-2 content-start"></div>
+                                <div class="relative">
+                                    <div class="flex flex-row">
+                                        <div class="rounded-l-lg bg-gray-100 flex items-center justify-center px-4 border border-r-0 border-black">
+                                            <i class="fas fa-heart"></i>
+                                        </div>
+                                        <input type="text" maxlength="100" autocomplete="off" class="multi-input w-full px-4 py-3 rounded-r-lg border border-black focus:border-[#602234] focus:ring-2 focus:ring-[#602234]/20 focus:bg-gray-50 transition-all duration-300" placeholder="Type an interest and press Enter">
+                                    </div>
+                                    <div class="autocomplete-dropdown"></div>
+                                </div>
+                            </div>
+
+                            <div class="multi-field flex flex-col h-full" data-field="extracurriculars" data-suggest="extracurriculars" data-empty="No extracurriculars added yet...">
+                                <label class="block text-xl font-medium text-black mb-2">Extracurricular(s)</label>
+                                <div class="chips flex flex-wrap gap-2 mb-2 content-start"></div>
+                                <div class="relative">
+                                    <div class="flex flex-row">
+                                        <div class="rounded-l-lg bg-gray-100 flex items-center justify-center px-4 border border-r-0 border-black">
+                                            <i class="fas fa-trophy"></i>
+                                        </div>
+                                        <input type="text" maxlength="120" autocomplete="off" class="multi-input w-full px-4 py-3 rounded-r-lg border border-black focus:border-[#602234] focus:ring-2 focus:ring-[#602234]/20 focus:bg-gray-50 transition-all duration-300" placeholder="Type an extracurricular and press Enter">
                                     </div>
                                     <div class="autocomplete-dropdown"></div>
                                 </div>
@@ -396,7 +427,7 @@
         navbar.init();
     </script>
     <script>
-        const multiFields = ['school', 'major', 'currentPosition', 'company', 'location'];
+        const multiFields = ['school', 'major', 'currentPosition', 'company', 'location', 'interests', 'extracurriculars'];
         const suggestionCache = {};
 
         function toList(value) {
@@ -485,7 +516,11 @@
                 if (key === 'socialLinks') {
                     for (const [socialKey, socialValue] of Object.entries(value || {})) {
                         const input = form.find(`[name="${socialKey}"]`);
-                        if (input.length) input.val(socialValue === 'n/a' ? '' : socialValue);
+                        if (input.length) {
+                            let next = socialValue === 'n/a' ? '' : socialValue;
+                            if (socialKey === 'discord') next = String(next || '').replace(/^https?:\/\//i, '').replace(/^www\./i, '');
+                            input.val(next);
+                        }
                     }
                 } else if (key === 'position' && value) {
                     const label = value.charAt(0).toUpperCase() + value.slice(1);

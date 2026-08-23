@@ -4,6 +4,7 @@ const path = require('path');
 const User = require('../models/User');
 const { editUser } = require('../controllers/editUser');
 const { normalizeList } = require('../utils/listFields');
+const { LIST_FIELDS } = require('../utils/profileFields');
 
 
 // Profile page route
@@ -15,7 +16,7 @@ router.get('/', async (req, res) => {
         try {
             const user = await User.findOne({username: req.session.username}).select('-password -email');
             const userData = user.toObject();
-            ['school', 'major', 'currentPosition', 'company', 'location'].forEach(field => {
+            LIST_FIELDS.forEach(field => {
                 userData[field] = normalizeList(userData[field]);
             });
             res.render(path.join(__dirname, '../views', 'profile.ejs'), {
