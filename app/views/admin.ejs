@@ -42,7 +42,7 @@
         <div class="max-w-6xl mx-auto">
             <div class="bg-white rounded-xl p-6 md:p-8 shadow-lg border-2 border-[#602234]">
                 <h1 class="text-3xl md:text-5xl font-extrabold gradient-text mb-2">Admin Panel</h1>
-                <p class="text-gray-600 mb-8">Look up an account by name, username, email, or Object ID, then delete it.</p>
+                <p class="text-gray-600 mb-8">Look up an account by name, username, email, or Object ID, then edit or delete it.</p>
 
                 <form method="GET" action="/admin" class="flex flex-col md:flex-row gap-4 mb-8">
                     <div class="relative flex-1">
@@ -89,7 +89,10 @@
                                         <td class="py-4 px-3 text-gray-600"><%= found.email %></td>
                                         <td class="py-4 px-3 text-gray-500 text-sm break-all"><%= found._id %></td>
                                         <td class="py-4 px-3 text-gray-600 capitalize"><%= found.position %></td>
-                                        <td class="py-4 px-3 text-right">
+                                        <td class="py-4 px-3 text-right whitespace-nowrap">
+                                            <a href="/admin/edit/<%= found._id %>" class="inline-block bg-[#602234] hover:bg-[#4a1a28] text-white font-semibold py-2 px-4 rounded-lg mr-2">
+                                                Edit
+                                            </a>
                                             <button type="button"
                                                 class="delete-user-btn bg-red-600 hover:bg-red-700 text-white font-semibold py-2 px-4 rounded-lg"
                                                 data-id="<%= found._id %>"
