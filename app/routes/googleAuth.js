@@ -24,6 +24,23 @@ function suggestUsername(email) {
     return base;
 }
 
+function escapeRegex(value) {
+    return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+async function findUserByGoogleOrEmail(googleId, email) {
+    const normalizedEmail = email.toLowerCase();
+    let user = await User.findOne({
+        $or: [{ googleId }, { email: normalizedEmail }]
+    });
+    if (!user) {
+        user = await User.findOne({
+            email: { $regex: `^${escapeRegex(normalizedEmail)}$`, $options: 'i' }
+        });
+    }
+    return user;
+}
+
 function googleName(profile) {
     let name = profile.displayName || '';
     if (!/\s/.test(name)) {
@@ -67,14 +84,16 @@ router.get('/callback', (req, res, next) => {
         try {
             const googleId = profile.id;
             const normalizedEmail = email.toLowerCase();
-            let user = await User.findOne({
-                $or: [{ googleId }, { email: normalizedEmail }]
-            });
+            const user = await findUserByGoogleOrEmail(googleId, normalizedEmail);
 
             if (user) {
                 if (!user.googleId) {
-                    user.googleId = googleId;
-                    await user.save();
+                    // Avoid full-document validation: leftover password hashes and
+                    // other legacy fields can fail validators on save().
+                    await User.updateOne(
+                        { _id: user._id },
+                        { $set: { googleId, email: normalizedEmail } }
+                    );
                 }
                 req.session.username = user.username;
                 req.session.email = user.email;
@@ -124,15 +143,22 @@ router.post('/complete', async (req, res) => {
     }
 
     try {
-        const existingUser = await User.findOne({
-            $or: [
-                { username: username.toLowerCase() },
-                { email: googleProfile.email },
-                { googleId: googleProfile.googleId }
-            ]
-        });
+        const existingAccount = await findUserByGoogleOrEmail(googleProfile.googleId, googleProfile.email);
+        if (existingAccount) {
+            if (!existingAccount.googleId) {
+                await User.updateOne(
+                    { _id: existingAccount._id },
+                    { $set: { googleId: googleProfile.googleId, email: googleProfile.email } }
+                );
+            }
+            delete req.session.googleProfile;
+            req.session.username = existingAccount.username;
+            req.session.email = existingAccount.email;
+            return req.session.save(() => res.redirect('/'));
+        }
 
-        if (existingUser) {
+        const existingUsername = await User.findOne({ username: username.toLowerCase() });
+        if (existingUsername) {
             return renderStatus(res, 409, 'User error', 'Username or email already exists, please try using a different username.');
         }
 
