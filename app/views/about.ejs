@@ -58,19 +58,21 @@
             animation: spin-slow 8s linear infinite;
         }
         .social-icon {
+            display: inline-flex;
             font-size: 3.25rem;
             color: #602234;
             transition: color 0.2s ease, transform 0.2s ease;
         }
         .social-icon:hover {
             color: #4a1a28;
-            transform: scale(1.08);
+            transform: translateY(-6px);
         }
         .wireframe {
             position: relative;
             background: transparent;
             border: 1.5px solid #602234;
             padding: 2.5rem 2.75rem;
+            overflow: visible;
         }
         .wireframe::before,
         .wireframe::after {
@@ -102,7 +104,7 @@
             shape-outside: circle(50%);
         }
         .about-copy {
-            overflow: auto;
+            overflow: visible;
         }
         .about-copy p {
             text-align: justify;
@@ -113,6 +115,7 @@
             justify-content: flex-end;
             gap: 2.75rem;
             padding-top: 1.75rem;
+            overflow: visible;
         }
         @media (max-width: 767px) {
             .about-photo {
@@ -157,7 +160,7 @@
             <h1 class="gradient-text text-4xl md:text-6xl font-extrabold mb-8 text-center">About Slink</h1>
             <div class="about-copy">
                 <img src="/images/headshot.png" alt="Creator Headshot" class="about-photo">
-                <p class="text-black text-lg md:text-xl leading-relaxed">Hey everyone! My name is Steven Livingston and I'm the creator of Slink. I graduated from SEM in 2026 and created Slink shortly before I graduated as a means of being able to help other students connect with alumni and explore college/industry options. Simply put, the motivation behind building the site was seeing just how much my connections helped me during the college application process. Having SEM friends who were at Stanford, MIT, UChicago, Brown, and many other top colleges gave me the opportunity to learn more about what each of those schools uniquely offered and not only helped me to make an informed decision on which college I wanted to attend, but also helped me navigate the admissions process. As a result, I'm now attending the University of Chicago, majoring in Computational & Applied Mathematics. Slink has been a project that has been in the works for quite a while now (it's construction was initially requested by the SEM PTA in 2022), and the entire site is coded from complete scratch using HTML, Tailwind, jQuery, Exprress.js, Node.js, MongoDB, and Heroku to deploy. If you have any questions about the site, wish to contribute, or have any complaints of bugs and whatnot, please don't hesitate to reach out to me at <a href="mailto:stevenlivingston@uchicago.edu" class="underline text-[#602234]">stevenlivingston@uchicago.edu</a>! Furthermore, you can connect with me on GitHub or LinkedIn using the buttons below...</p>
+                <p class="text-black text-lg md:text-xl leading-relaxed">Hey everyone! My name is Steven Livingston and I'm the creator of Slink. I graduated from SEM in 2026 and created Slink shortly before I graduated as a means of being able to help other students connect with alumni and explore college/industry options. Simply put, the motivation behind building the site was seeing just how much my connections helped me during the college application process. Having SEM friends who were at Stanford, MIT, UChicago, Brown, and many other top colleges gave me the opportunity to learn more about what each of those schools uniquely offered and not only helped me to make an informed decision on which college I wanted to attend, but also helped me navigate the admissions process. As a result, I'm now attending the University of Chicago, majoring in Computational & Applied Mathematics. Slink has been a project that has been in the works for quite a while now (it's construction was initially requested by the SEM PTA in 2022), and the entire site is coded from complete scratch using HTML, Tailwind, jQuery, Express.js, Node.js, MongoDB, and Heroku to deploy. If you have any questions about the site, wish to contribute, or have any complaints of bugs and whatnot, please don't hesitate to reach out to me at <a href="mailto:stevenlivingston@uchicago.edu" class="underline text-[#602234]">stevenlivingston@uchicago.edu</a>! Furthermore, you can connect with me on GitHub or LinkedIn using the buttons below...</p>
                 <div class="about-socials">
                     <a href="https://github.com/5txvn" class="social-icon" aria-label="GitHub">
                         <i class="fab fa-github"></i>
