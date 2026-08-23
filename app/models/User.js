@@ -44,7 +44,7 @@ const userSchema = new mongoose.Schema({
         },
         validate: {
             validator: function(p) {
-                if (this.googleId && !p) return true;
+                if (this.googleId) return true;
                 return /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]).{8,}$/.test(p);
             },
             message: "Password must be at least 8 characters long and include at least one uppercase letter, one number, and one special character."
@@ -81,6 +81,14 @@ const userSchema = new mongoose.Schema({
         default: []
     },
     location: {
+        type: [String],
+        default: []
+    },
+    interests: {
+        type: [String],
+        default: []
+    },
+    extracurriculars: {
         type: [String],
         default: []
     },
